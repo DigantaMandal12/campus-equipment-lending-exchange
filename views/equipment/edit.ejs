@@ -24,6 +24,7 @@
 
       </div>
 
+
       <% if (error) { %>
 
         <div class="alert alert-error">
@@ -32,14 +33,18 @@
 
       <% } %>
 
+
       <form
         action="/equipment/<%= equipment._id %>/update"
         method="POST"
+        enctype="multipart/form-data"
         class="auth-form"
       >
 
         <div class="equipment-form-grid">
 
+
+          <!-- Equipment Name -->
           <div class="form-group">
 
             <label for="name">
@@ -51,12 +56,15 @@
               type="text"
               name="name"
               value="<%= equipment.name %>"
+              minlength="2"
+              maxlength="120"
               required
             >
 
           </div>
 
 
+          <!-- Category -->
           <div class="form-group">
 
             <label for="category">
@@ -68,12 +76,14 @@
               type="text"
               name="category"
               value="<%= equipment.category %>"
+              maxlength="100"
               required
             >
 
           </div>
 
 
+          <!-- Department -->
           <div class="form-group">
 
             <label for="department">
@@ -85,12 +95,14 @@
               type="text"
               name="department"
               value="<%= equipment.department %>"
+              maxlength="100"
               required
             >
 
           </div>
 
 
+          <!-- Condition -->
           <div class="form-group">
 
             <label for="condition">
@@ -143,6 +155,7 @@
           </div>
 
 
+          <!-- Quantity -->
           <div class="form-group">
 
             <label for="quantity">
@@ -159,9 +172,14 @@
               required
             >
 
+            <small class="form-help">
+              Total physical stock.
+            </small>
+
           </div>
 
 
+          <!-- Rental Fee -->
           <div class="form-group">
 
             <label for="rentalFee">
@@ -181,6 +199,7 @@
           </div>
 
 
+          <!-- Security Deposit -->
           <div class="form-group">
 
             <label for="securityDeposit">
@@ -200,21 +219,45 @@
           </div>
 
 
+          <!-- Current Availability -->
           <div class="form-group">
 
-            <label>
+            <label for="currentAvailability">
               Current Availability
             </label>
 
             <input
+              id="currentAvailability"
               type="text"
               value="<%= equipment.availableQuantity %> / <%= equipment.quantity %>"
+              disabled
+            >
+
+            <small class="form-help">
+              Available / Total
+            </small>
+
+          </div>
+
+
+          <!-- Current Status -->
+          <div class="form-group">
+
+            <label for="currentStatus">
+              Current Status
+            </label>
+
+            <input
+              id="currentStatus"
+              type="text"
+              value="<%= equipment.status %>"
               disabled
             >
 
           </div>
 
 
+          <!-- Description -->
           <div class="form-group form-field-full">
 
             <label for="description">
@@ -224,12 +267,83 @@
             <textarea
               id="description"
               name="description"
+              minlength="10"
+              maxlength="2000"
               required
             ><%= equipment.description %></textarea>
 
           </div>
 
 
+          <!-- Existing Images -->
+          <div class="form-group form-field-full">
+
+            <label>
+              Current Equipment Photos
+            </label>
+
+            <% if (Array.isArray(equipment.images) && equipment.images.length > 0) { %>
+
+              <div class="equipment-image-gallery">
+
+                <% equipment.images.forEach(function(image) { %>
+
+                  <div class="equipment-image-item">
+
+                    <img
+                      src="<%= image %>"
+                      alt="<%= equipment.name %>"
+                      loading="lazy"
+                    >
+
+                  </div>
+
+                <% }); %>
+
+              </div>
+
+            <% } else { %>
+
+              <p class="form-help">
+                No photos have been uploaded yet.
+              </p>
+
+            <% } %>
+
+          </div>
+
+
+          <!-- New Images -->
+          <div class="form-group form-field-full">
+
+            <label for="images">
+              Add More Equipment Photos
+            </label>
+
+            <input
+              id="images"
+              type="file"
+              name="images"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              data-max-files="5"
+              data-max-size="2097152"
+            >
+
+            <small class="form-help">
+              You can add up to 5 new images. Each image must be 2 MB or smaller.
+            </small>
+
+            <div
+              id="image-preview"
+              class="equipment-image-preview"
+              aria-live="polite"
+            ></div>
+
+          </div>
+
+
+          <!-- Borrowing Terms -->
           <div class="form-group form-field-full">
 
             <label for="borrowingTerms">
@@ -239,6 +353,7 @@
             <textarea
               id="borrowingTerms"
               name="borrowingTerms"
+              maxlength="2000"
             ><%= equipment.borrowingTerms %></textarea>
 
           </div>

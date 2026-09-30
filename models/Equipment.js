@@ -64,21 +64,58 @@ const equipmentSchema = new mongoose.Schema(
       index: true
     },
 
+    /*
+     * Equipment images uploaded through Multer.
+     *
+     * Phase 3D rules:
+     * - Maximum 5 images
+     * - Stored as relative public URLs
+     */
     images: {
-      type: [String],
-      default: []
+      type: [
+        {
+          type: String,
+          trim: true
+        }
+      ],
+
+      default: [],
+
+      validate: {
+        validator: function (images) {
+          return (
+            Array.isArray(images) &&
+            images.length <= 5
+          );
+        },
+
+        message:
+          "A maximum of 5 equipment images is allowed."
+      }
     },
 
     quantity: {
       type: Number,
       required: true,
-      min: 1
+      min: 1,
+
+      validate: {
+        validator: Number.isInteger,
+        message:
+          "Quantity must be a whole number."
+      }
     },
 
     availableQuantity: {
       type: Number,
       required: true,
-      min: 0
+      min: 0,
+
+      validate: {
+        validator: Number.isInteger,
+        message:
+          "Available quantity must be a whole number."
+      }
     },
 
     rentalFee: {
@@ -114,15 +151,68 @@ const equipmentSchema = new mongoose.Schema(
   }
 );
 
+/*
+ * Text search index.
+ */
 equipmentSchema.index({
   name: "text",
   description: "text",
   category: "text"
 });
 
+/*
+ * Compound indexes useful for equipment browsing.
+ */
+equipmentSchema.index({
+  status: 1,
+  availableQuantity: 1
+});
+
+equipmentSchema.index({
+  owner: 1,
+  createdAt: -1
+});
+
+/*
+ * Inventory consistency validation.
+ */
 equipmentSchema.pre(
   "validate",
   function (next) {
+    /*
+     * Total quantity must be valid.
+     */
+    if (
+      !Number.isInteger(this.quantity) ||
+      this.quantity < 1
+    ) {
+      return next(
+        new Error(
+          "Quantity must be a whole number greater than 0."
+        )
+      );
+    }
+
+    /*
+     * Available quantity must be valid.
+     */
+    if (
+      !Number.isInteger(
+        this.availableQuantity
+      ) ||
+      this.availableQuantity < 0
+    ) {
+      return next(
+        new Error(
+          "Available quantity must be a whole number greater than or equal to 0."
+        )
+      );
+    }
+
+    /*
+     * Available stock can never exceed
+     * total physical stock.
+     */
     if (
       this.availableQuantity >
       this.quantity
@@ -134,18 +224,22 @@ equipmentSchema.pre(
       );
     }
 
+    /*
+     * DRAFT is intentionally preserved.
+     *
+     * Only normal inventory states are automatically
+     * synchronized.
+     */
     if (
-      this.availableQuantity === 0 &&
-      this.status === "AVAILABLE"
+      this.status !== "DRAFT"
     ) {
-      this.status = "UNAVAILABLE";
-    }
-
-    if (
-      this.availableQuantity > 0 &&
-      this.status === "UNAVAILABLE"
-    ) {
-      this.status = "AVAILABLE";
+      if (
+        this.availableQuantity === 0
+      ) {
+        this.status = "UNAVAILABLE";
+      } else {
+        this.status = "AVAILABLE";
+      }
     }
 
     next();

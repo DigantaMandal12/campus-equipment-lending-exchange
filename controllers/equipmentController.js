@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const {
   createEquipment,
   getEquipmentById,
@@ -8,193 +11,212 @@ const {
   deleteMyEquipment
 } = require("../services/equipmentService");
 
-function renderCreateEquipment(
-  req,
-  res
-) {
-  return res.render(
-    "equipment/new",
-    {
-      title: "Add Equipment",
-      error:
-        req.query.error || null,
-      formData: {
-        name: "",
-        description: "",
-        category: "",
-        department:
-          req.session.user.department || "",
-        condition: "GOOD",
-        quantity: "1",
-        rentalFee: "0",
-        securityDeposit: "0",
-        borrowingTerms: ""
-      }
+/**
+ * Delete files uploaded by multer when an operation fails.
+ */
+function cleanupUploadedFiles(files) {
+  if (!Array.isArray(files) || files.length === 0) {
+    return;
+  }
+
+  for (const file of files) {
+    if (!file || !file.filename) {
+      continue;
     }
-  );
+
+    const filePath = path.join(
+      __dirname,
+      "..",
+      "public",
+      "uploads",
+      "equipment",
+      file.filename
+    );
+
+    try {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (cleanupError) {
+      console.error(
+        "Failed to remove uploaded file:",
+        filePath,
+        cleanupError.message
+      );
+    }
+  }
 }
 
-async function create(
-  req,
-  res
-) {
+/**
+ * Render equipment creation form.
+ */
+function renderCreateEquipment(req, res) {
+  return res.render("equipment/new", {
+    title: "Add Equipment",
+    error: req.query.error || null,
+
+    formData: {
+      name: "",
+      description: "",
+      category: "",
+      department: req.session.user.department || "",
+      condition: "GOOD",
+      quantity: "1",
+      rentalFee: "0",
+      securityDeposit: "0",
+      borrowingTerms: ""
+    }
+  });
+}
+
+/**
+ * Create new equipment.
+ */
+async function create(req, res) {
   try {
-    await createEquipment(
-      req.session.user.id,
-      req.body
+    const imagePaths = (req.files || []).map(
+      (file) => `/uploads/equipment/${file.filename}`
     );
+
+    await createEquipment(req.session.user.id, {
+      ...req.body,
+      images: imagePaths
+    });
 
     return res.redirect(
       "/equipment/mine?success=Equipment+listed+successfully."
     );
   } catch (error) {
-    return res.status(400).render(
-      "equipment/new",
-      {
-        title: "Add Equipment",
-        error: error.message,
-        formData: {
-          name:
-            req.body.name || "",
-          description:
-            req.body.description || "",
-          category:
-            req.body.category || "",
-          department:
-            req.body.department ||
-            req.session.user.department ||
-            "",
-          condition:
-            req.body.condition ||
-            "GOOD",
-          quantity:
-            req.body.quantity || "1",
-          rentalFee:
-            req.body.rentalFee || "0",
-          securityDeposit:
-            req.body.securityDeposit ||
-            "0",
-          borrowingTerms:
-            req.body.borrowingTerms ||
-            ""
-        }
+    cleanupUploadedFiles(req.files);
+
+    return res.status(400).render("equipment/new", {
+      title: "Add Equipment",
+      error: error.message,
+
+      formData: {
+        name: req.body.name || "",
+        description: req.body.description || "",
+        category: req.body.category || "",
+
+        department:
+          req.body.department ||
+          req.session.user.department ||
+          "",
+
+        condition: req.body.condition || "GOOD",
+        quantity: req.body.quantity || "1",
+        rentalFee: req.body.rentalFee || "0",
+        securityDeposit:
+          req.body.securityDeposit || "0",
+
+        borrowingTerms:
+          req.body.borrowingTerms || ""
       }
-    );
+    });
   }
 }
 
-async function browse(
-  req,
-  res,
-  next
-) {
+/**
+ * Browse available equipment.
+ */
+async function browse(req, res, next) {
   try {
-    const equipment =
-      await getAvailableEquipment();
+    const equipment = await getAvailableEquipment();
 
-    return res.render(
-      "equipment/browse",
-      {
-        title: "Browse Equipment",
-        equipment,
-        currentUser:
-          req.session.user,
-        isOwnerView: false
-      }
-    );
+    return res.render("equipment/browse", {
+      title: "Browse Equipment",
+      equipment,
+
+      currentUser: req.session.user,
+
+      isOwnerView: false
+    });
   } catch (error) {
     next(error);
   }
 }
 
-async function mine(
-  req,
-  res,
-  next
-) {
+/**
+ * Show lender's own equipment.
+ */
+async function mine(req, res, next) {
   try {
-    const equipment =
-      await getMyEquipment(
-        req.session.user.id
-      );
-
-    return res.render(
-      "equipment/browse",
-      {
-        title: "My Equipment",
-        equipment,
-        currentUser:
-          req.session.user,
-        isOwnerView: true,
-        success:
-          req.query.success || null
-      }
+    const equipment = await getMyEquipment(
+      req.session.user.id
     );
+
+    return res.render("equipment/browse", {
+      title: "My Equipment",
+      equipment,
+
+      currentUser: req.session.user,
+
+      isOwnerView: true,
+
+      success: req.query.success || null
+    });
   } catch (error) {
     next(error);
   }
 }
 
-async function details(
-  req,
-  res,
-  next
-) {
+/**
+ * Show equipment details.
+ */
+async function details(req, res, next) {
   try {
-    const equipment =
-      await getEquipmentById(
-        req.params.id
-      );
-
-    return res.render(
-      "equipment/detail",
-      {
-        title: equipment.name,
-        equipment,
-        currentUser:
-          req.session.user
-      }
+    const equipment = await getEquipmentById(
+      req.params.id
     );
+
+    return res.render("equipment/detail", {
+      title: equipment.name,
+      equipment,
+
+      currentUser: req.session.user
+    });
   } catch (error) {
     next(error);
   }
 }
 
-async function renderEditEquipment(
-  req,
-  res,
-  next
-) {
+/**
+ * Render equipment edit form.
+ * Ownership is checked inside the service.
+ */
+async function renderEditEquipment(req, res, next) {
   try {
-    const equipment =
-      await getMyEquipmentById(
-        req.session.user.id,
-        req.params.id
-      );
-
-    return res.render(
-      "equipment/edit",
-      {
-        title: `Edit ${equipment.name}`,
-        error: null,
-        equipment
-      }
+    const equipment = await getMyEquipmentById(
+      req.session.user.id,
+      req.params.id
     );
+
+    return res.render("equipment/edit", {
+      title: `Edit ${equipment.name}`,
+      error: null,
+      equipment
+    });
   } catch (error) {
     next(error);
   }
 }
 
-async function update(
-  req,
-  res,
-  next
-) {
+/**
+ * Update lender's equipment.
+ */
+async function update(req, res, next) {
   try {
+    const imagePaths = (req.files || []).map(
+      (file) => `/uploads/equipment/${file.filename}`
+    );
+
     await updateMyEquipment(
       req.session.user.id,
       req.params.id,
-      req.body
+      {
+        ...req.body,
+        images: imagePaths
+      }
     );
 
     return res.redirect(
@@ -203,61 +225,72 @@ async function update(
       )}`
     );
   } catch (error) {
-    try {
-      const equipment =
-        await getMyEquipmentById(
-          req.session.user.id,
-          req.params.id
-        );
+    /**
+     * New files were already stored by multer.
+     * Remove them when database update fails.
+     */
+    cleanupUploadedFiles(req.files);
 
-      return res.status(400).render(
-        "equipment/edit",
-        {
-          title: `Edit ${equipment.name}`,
-          error: error.message,
-          equipment: {
-            ...equipment,
-            name:
-              req.body.name ||
-              equipment.name,
-            description:
-              req.body.description ||
-              equipment.description,
-            category:
-              req.body.category ||
-              equipment.category,
-            department:
-              req.body.department ||
-              equipment.department,
-            condition:
-              req.body.condition ||
-              equipment.condition,
-            quantity:
-              req.body.quantity ||
-              equipment.quantity,
-            rentalFee:
-              req.body.rentalFee ??
-              equipment.rentalFee,
-            securityDeposit:
-              req.body.securityDeposit ??
-              equipment.securityDeposit,
-            borrowingTerms:
-              req.body.borrowingTerms ??
-              equipment.borrowingTerms
-          }
-        }
+    try {
+      const equipment = await getMyEquipmentById(
+        req.session.user.id,
+        req.params.id
       );
+
+      return res.status(400).render("equipment/edit", {
+        title: `Edit ${equipment.name}`,
+        error: error.message,
+
+        equipment: {
+          ...equipment,
+
+          name:
+            req.body.name ||
+            equipment.name,
+
+          description:
+            req.body.description ||
+            equipment.description,
+
+          category:
+            req.body.category ||
+            equipment.category,
+
+          department:
+            req.body.department ||
+            equipment.department,
+
+          condition:
+            req.body.condition ||
+            equipment.condition,
+
+          quantity:
+            req.body.quantity ||
+            equipment.quantity,
+
+          rentalFee:
+            req.body.rentalFee ??
+            equipment.rentalFee,
+
+          securityDeposit:
+            req.body.securityDeposit ??
+            equipment.securityDeposit,
+
+          borrowingTerms:
+            req.body.borrowingTerms ??
+            equipment.borrowingTerms
+        }
+      });
     } catch (renderError) {
       next(renderError);
     }
   }
 }
 
-async function remove(
-  req,
-  res,
-  next
-) {
+/**
+ * Delete lender's equipment.
+ */
+async function remove(req, res, next) {
   try {
     await deleteMyEquipment(
       req.session.user.id,

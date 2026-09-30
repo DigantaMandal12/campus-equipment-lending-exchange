@@ -15,10 +15,7 @@ function normalizeText(value) {
   return String(value || "").trim();
 }
 
-function parseNonNegativeNumber(
-  value,
-  fieldName
-) {
+function parseNonNegativeNumber(value, fieldName) {
   const number = Number(value);
 
   if (!Number.isFinite(number)) {
@@ -36,10 +33,7 @@ function parseNonNegativeNumber(
   return number;
 }
 
-function parsePositiveInteger(
-  value,
-  fieldName
-) {
+function parsePositiveInteger(value, fieldName) {
   const number = Number(value);
 
   if (
@@ -55,8 +49,7 @@ function parsePositiveInteger(
 }
 
 function validateEquipmentData(data) {
-  const name =
-    normalizeText(data.name);
+  const name = normalizeText(data.name);
 
   const description =
     normalizeText(data.description);
@@ -68,9 +61,7 @@ function validateEquipmentData(data) {
     normalizeText(data.department);
 
   const condition =
-    normalizeText(
-      data.condition
-    ).toUpperCase();
+    normalizeText(data.condition).toUpperCase();
 
   if (name.length < 2) {
     throw new Error(
@@ -97,9 +88,7 @@ function validateEquipmentData(data) {
   }
 
   if (
-    !ALLOWED_CONDITIONS.includes(
-      condition
-    )
+    !ALLOWED_CONDITIONS.includes(condition)
   ) {
     throw new Error(
       "Invalid equipment condition."
@@ -134,22 +123,36 @@ function validateEquipmentData(data) {
     rentalFee,
     securityDeposit,
     borrowingTerms:
-      normalizeText(
-        data.borrowingTerms
-      )
+      normalizeText(data.borrowingTerms)
   };
 }
 
-async function createEquipment(
-  ownerId,
-  data
-) {
+/**
+ * Normalize uploaded image paths.
+ *
+ * The controller creates these paths from Multer filenames,
+ * for example:
+ *
+ * /uploads/equipment/abc123.jpg
+ */
+function normalizeImages(images) {
+  if (!Array.isArray(images)) {
+    return [];
+  }
+
+  return images
+    .map((image) => normalizeText(image))
+    .filter(Boolean);
+}
+
+/**
+ * Create new equipment.
+ */
+async function createEquipment(ownerId, data) {
   await connectDB();
 
   if (
-    !mongoose.Types.ObjectId.isValid(
-      ownerId
-    )
+    !mongoose.Types.ObjectId.isValid(ownerId)
   ) {
     throw new Error(
       "Invalid lender account."
@@ -159,21 +162,30 @@ async function createEquipment(
   const equipmentData =
     validateEquipmentData(data);
 
+  const images =
+    normalizeImages(data.images);
+
   const equipment =
     await Equipment.create({
       owner: ownerId,
+
       ...equipmentData,
+
+      images,
+
       availableQuantity:
         equipmentData.quantity,
+
       status: "AVAILABLE"
     });
 
   return equipment;
 }
 
-async function getEquipmentById(
-  equipmentId
-) {
+/**
+ * Get one equipment item by ID.
+ */
+async function getEquipmentById(equipmentId) {
   await connectDB();
 
   if (
@@ -191,9 +203,7 @@ async function getEquipmentById(
   }
 
   const equipment =
-    await Equipment.findById(
-      equipmentId
-    )
+    await Equipment.findById(equipmentId)
       .populate(
         "owner",
         "name email department year trustScore"
@@ -213,11 +223,15 @@ async function getEquipmentById(
   return equipment;
 }
 
+/**
+ * Get all currently available equipment.
+ */
 async function getAvailableEquipment() {
   await connectDB();
 
   return Equipment.find({
     status: "AVAILABLE",
+
     availableQuantity: {
       $gt: 0
     }
@@ -232,15 +246,14 @@ async function getAvailableEquipment() {
     .lean();
 }
 
-async function getMyEquipment(
-  ownerId
-) {
+/**
+ * Get all equipment owned by a lender.
+ */
+async function getMyEquipment(ownerId) {
   await connectDB();
 
   if (
-    !mongoose.Types.ObjectId.isValid(
-      ownerId
-    )
+    !mongoose.Types.ObjectId.isValid(ownerId)
   ) {
     throw new Error(
       "Invalid lender account."
@@ -256,6 +269,12 @@ async function getMyEquipment(
     .lean();
 }
 
+/**
+ * Get one equipment item only if the lender owns it.
+ *
+ * Ownership protection:
+ * _id + owner
+ */
 async function getMyEquipmentById(
   ownerId,
   equipmentId
@@ -263,9 +282,7 @@ async function getMyEquipmentById(
   await connectDB();
 
   if (
-    !mongoose.Types.ObjectId.isValid(
-      ownerId
-    )
+    !mongoose.Types.ObjectId.isValid(ownerId)
   ) {
     throw new Error(
       "Invalid lender account."
@@ -305,6 +322,28 @@ async function getMyEquipmentById(
   return equipment;
 }
 
+/**
+ * Update lender-owned equipment.
+ *
+ * Inventory rule:
+ *
+ * quantity = total physical items
+ * availableQuantity = items currently available
+ *
+ * reserved/unavailable quantity:
+ * quantity - availableQuantity
+ *
+ * Example:
+ *
+ * quantity = 5
+ * availableQuantity = 3
+ *
+ * reserved/unavailable = 2
+ *
+ * If quantity changes to 4:
+ *
+ * availableQuantity = 4 - 2 = 2
+ */
 async function updateMyEquipment(
   ownerId,
   equipmentId,
@@ -313,9 +352,7 @@ async function updateMyEquipment(
   await connectDB();
 
   if (
-    !mongoose.Types.ObjectId.isValid(
-      ownerId
-    )
+    !mongoose.Types.ObjectId.isValid(ownerId)
   ) {
     throw new Error(
       "Invalid lender account."
@@ -355,19 +392,6 @@ async function updateMyEquipment(
   const validated =
     validateEquipmentData(data);
 
-  /*
-   * Preserve inventory already committed to future
-   * borrowing operations.
-   *
-   * Example:
-   * quantity = 5
-   * availableQuantity = 3
-   *
-   * reserved quantity = 2
-   *
-   * If lender changes total quantity to 4:
-   * availableQuantity becomes 2.
-   */
   const reservedQuantity =
     existingEquipment.quantity -
     existingEquipment.availableQuantity;
@@ -415,6 +439,32 @@ async function updateMyEquipment(
   existingEquipment.borrowingTerms =
     validated.borrowingTerms;
 
+  /**
+   * Image handling:
+   *
+   * No new images:
+   * keep existing images.
+   *
+   * New images:
+   * append them to existing images.
+   */
+  const newImages =
+    normalizeImages(data.images);
+
+  if (newImages.length > 0) {
+    const existingImages =
+      Array.isArray(
+        existingEquipment.images
+      )
+        ? existingEquipment.images
+        : [];
+
+    existingEquipment.images = [
+      ...existingImages,
+      ...newImages
+    ];
+  }
+
   existingEquipment.status =
     newAvailableQuantity > 0
       ? "AVAILABLE"
@@ -425,6 +475,9 @@ async function updateMyEquipment(
   return existingEquipment;
 }
 
+/**
+ * Delete lender-owned equipment.
+ */
 async function deleteMyEquipment(
   ownerId,
   equipmentId
@@ -432,9 +485,7 @@ async function deleteMyEquipment(
   await connectDB();
 
   if (
-    !mongoose.Types.ObjectId.isValid(
-      ownerId
-    )
+    !mongoose.Types.ObjectId.isValid(ownerId)
   ) {
     throw new Error(
       "Invalid lender account."
@@ -472,11 +523,11 @@ async function deleteMyEquipment(
   }
 
   /*
-   * There is no Transaction model yet because borrowing
-   * belongs to Phase 4.
+   * There is no Transaction model yet because
+   * borrowing belongs to Phase 4.
    *
-   * Once transactions exist, deletion should additionally
-   * check for active transactions before allowing deletion.
+   * Once transactions exist, deletion should
+   * additionally check for active transactions.
    */
 
   await Equipment.deleteOne({

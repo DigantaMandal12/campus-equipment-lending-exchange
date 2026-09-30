@@ -8,35 +8,191 @@
 
     <div class="equipment-detail">
 
+
+      <!-- LEFT -->
       <section class="detail-panel">
 
         <div class="detail-hero">
 
-          <span class="detail-hero-letter">
-            <%= equipment.name.charAt(0).toUpperCase() %>
-          </span>
+          <% if (
+            Array.isArray(equipment.images) &&
+            equipment.images.length > 0
+          ) { %>
+
+            <img
+              src="<%= equipment.images[0] %>"
+              alt="<%= equipment.name %>"
+              class="detail-image"
+            >
+
+          <% } else { %>
+
+            <span class="detail-hero-letter">
+              <%= equipment.name.charAt(0).toUpperCase() %>
+            </span>
+
+          <% } %>
 
         </div>
+
+
+        <% if (
+          Array.isArray(equipment.images) &&
+          equipment.images.length > 1
+        ) { %>
+
+          <div class="equipment-detail-gallery">
+
+            <% equipment.images.forEach(function(image, index) { %>
+
+              <div class="detail-gallery-item">
+
+                <img
+                  src="<%= image %>"
+                  alt="<%= equipment.name %> photo <%= index + 1 %>"
+                  loading="lazy"
+                >
+
+              </div>
+
+            <% }); %>
+
+          </div>
+
+        <% } %>
 
       </section>
 
 
+      <!-- RIGHT -->
       <section class="detail-panel">
 
         <span class="eyebrow">
           <%= equipment.category %>
         </span>
 
+
         <h1>
           <%= equipment.name %>
         </h1>
+
 
         <p class="detail-description">
           <%= equipment.description %>
         </p>
 
 
+        <%
+          const totalQuantity =
+            Number(equipment.quantity) || 0;
+
+          const availableQuantity =
+            Number(equipment.availableQuantity) || 0;
+
+          const availabilityPercentage =
+            totalQuantity > 0
+              ? Math.round(
+                  (availableQuantity / totalQuantity) * 100
+                )
+              : 0;
+
+          const isAvailable =
+            equipment.status === "AVAILABLE" &&
+            availableQuantity > 0;
+        %>
+
+
+        <!-- STATUS -->
+        <div class="detail-status-card">
+
+          <span>
+            Availability Status
+          </span>
+
+          <strong
+            class="<%= isAvailable
+              ? 'status-text-available'
+              : 'status-text-unavailable'
+            %>"
+          >
+            <%= isAvailable
+              ? "AVAILABLE"
+              : "UNAVAILABLE"
+            %>
+          </strong>
+
+        </div>
+
+
+        <!-- STOCK -->
+        <div class="detail-stock-section">
+
+          <div class="detail-stock-header">
+
+            <div>
+
+              <span class="detail-stock-label">
+                Stock Availability
+              </span>
+
+              <strong class="detail-stock-count">
+                <%= availableQuantity %>
+                /
+                <%= totalQuantity %>
+              </strong>
+
+            </div>
+
+            <span class="detail-stock-percentage">
+              <%= availabilityPercentage %>%
+            </span>
+
+          </div>
+
+
+          <div class="equipment-stock-bar detail-stock-bar">
+
+            <div
+              class="equipment-stock-fill
+              <%= isAvailable
+                ? 'stock-available'
+                : 'stock-empty'
+              %>"
+              style="width: <%= availabilityPercentage %>%"
+            ></div>
+
+          </div>
+
+
+          <p class="detail-stock-message">
+
+            <% if (!isAvailable) { %>
+
+              This equipment is currently out of stock.
+
+            <% } else if (availableQuantity < totalQuantity) { %>
+
+              <%= availableQuantity %>
+              of
+              <%= totalQuantity %>
+              item(s) are currently available.
+
+            <% } else { %>
+
+              All
+              <%= totalQuantity %>
+              item(s) are currently available.
+
+            <% } %>
+
+          </p>
+
+        </div>
+
+
+        <!-- DETAILS -->
         <div class="detail-list">
+
 
           <div class="detail-list-item">
 
@@ -67,13 +223,24 @@
           <div class="detail-list-item">
 
             <span>
-              Availability
+              Total Quantity
             </span>
 
             <strong>
-              <%= equipment.availableQuantity %>
-              /
-              <%= equipment.quantity %>
+              <%= totalQuantity %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Available Quantity
+            </span>
+
+            <strong>
+              <%= availableQuantity %>
             </strong>
 
           </div>
@@ -154,13 +321,27 @@
 
           <div style="margin-top: 28px;">
 
-            <button
-              type="button"
-              class="btn btn-primary btn-full"
-              disabled
-            >
-              Borrow Request — Phase 4
-            </button>
+            <% if (isAvailable) { %>
+
+              <button
+                type="button"
+                class="btn btn-primary btn-full"
+                disabled
+              >
+                Borrow Request — Phase 4
+              </button>
+
+            <% } else { %>
+
+              <button
+                type="button"
+                class="btn btn-secondary btn-full"
+                disabled
+              >
+                Currently Unavailable
+              </button>
+
+            <% } %>
 
           </div>
 

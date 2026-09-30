@@ -18,6 +18,10 @@ const {
 const requireRole =
   require("../middleware/roleMiddleware");
 
+const {
+  uploadEquipmentImages
+} = require("../middleware/uploadMiddleware");
+
 const router =
   express.Router();
 
@@ -36,6 +40,10 @@ router.post(
   "/",
   requireAuth,
   requireRole("LENDER"),
+  uploadEquipmentImages.array(
+    "images",
+    5
+  ),
   create
 );
 
@@ -65,6 +73,10 @@ router.post(
   "/:id/update",
   requireAuth,
   requireRole("LENDER"),
+  uploadEquipmentImages.array(
+    "images",
+    5
+  ),
   update
 );
 
@@ -80,7 +92,7 @@ router.post(
 );
 
 // -----------------------------------------------
-// Publicly browsable authenticated inventory
+// Browse Equipment
 // -----------------------------------------------
 
 router.get(
@@ -90,10 +102,9 @@ router.get(
 );
 
 // -----------------------------------------------
-// Details
-// IMPORTANT: keep this after /new, /mine and
-// /:id/edit so those paths are not interpreted
-// as IDs.
+// Equipment Details
+// IMPORTANT:
+// Keep this after /new, /mine and /:id/edit.
 // -----------------------------------------------
 
 router.get(

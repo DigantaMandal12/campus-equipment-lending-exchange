@@ -24,20 +24,27 @@
 
       </div>
 
+
       <% if (error) { %>
+
         <div class="alert alert-error">
           <%= error %>
         </div>
+
       <% } %>
+
 
       <form
         action="/equipment"
         method="POST"
+        enctype="multipart/form-data"
         class="auth-form"
       >
 
         <div class="equipment-form-grid">
 
+
+          <!-- Equipment Name -->
           <div class="form-group">
 
             <label for="name">
@@ -50,12 +57,15 @@
               name="name"
               value="<%= formData.name %>"
               placeholder="Mechanical Draftor"
+              minlength="2"
+              maxlength="120"
               required
             >
 
           </div>
 
 
+          <!-- Category -->
           <div class="form-group">
 
             <label for="category">
@@ -68,12 +78,14 @@
               name="category"
               value="<%= formData.category %>"
               placeholder="Engineering Drawing"
+              maxlength="100"
               required
             >
 
           </div>
 
 
+          <!-- Department -->
           <div class="form-group">
 
             <label for="department">
@@ -86,12 +98,14 @@
               name="department"
               value="<%= formData.department %>"
               placeholder="Mechanical Engineering"
+              maxlength="100"
               required
             >
 
           </div>
 
 
+          <!-- Condition -->
           <div class="form-group">
 
             <label for="condition">
@@ -144,6 +158,7 @@
           </div>
 
 
+          <!-- Quantity -->
           <div class="form-group">
 
             <label for="quantity">
@@ -160,9 +175,14 @@
               required
             >
 
+            <small class="form-help">
+              Total number of physical items available.
+            </small>
+
           </div>
 
 
+          <!-- Rental Fee -->
           <div class="form-group">
 
             <label for="rentalFee">
@@ -182,6 +202,7 @@
           </div>
 
 
+          <!-- Security Deposit -->
           <div class="form-group">
 
             <label for="securityDeposit">
@@ -201,22 +222,37 @@
           </div>
 
 
+          <!-- Images -->
           <div class="form-group form-field-full">
 
-            <label for="description">
-              Description
+            <label for="images">
+              Equipment Photos
             </label>
 
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Describe the equipment, its use and important details."
-              required
-            ><%= formData.description %></textarea>
+            <input
+              id="images"
+              type="file"
+              name="images"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              data-max-files="5"
+              data-max-size="2097152"
+            >
+
+            <small class="form-help">
+              Upload up to 5 images. JPG, PNG or WEBP. Maximum 2 MB per image.
+            </small>
+
+            <div
+              id="image-preview"
+              class="equipment-image-preview"
+              aria-live="polite"
+            ></div>
 
           </div>
 
 
+          <!-- Borrowing Terms -->
           <div class="form-group form-field-full">
 
             <label for="borrowingTerms">
@@ -226,6 +262,7 @@
             <textarea
               id="borrowingTerms"
               name="borrowingTerms"
+              maxlength="2000"
               placeholder="Example: Return within 7 days. Keep equipment dry."
             ><%= formData.borrowingTerms %></textarea>
 
