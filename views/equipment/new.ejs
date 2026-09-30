@@ -56,7 +56,7 @@
               type="text"
               name="name"
               value="<%= formData.name %>"
-              placeholder="Mechanical Draftor"
+              placeholder="Scientific Calculator"
               minlength="2"
               maxlength="120"
               required
@@ -77,7 +77,7 @@
               type="text"
               name="category"
               value="<%= formData.category %>"
-              placeholder="Engineering Drawing"
+              placeholder="Mathematics"
               maxlength="100"
               required
             >
@@ -97,7 +97,7 @@
               type="text"
               name="department"
               value="<%= formData.department %>"
-              placeholder="Mechanical Engineering"
+              placeholder="Computer Science and Engineering"
               maxlength="100"
               required
             >
@@ -222,6 +222,31 @@
           </div>
 
 
+          <!-- Description -->
+          <div class="form-group form-field-full">
+
+            <label for="description">
+              Equipment Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              minlength="10"
+              maxlength="2000"
+              rows="5"
+              placeholder="Example: Handheld non-programmable scientific calculator suitable for mathematics and engineering calculations."
+              required
+            ><%= formData.description %></textarea>
+
+            <small class="form-help">
+              Minimum 10 characters. Describe the equipment, its purpose,
+              and how it can be used.
+            </small>
+
+          </div>
+
+
           <!-- Images -->
           <div class="form-group form-field-full">
 
@@ -263,8 +288,13 @@
               id="borrowingTerms"
               name="borrowingTerms"
               maxlength="2000"
-              placeholder="Example: Return within 7 days. Keep equipment dry."
+              rows="4"
+              placeholder="Example: Return within 7 days. Keep equipment dry and in good condition."
             ><%= formData.borrowingTerms %></textarea>
+
+            <small class="form-help">
+              Add rules students should follow while borrowing the equipment.
+            </small>
 
           </div>
 
