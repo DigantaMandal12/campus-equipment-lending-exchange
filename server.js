@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const connectDB = require("./config/db");
+
 const createSessionMiddleware =
   require("./config/session");
 
@@ -17,6 +18,12 @@ const healthRoutes =
 
 const authRoutes =
   require("./routes/authRoutes");
+
+const dashboardRoutes =
+  require("./routes/dashboardRoutes");
+
+const equipmentRoutes =
+  require("./routes/equipmentRoutes");
 
 const {
   attachCurrentUser
@@ -36,7 +43,9 @@ const PORT =
 // VERCEL / PROXY
 // --------------------------------------------------
 
-if (process.env.NODE_ENV === "production") {
+if (
+  process.env.NODE_ENV === "production"
+) {
   app.set("trust proxy", 1);
 }
 
@@ -51,7 +60,10 @@ app.set(
 
 app.set(
   "views",
-  path.join(__dirname, "views")
+  path.join(
+    __dirname,
+    "views"
+  )
 );
 
 // --------------------------------------------------
@@ -74,8 +86,7 @@ app.use(
 
 app.use(
   morgan(
-    process.env.NODE_ENV ===
-      "production"
+    process.env.NODE_ENV === "production"
       ? "combined"
       : "dev"
   )
@@ -110,8 +121,7 @@ app.use(
     ),
     {
       maxAge:
-        process.env.NODE_ENV ===
-        "production"
+        process.env.NODE_ENV === "production"
           ? "1d"
           : 0
     }
@@ -120,6 +130,8 @@ app.use(
 
 // --------------------------------------------------
 // SESSION
+// IMPORTANT:
+// Session MUST come before protected routes.
 // --------------------------------------------------
 
 app.use(
@@ -128,6 +140,7 @@ app.use(
 
 // --------------------------------------------------
 // CURRENT USER
+// Must come after session middleware.
 // --------------------------------------------------
 
 app.use(
@@ -151,6 +164,16 @@ app.use(
 app.use(
   "/auth",
   authRoutes
+);
+
+app.use(
+  "/dashboard",
+  dashboardRoutes
+);
+
+app.use(
+  "/equipment",
+  equipmentRoutes
 );
 
 // --------------------------------------------------
@@ -207,11 +230,19 @@ async function startLocalServer() {
   }
 }
 
+// --------------------------------------------------
+// START LOCAL SERVER
+// --------------------------------------------------
+
 if (
   require.main === module &&
   process.env.VERCEL !== "1"
 ) {
   startLocalServer();
 }
+
+// --------------------------------------------------
+// VERCEL EXPORT
+// --------------------------------------------------
 
 module.exports = app;

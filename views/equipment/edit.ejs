@@ -1,0 +1,276 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="form-page">
+
+  <div class="container">
+
+    <div class="form-card">
+
+      <div class="form-card-heading">
+
+        <span class="eyebrow">
+          LENDER
+        </span>
+
+        <h1>
+          Edit Equipment
+        </h1>
+
+        <p>
+          Update your equipment listing.
+        </p>
+
+      </div>
+
+      <% if (error) { %>
+
+        <div class="alert alert-error">
+          <%= error %>
+        </div>
+
+      <% } %>
+
+      <form
+        action="/equipment/<%= equipment._id %>/update"
+        method="POST"
+        class="auth-form"
+      >
+
+        <div class="equipment-form-grid">
+
+          <div class="form-group">
+
+            <label for="name">
+              Equipment Name
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value="<%= equipment.name %>"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="category">
+              Category
+            </label>
+
+            <input
+              id="category"
+              type="text"
+              name="category"
+              value="<%= equipment.category %>"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="department">
+              Engineering Department
+            </label>
+
+            <input
+              id="department"
+              type="text"
+              name="department"
+              value="<%= equipment.department %>"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="condition">
+              Condition
+            </label>
+
+            <select
+              id="condition"
+              name="condition"
+              required
+            >
+
+              <option
+                value="NEW"
+                <%= equipment.condition === "NEW" ? "selected" : "" %>
+              >
+                New
+              </option>
+
+              <option
+                value="LIKE_NEW"
+                <%= equipment.condition === "LIKE_NEW" ? "selected" : "" %>
+              >
+                Like New
+              </option>
+
+              <option
+                value="GOOD"
+                <%= equipment.condition === "GOOD" ? "selected" : "" %>
+              >
+                Good
+              </option>
+
+              <option
+                value="FAIR"
+                <%= equipment.condition === "FAIR" ? "selected" : "" %>
+              >
+                Fair
+              </option>
+
+              <option
+                value="NEEDS_REPAIR"
+                <%= equipment.condition === "NEEDS_REPAIR" ? "selected" : "" %>
+              >
+                Needs Repair
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="quantity">
+              Total Quantity
+            </label>
+
+            <input
+              id="quantity"
+              type="number"
+              name="quantity"
+              min="1"
+              step="1"
+              value="<%= equipment.quantity %>"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="rentalFee">
+              Borrow / Rental Fee (₹)
+            </label>
+
+            <input
+              id="rentalFee"
+              type="number"
+              name="rentalFee"
+              min="0"
+              step="0.01"
+              value="<%= equipment.rentalFee %>"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="securityDeposit">
+              Security Deposit (₹)
+            </label>
+
+            <input
+              id="securityDeposit"
+              type="number"
+              name="securityDeposit"
+              min="0"
+              step="0.01"
+              value="<%= equipment.securityDeposit %>"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Current Availability
+            </label>
+
+            <input
+              type="text"
+              value="<%= equipment.availableQuantity %> / <%= equipment.quantity %>"
+              disabled
+            >
+
+          </div>
+
+
+          <div class="form-group form-field-full">
+
+            <label for="description">
+              Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              required
+            ><%= equipment.description %></textarea>
+
+          </div>
+
+
+          <div class="form-group form-field-full">
+
+            <label for="borrowingTerms">
+              Borrowing Terms
+            </label>
+
+            <textarea
+              id="borrowingTerms"
+              name="borrowingTerms"
+            ><%= equipment.borrowingTerms %></textarea>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-full"
+        >
+          Save Changes
+        </button>
+
+      </form>
+
+
+      <div style="margin-top: 14px;">
+
+        <a
+          href="/equipment/<%= equipment._id %>"
+          class="btn btn-secondary btn-full"
+        >
+          Cancel
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

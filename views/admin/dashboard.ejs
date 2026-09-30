@@ -1,0 +1,127 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">
+          ADMIN
+        </span>
+
+        <h1>
+          Admin Dashboard
+        </h1>
+
+        <p>
+          Monitor users, equipment and platform activity.
+        </p>
+      </div>
+
+    </div>
+
+
+    <section class="stat-grid">
+
+      <article class="stat-card">
+        <span>Total Users</span>
+        <strong>
+          <%= stats.totalUsers %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Total Lenders</span>
+        <strong>
+          <%= stats.totalLenders %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Total Borrowers</span>
+        <strong>
+          <%= stats.totalBorrowers %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Total Equipment</span>
+        <strong>
+          <%= stats.totalEquipment %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Available Equipment</span>
+        <strong>
+          <%= stats.availableEquipment %>
+        </strong>
+      </article>
+
+    </section>
+
+
+    <section class="dashboard-panel">
+
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">
+            COMING WITH BORROW ENGINE
+          </span>
+
+          <h2>
+            Platform Monitoring
+          </h2>
+        </div>
+      </div>
+
+      <div class="monitor-grid">
+
+        <div class="monitor-item">
+          <span>Active Borrowings</span>
+          <strong>
+            <%= stats.activeBorrowings %>
+          </strong>
+        </div>
+
+        <div class="monitor-item">
+          <span>Pending Requests</span>
+          <strong>
+            <%= stats.pendingRequests %>
+          </strong>
+        </div>
+
+        <div class="monitor-item">
+          <span>Pending Deposits</span>
+          <strong>
+            <%= stats.pendingDeposits %>
+          </strong>
+        </div>
+
+        <div class="monitor-item">
+          <span>Overdue Transactions</span>
+          <strong>
+            <%= stats.overdueTransactions %>
+          </strong>
+        </div>
+
+        <div class="monitor-item">
+          <span>Reported Damage</span>
+          <strong>
+            <%= stats.reportedDamage %>
+          </strong>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

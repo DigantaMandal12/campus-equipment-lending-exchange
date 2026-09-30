@@ -1,0 +1,177 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="equipment-detail">
+
+      <section class="detail-panel">
+
+        <div class="detail-hero">
+
+          <span class="detail-hero-letter">
+            <%= equipment.name.charAt(0).toUpperCase() %>
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <section class="detail-panel">
+
+        <span class="eyebrow">
+          <%= equipment.category %>
+        </span>
+
+        <h1>
+          <%= equipment.name %>
+        </h1>
+
+        <p class="detail-description">
+          <%= equipment.description %>
+        </p>
+
+
+        <div class="detail-list">
+
+          <div class="detail-list-item">
+
+            <span>
+              Department
+            </span>
+
+            <strong>
+              <%= equipment.department %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Condition
+            </span>
+
+            <strong>
+              <%= equipment.condition.replace("_", " ") %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Availability
+            </span>
+
+            <strong>
+              <%= equipment.availableQuantity %>
+              /
+              <%= equipment.quantity %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Borrow Fee
+            </span>
+
+            <strong>
+              ₹<%= equipment.rentalFee %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Security Deposit
+            </span>
+
+            <strong>
+              ₹<%= equipment.securityDeposit %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Lender
+            </span>
+
+            <strong>
+              <%= equipment.owner.name %>
+            </strong>
+
+          </div>
+
+
+          <div class="detail-list-item">
+
+            <span>
+              Lender Department
+            </span>
+
+            <strong>
+              <%= equipment.owner.department %>
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <% if (equipment.borrowingTerms) { %>
+
+          <div style="margin-top: 28px;">
+
+            <span class="eyebrow">
+              BORROWING TERMS
+            </span>
+
+            <p class="detail-description">
+              <%= equipment.borrowingTerms %>
+            </p>
+
+          </div>
+
+        <% } %>
+
+
+        <% if (currentUser.role === "BORROWER") { %>
+
+          <div style="margin-top: 28px;">
+
+            <button
+              type="button"
+              class="btn btn-primary btn-full"
+              disabled
+            >
+              Borrow Request — Phase 4
+            </button>
+
+          </div>
+
+        <% } %>
+
+      </section>
+
+    </div>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

@@ -1,0 +1,222 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          Welcome, <%= currentUser.name %>
+        </h1>
+
+        <p>
+          Discover academic equipment available on campus.
+        </p>
+
+      </div>
+
+      <!-- TRUST SCORE -->
+      <div class="trust-box">
+
+        <span>
+          Trust Score
+        </span>
+
+        <strong>
+          <%= stats.user.trustScore %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+    <section class="stat-grid">
+
+      <article class="stat-card">
+
+        <span>
+          Available Equipment
+        </span>
+
+        <strong>
+          <%= stats.availableEquipment %>
+        </strong>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <span>
+          Active Borrowings
+        </span>
+
+        <strong>
+          <%= stats.activeBorrowings %>
+        </strong>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <span>
+          Pending Requests
+        </span>
+
+        <strong>
+          <%= stats.pendingRequests %>
+        </strong>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <span>
+          Due Soon
+        </span>
+
+        <strong>
+          <%= stats.dueSoon %>
+        </strong>
+
+      </article>
+
+    </section>
+
+
+    <!-- AVAILABLE EQUIPMENT -->
+    <section class="dashboard-panel">
+
+  <div class="panel-heading">
+
+    <div>
+
+      <span class="eyebrow">
+        MARKETPLACE
+      </span>
+
+      <h2>
+        Available Equipment
+      </h2>
+
+    </div>
+
+    <a
+      href="/equipment"
+      class="btn btn-primary"
+    >
+      Browse All
+    </a>
+
+  </div>
+
+
+  <% if (stats.recommendedEquipment.length === 0) { %>
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        —
+      </div>
+
+      <h3>
+        No equipment listed yet
+      </h3>
+
+      <p>
+        Equipment will appear here when lenders
+        add their listings.
+      </p>
+
+    </div>
+
+  <% } else { %>
+
+    <div class="equipment-preview-grid">
+
+      <% stats.recommendedEquipment.forEach(function(equipment) { %>
+
+        <article class="equipment-mini-card">
+
+          <div class="equipment-placeholder">
+
+            <span>
+              <%= equipment.name.charAt(0).toUpperCase() %>
+            </span>
+
+          </div>
+
+
+          <div class="equipment-mini-content">
+
+            <span class="category-label">
+              <%= equipment.category %>
+            </span>
+
+            <h3>
+              <%= equipment.name %>
+            </h3>
+
+            <p>
+              <%= equipment.department %>
+            </p>
+
+
+            <div class="equipment-meta">
+
+              <span>
+                Available:
+                <strong>
+                  <%= equipment.availableQuantity %>
+                </strong>
+              </span>
+
+              <span>
+                ₹<%= equipment.rentalFee %>
+              </span>
+
+            </div>
+
+
+            <div style="margin-top: 15px;">
+
+              <a
+                href="/equipment/<%= equipment._id %>"
+                class="btn btn-secondary btn-full"
+              >
+                View Details
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      <% }); %>
+
+    </div>
+
+  <% } %>
+
+</section>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

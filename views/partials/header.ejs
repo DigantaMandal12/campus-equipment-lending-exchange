@@ -6,7 +6,9 @@
       class="brand"
       aria-label="Campus Exchange Home"
     >
-      <span class="brand-mark">CE</span>
+      <span class="brand-mark">
+        CE
+      </span>
 
       <span class="brand-text">
         Campus Exchange
@@ -17,13 +19,20 @@
       class="nav"
       aria-label="Primary navigation"
     >
-      <a href="/">Home</a>
+
+      <a href="/">
+        Home
+      </a>
 
       <a href="/health">
         Health
       </a>
 
       <% if (currentUser) { %>
+
+        <a href="/dashboard">
+          Dashboard
+        </a>
 
         <span class="nav-user">
           Hi, <%= currentUser.name %>

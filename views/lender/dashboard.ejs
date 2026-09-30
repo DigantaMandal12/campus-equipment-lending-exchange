@@ -1,0 +1,131 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">
+          LENDER
+        </span>
+
+        <h1>
+          Welcome, <%= currentUser.name %>
+        </h1>
+
+        <p>
+          Manage your academic equipment and future borrowing requests.
+        </p>
+      </div>
+
+    </div>
+
+
+    <section class="stat-grid">
+
+      <article class="stat-card">
+        <span>My Equipment</span>
+        <strong>
+          <%= stats.myEquipment %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Available</span>
+        <strong>
+          <%= stats.availableEquipment %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Unavailable</span>
+        <strong>
+          <%= stats.unavailableEquipment %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Pending Requests</span>
+        <strong>
+          <%= stats.pendingRequests %>
+        </strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Active Loans</span>
+        <strong>
+          <%= stats.activeLoans %>
+        </strong>
+      </article>
+
+    </section>
+
+
+    <section class="dashboard-panel">
+
+  <div class="panel-heading">
+
+    <div>
+
+      <span class="eyebrow">
+        EQUIPMENT
+      </span>
+
+      <h2>
+        Equipment Management
+      </h2>
+
+    </div>
+
+    <a
+      href="/equipment/new"
+      class="btn btn-primary"
+    >
+      + Add Equipment
+    </a>
+
+  </div>
+
+
+  <div class="monitor-grid">
+
+    <a
+      href="/equipment/mine"
+      class="monitor-item"
+    >
+      <span>
+        My Equipment
+      </span>
+
+      <strong>
+        <%= stats.myEquipment %>
+      </strong>
+    </a>
+
+
+    <a
+      href="/equipment/new"
+      class="monitor-item"
+    >
+      <span>
+        Create Listing
+      </span>
+
+      <strong>
+        +
+      </strong>
+    </a>
+
+  </div>
+
+</section>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

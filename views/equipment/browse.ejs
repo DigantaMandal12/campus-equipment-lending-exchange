@@ -1,0 +1,222 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          <%= isOwnerView ? "LENDER" : "MARKETPLACE" %>
+        </span>
+
+        <h1>
+          <%= isOwnerView ? "My Equipment" : "Browse Equipment" %>
+        </h1>
+
+        <p>
+          <%= isOwnerView
+            ? "Manage the equipment you have listed."
+            : "Discover academic equipment available for borrowing."
+          %>
+        </p>
+
+      </div>
+
+      <% if (currentUser.role === "LENDER" && !isOwnerView) { %>
+
+        <a
+          href="/equipment/new"
+          class="btn btn-primary"
+        >
+          Add Equipment
+        </a>
+
+      <% } %>
+
+    </div>
+
+
+    <% if (isOwnerView && currentUser.role === "LENDER") { %>
+
+      <div style="margin-bottom: 20px;">
+
+        <a
+          href="/equipment/new"
+          class="btn btn-primary"
+        >
+          + Add Equipment
+        </a>
+
+      </div>
+
+    <% } %>
+
+
+    <% if (equipment.length === 0) { %>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          —
+        </div>
+
+        <h3>
+          <%= isOwnerView
+            ? "You have not listed any equipment yet."
+            : "No equipment is available yet."
+          %>
+        </h3>
+
+        <p>
+          <%= isOwnerView
+            ? "Create your first listing to make it available to students."
+            : "Lenders will appear here when they publish equipment."
+          %>
+        </p>
+
+      </div>
+
+    <% } else { %>
+
+      <div class="equipment-grid">
+
+        <% equipment.forEach(function(item) { %>
+
+          <article class="equipment-card">
+
+            <div class="equipment-card-visual">
+
+              <span class="equipment-letter">
+                <%= item.name.charAt(0).toUpperCase() %>
+              </span>
+
+            </div>
+
+
+            <div class="equipment-card-content">
+
+              <span class="equipment-card-category">
+                <%= item.category %>
+              </span>
+
+              <h2>
+                <%= item.name %>
+              </h2>
+
+              <p class="equipment-card-description">
+                <%= item.description.length > 110
+                  ? item.description.substring(0, 110) + "..."
+                  : item.description
+                %>
+              </p>
+
+
+              <div class="equipment-info-row">
+
+                <span>
+                  Department
+                </span>
+
+                <strong>
+                  <%= item.department %>
+                </strong>
+
+              </div>
+
+
+              <div class="equipment-info-row">
+
+                <span>
+                  Available
+                </span>
+
+                <strong>
+                  <%= item.availableQuantity %>
+                  /
+                  <%= item.quantity %>
+                </strong>
+
+              </div>
+
+
+              <div class="equipment-price">
+
+                <div>
+                  <strong>
+                    ₹<%= item.rentalFee %>
+                  </strong>
+
+                  <span>
+                    / borrow
+                  </span>
+                </div>
+
+                <span class="condition-badge">
+                  <%= item.condition.replace("_", " ") %>
+                </span>
+
+              </div>
+
+
+              <div style="margin-top: 18px;">
+
+  <a
+    href="/equipment/<%= item._id %>"
+    class="btn btn-primary btn-full"
+  >
+    View Details
+  </a>
+
+</div>
+
+<% if (isOwnerView) { %>
+
+  <div class="equipment-owner-actions">
+
+    <a
+      href="/equipment/<%= item._id %>/edit"
+      class="btn btn-secondary"
+    >
+      Edit
+    </a>
+
+    <form
+      action="/equipment/<%= item._id %>/delete"
+      method="POST"
+      class="delete-equipment-form"
+      onsubmit="return confirmDeleteEquipment();"
+    >
+
+      <button
+        type="submit"
+        class="btn btn-danger"
+      >
+        Delete
+      </button>
+
+    </form>
+
+  </div>
+
+<% } %>
+
+            </div>
+
+          </article>
+
+        <% }); %>
+
+      </div>
+
+    <% } %>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

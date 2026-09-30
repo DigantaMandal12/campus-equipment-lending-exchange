@@ -26,21 +26,43 @@
           academic equipment.
         </p>
 
-        <div class="hero-actions">
-          <a
-            href="#architecture"
-            class="btn btn-primary"
-          >
-            View Architecture
-          </a>
+       <div class="hero-actions">
 
-          <a
-            href="/health"
-            class="btn btn-secondary"
-          >
-            Check Health
-          </a>
-        </div>
+  <% if (currentUser) { %>
+
+    <a
+      href="/dashboard"
+      class="btn btn-primary"
+    >
+      Open Dashboard
+    </a>
+
+  <% } else { %>
+
+    <a
+      href="/auth/register"
+      class="btn btn-primary"
+    >
+      Create Account
+    </a>
+
+    <a
+      href="/auth/login"
+      class="btn btn-secondary"
+    >
+      Login
+    </a>
+
+  <% } %>
+
+  <a
+    href="#architecture"
+    class="btn btn-secondary"
+  >
+    View Architecture
+  </a>
+
+</div>
 
       </div>
 
