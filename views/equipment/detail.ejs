@@ -317,35 +317,37 @@
         <% } %>
 
 
-        <% if (currentUser.role === "BORROWER") { %>
+       <% if (currentUser.role === "BORROWER") { %>
 
-          <div style="margin-top: 28px;">
+  <div style="margin-top: 28px;">
 
-            <% if (isAvailable) { %>
+    <% if (
+      equipment.status === "AVAILABLE" &&
+      equipment.availableQuantity > 0
+    ) { %>
 
-              <button
-                type="button"
-                class="btn btn-primary btn-full"
-                disabled
-              >
-                Borrow Request — Phase 4
-              </button>
+      <a
+        href="/borrow/request/<%= equipment._id %>"
+        class="btn btn-primary btn-full"
+      >
+        Request to Borrow
+      </a>
 
-            <% } else { %>
+    <% } else { %>
 
-              <button
-                type="button"
-                class="btn btn-secondary btn-full"
-                disabled
-              >
-                Currently Unavailable
-              </button>
+      <button
+        type="button"
+        class="btn btn-secondary btn-full"
+        disabled
+      >
+        Currently Unavailable
+      </button>
 
-            <% } %>
+    <% } %>
 
-          </div>
+  </div>
 
-        <% } %>
+<% } %>
 
       </section>
 

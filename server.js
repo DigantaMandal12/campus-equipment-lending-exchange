@@ -5,7 +5,8 @@ const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
-const connectDB = require("./config/db");
+const connectDB =
+  require("./config/db");
 
 const createSessionMiddleware =
   require("./config/session");
@@ -25,6 +26,9 @@ const dashboardRoutes =
 const equipmentRoutes =
   require("./routes/equipmentRoutes");
 
+const borrowRoutes =
+  require("./routes/borrowRoutes");
+
 const {
   attachCurrentUser
 } = require("./middleware/authMiddleware");
@@ -39,6 +43,7 @@ const app = express();
 const PORT =
   process.env.PORT || 3000;
 
+
 // --------------------------------------------------
 // VERCEL / PROXY
 // --------------------------------------------------
@@ -48,6 +53,7 @@ if (
 ) {
   app.set("trust proxy", 1);
 }
+
 
 // --------------------------------------------------
 // VIEW ENGINE
@@ -66,6 +72,7 @@ app.set(
   )
 );
 
+
 // --------------------------------------------------
 // SECURITY
 // --------------------------------------------------
@@ -80,6 +87,7 @@ app.use(
   })
 );
 
+
 // --------------------------------------------------
 // LOGGING
 // --------------------------------------------------
@@ -91,6 +99,7 @@ app.use(
       : "dev"
   )
 );
+
 
 // --------------------------------------------------
 // BODY PARSERS
@@ -108,6 +117,7 @@ app.use(
     limit: "1mb"
   })
 );
+
 
 // --------------------------------------------------
 // STATIC FILES
@@ -128,6 +138,7 @@ app.use(
   )
 );
 
+
 // --------------------------------------------------
 // SESSION
 // IMPORTANT:
@@ -138,6 +149,7 @@ app.use(
   createSessionMiddleware()
 );
 
+
 // --------------------------------------------------
 // CURRENT USER
 // Must come after session middleware.
@@ -146,6 +158,7 @@ app.use(
 app.use(
   attachCurrentUser
 );
+
 
 // --------------------------------------------------
 // ROUTES
@@ -176,6 +189,15 @@ app.use(
   equipmentRoutes
 );
 
+
+// --------------------------------------------------
+// PHASE 4
+// BORROW / RETURN ENGINE
+// --------------------------------------------------
+
+app.use("/borrow", borrowRoutes);
+
+
 // --------------------------------------------------
 // 404
 // --------------------------------------------------
@@ -184,6 +206,7 @@ app.use(
   notFoundHandler
 );
 
+
 // --------------------------------------------------
 // ERROR HANDLER
 // --------------------------------------------------
@@ -191,6 +214,7 @@ app.use(
 app.use(
   errorHandler
 );
+
 
 // --------------------------------------------------
 // LOCAL DEVELOPMENT
@@ -230,6 +254,7 @@ async function startLocalServer() {
   }
 }
 
+
 // --------------------------------------------------
 // START LOCAL SERVER
 // --------------------------------------------------
@@ -240,6 +265,7 @@ if (
 ) {
   startLocalServer();
 }
+
 
 // --------------------------------------------------
 // VERCEL EXPORT

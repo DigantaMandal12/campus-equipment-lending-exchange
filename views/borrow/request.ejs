@@ -1,0 +1,279 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="form-card">
+
+      <div class="form-card-heading">
+
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          Request to Borrow
+        </h1>
+
+        <p>
+          Submit a borrowing request for this academic equipment.
+        </p>
+
+      </div>
+
+
+      <% if (error) { %>
+
+        <div class="alert alert-error">
+          <%= error %>
+        </div>
+
+      <% } %>
+
+
+      <!-- Equipment summary -->
+
+      <div class="detail-status-card" style="margin-top: 0;">
+
+        <span>
+          Equipment
+        </span>
+
+        <strong>
+          <%= equipment.name %>
+        </strong>
+
+      </div>
+
+
+      <div class="detail-list">
+
+        <div class="detail-list-item">
+
+          <span>
+            Category
+          </span>
+
+          <strong>
+            <%= equipment.category %>
+          </strong>
+
+        </div>
+
+
+        <div class="detail-list-item">
+
+          <span>
+            Department
+          </span>
+
+          <strong>
+            <%= equipment.department %>
+          </strong>
+
+        </div>
+
+
+        <div class="detail-list-item">
+
+          <span>
+            Condition
+          </span>
+
+          <strong>
+            <%= equipment.condition.replace("_", " ") %>
+          </strong>
+
+        </div>
+
+
+        <div class="detail-list-item">
+
+          <span>
+            Available
+          </span>
+
+          <strong>
+            <%= equipment.availableQuantity %>
+            /
+            <%= equipment.quantity %>
+          </strong>
+
+        </div>
+
+
+        <div class="detail-list-item">
+
+          <span>
+            Borrow Fee
+          </span>
+
+          <strong>
+            ₹<%= equipment.rentalFee %>
+          </strong>
+
+        </div>
+
+
+        <div class="detail-list-item">
+
+          <span>
+            Security Deposit
+          </span>
+
+          <strong>
+            ₹<%= equipment.securityDeposit %>
+          </strong>
+
+        </div>
+
+
+        <div class="detail-list-item">
+
+          <span>
+            Lender
+          </span>
+
+          <strong>
+            <%= equipment.owner.name %>
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <%
+        const minDate = new Date(
+          Date.now() + 24 * 60 * 60 * 1000
+        )
+          .toISOString()
+          .split("T")[0];
+      %>
+
+
+      <!-- Borrow request form -->
+
+      <form
+        action="/borrow/request/<%= equipment._id %>"
+        method="POST"
+        class="auth-form"
+        style="margin-top: 28px;"
+      >
+
+        <div class="equipment-form-grid">
+
+
+          <!-- Quantity -->
+
+          <div class="form-group">
+
+            <label for="quantity">
+              Quantity
+            </label>
+
+            <input
+              id="quantity"
+              type="number"
+              name="quantity"
+              min="1"
+              max="<%= equipment.availableQuantity %>"
+              step="1"
+              value="<%= formData.quantity %>"
+              required
+              <%= equipment.availableQuantity < 1 ? "disabled" : "" %>
+            >
+
+            <small class="form-help">
+              Maximum available:
+              <%= equipment.availableQuantity %>
+            </small>
+
+          </div>
+
+
+          <!-- Return date -->
+
+          <div class="form-group">
+
+            <label for="requestedReturnDate">
+              Desired Return Date
+            </label>
+
+            <input
+              id="requestedReturnDate"
+              type="date"
+              name="requestedReturnDate"
+              min="<%= minDate %>"
+              value="<%= formData.requestedReturnDate %>"
+              required
+              <%= equipment.availableQuantity < 1 ? "disabled" : "" %>
+            >
+
+            <small class="form-help">
+              Select the date you expect to return the equipment.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <% if (equipment.availableQuantity > 0) { %>
+
+          <div class="alert">
+
+            Submitting this request does not reduce equipment stock.
+            Stock will be checked again during approval and checkout.
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-full"
+          >
+            Submit Borrow Request
+          </button>
+
+        <% } else { %>
+
+          <div class="alert alert-error">
+            This equipment is currently unavailable.
+          </div>
+
+
+          <button
+            type="button"
+            class="btn btn-secondary btn-full"
+            disabled
+          >
+            Currently Unavailable
+          </button>
+
+        <% } %>
+
+      </form>
+
+
+      <div style="margin-top: 14px;">
+
+        <a
+          href="/equipment/<%= equipment._id %>"
+          class="btn btn-secondary btn-full"
+        >
+          Back to Equipment
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

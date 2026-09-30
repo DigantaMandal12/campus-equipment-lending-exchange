@@ -1,0 +1,271 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          My Borrow Requests
+        </h1>
+
+        <p>
+          Track the equipment requests you have submitted.
+        </p>
+
+      </div>
+
+
+      <a
+        href="/equipment"
+        class="btn btn-primary"
+      >
+        Browse Equipment
+      </a>
+
+    </div>
+
+
+    <% if (success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (requests.length === 0) { %>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          —
+        </div>
+
+        <h3>
+          No borrow requests yet.
+        </h3>
+
+        <p>
+          Browse available equipment and submit your first request.
+        </p>
+
+
+        <div style="margin-top: 18px;">
+
+          <a
+            href="/equipment"
+            class="btn btn-primary"
+          >
+            Browse Equipment
+          </a>
+
+        </div>
+
+      </div>
+
+    <% } else { %>
+
+      <div class="equipment-grid">
+
+        <% requests.forEach(function(request) { %>
+
+          <article class="equipment-card">
+
+
+            <!-- Image -->
+
+            <div class="equipment-card-visual">
+
+              <% if (
+                request.equipment &&
+                Array.isArray(request.equipment.images) &&
+                request.equipment.images.length > 0
+              ) { %>
+
+                <img
+                  src="<%= request.equipment.images[0] %>"
+                  alt="<%= request.equipment.name %>"
+                  class="equipment-card-image"
+                  loading="lazy"
+                >
+
+              <% } else { %>
+
+                <span class="equipment-letter">
+
+                  <%= request.equipment
+                    ? request.equipment.name
+                        .charAt(0)
+                        .toUpperCase()
+                    : "?"
+                  %>
+
+                </span>
+
+              <% } %>
+
+
+              <span class="equipment-status-badge status-available">
+
+                <%= request.status
+                  .replace(/_/g, " ") %>
+
+              </span>
+
+            </div>
+
+
+            <!-- Content -->
+
+            <div class="equipment-card-content">
+
+              <span class="equipment-card-category">
+
+                <%= request.equipment
+                  ? request.equipment.category
+                  : "Equipment"
+                %>
+
+              </span>
+
+
+              <h2>
+
+                <%= request.equipment
+                  ? request.equipment.name
+                  : "Equipment unavailable"
+                %>
+
+              </h2>
+
+
+              <div class="detail-list">
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Request Status
+                  </span>
+
+                  <strong>
+                    <%= request.status
+                      .replace(/_/g, " ") %>
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Requested Quantity
+                  </span>
+
+                  <strong>
+                    <%= request.quantity %>
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Return Date
+                  </span>
+
+                  <strong>
+                    <%= new Date(
+                      request.requestedReturnDate
+                    ).toLocaleDateString("en-IN") %>
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Borrow Fee
+                  </span>
+
+                  <strong>
+                    ₹<%= request.rentalFee %>
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Security Deposit
+                  </span>
+
+                  <strong>
+                    ₹<%= request.securityDeposit %>
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Lender
+                  </span>
+
+                  <strong>
+                    <%= request.lender
+                      ? request.lender.name
+                      : "Unavailable"
+                    %>
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <% if (request.equipment) { %>
+
+                <div style="margin-top: 18px;">
+
+                  <a
+                    href="/equipment/<%= request.equipment._id %>"
+                    class="btn btn-primary btn-full"
+                  >
+                    View Equipment
+                  </a>
+
+                </div>
+
+              <% } %>
+
+            </div>
+
+          </article>
+
+        <% }); %>
+
+      </div>
+
+    <% } %>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>
