@@ -6,8 +6,21 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const connectDB = require("./config/db");
-const homeRoutes = require("./routes/homeRoutes");
-const healthRoutes = require("./routes/healthRoutes");
+const createSessionMiddleware =
+  require("./config/session");
+
+const homeRoutes =
+  require("./routes/homeRoutes");
+
+const healthRoutes =
+  require("./routes/healthRoutes");
+
+const authRoutes =
+  require("./routes/authRoutes");
+
+const {
+  attachCurrentUser
+} = require("./middleware/authMiddleware");
 
 const {
   notFoundHandler,
@@ -16,20 +29,38 @@ const {
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT =
+  process.env.PORT || 3000;
+
+// --------------------------------------------------
+// VERCEL / PROXY
+// --------------------------------------------------
+
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
 
 // --------------------------------------------------
 // VIEW ENGINE
 // --------------------------------------------------
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set(
+  "view engine",
+  "ejs"
+);
+
+app.set(
+  "views",
+  path.join(__dirname, "views")
+);
 
 // --------------------------------------------------
 // SECURITY
 // --------------------------------------------------
 
-app.disable("x-powered-by");
+app.disable(
+  "x-powered-by"
+);
 
 app.use(
   helmet({
@@ -43,7 +74,8 @@ app.use(
 
 app.use(
   morgan(
-    process.env.NODE_ENV === "production"
+    process.env.NODE_ENV ===
+      "production"
       ? "combined"
       : "dev"
   )
@@ -53,7 +85,11 @@ app.use(
 // BODY PARSERS
 // --------------------------------------------------
 
-app.use(express.json({ limit: "1mb" }));
+app.use(
+  express.json({
+    limit: "1mb"
+  })
+);
 
 app.use(
   express.urlencoded({
@@ -68,10 +104,14 @@ app.use(
 
 app.use(
   express.static(
-    path.join(__dirname, "public"),
+    path.join(
+      __dirname,
+      "public"
+    ),
     {
       maxAge:
-        process.env.NODE_ENV === "production"
+        process.env.NODE_ENV ===
+        "production"
           ? "1d"
           : 0
     }
@@ -79,24 +119,55 @@ app.use(
 );
 
 // --------------------------------------------------
+// SESSION
+// --------------------------------------------------
+
+app.use(
+  createSessionMiddleware()
+);
+
+// --------------------------------------------------
+// CURRENT USER
+// --------------------------------------------------
+
+app.use(
+  attachCurrentUser
+);
+
+// --------------------------------------------------
 // ROUTES
 // --------------------------------------------------
 
-app.use("/", homeRoutes);
+app.use(
+  "/",
+  homeRoutes
+);
 
-app.use("/health", healthRoutes);
+app.use(
+  "/health",
+  healthRoutes
+);
+
+app.use(
+  "/auth",
+  authRoutes
+);
 
 // --------------------------------------------------
 // 404
 // --------------------------------------------------
 
-app.use(notFoundHandler);
+app.use(
+  notFoundHandler
+);
 
 // --------------------------------------------------
 // ERROR HANDLER
 // --------------------------------------------------
 
-app.use(errorHandler);
+app.use(
+  errorHandler
+);
 
 // --------------------------------------------------
 // LOCAL DEVELOPMENT
@@ -110,13 +181,22 @@ async function startLocalServer() {
       );
     }
 
+    if (!process.env.SESSION_SECRET) {
+      throw new Error(
+        "SESSION_SECRET is missing. Add SESSION_SECRET to your .env file."
+      );
+    }
+
     await connectDB();
 
-    app.listen(PORT, () => {
-      console.log(
-        `Server running at http://localhost:${PORT}`
-      );
-    });
+    app.listen(
+      PORT,
+      () => {
+        console.log(
+          `Server running at http://localhost:${PORT}`
+        );
+      }
+    );
   } catch (error) {
     console.error(
       "Server startup failed:",
@@ -127,7 +207,6 @@ async function startLocalServer() {
   }
 }
 
-// Vercel imports this file instead of starting app.listen().
 if (
   require.main === module &&
   process.env.VERCEL !== "1"

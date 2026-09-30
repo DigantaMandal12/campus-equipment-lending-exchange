@@ -18,7 +18,42 @@
       aria-label="Primary navigation"
     >
       <a href="/">Home</a>
-      <a href="/health">Health</a>
+
+      <a href="/health">
+        Health
+      </a>
+
+      <% if (currentUser) { %>
+
+        <span class="nav-user">
+          Hi, <%= currentUser.name %>
+        </span>
+
+        <form
+          action="/auth/logout"
+          method="POST"
+          class="logout-form"
+        >
+          <button
+            type="submit"
+            class="nav-button"
+          >
+            Logout
+          </button>
+        </form>
+
+      <% } else { %>
+
+        <a href="/auth/login">
+          Login
+        </a>
+
+        <a href="/auth/register">
+          Register
+        </a>
+
+      <% } %>
+
     </nav>
 
   </div>
