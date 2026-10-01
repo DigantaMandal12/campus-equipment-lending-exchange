@@ -1,0 +1,368 @@
+<%- include("../partials/head", { title: "My Equipment" }) %>
+
+<link
+  rel="stylesheet"
+  href="/css/my-equipment.css?v=8"
+>
+
+
+<%- include("../partials/header") %>
+
+
+<main class="my-equipment-page">
+
+  <div class="my-equipment-container">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="my-equipment-header">
+
+      <div>
+
+        <span class="my-equipment-eyebrow">
+          LENDER
+        </span>
+
+        <h1>
+          My Equipment
+        </h1>
+
+        <p>
+          Manage the equipment you have listed on Campus Exchange.
+        </p>
+
+      </div>
+
+
+      <div class="my-equipment-header-actions">
+
+        <a
+          href="/dashboard/lender"
+          class="my-equipment-btn my-equipment-btn-secondary"
+        >
+          Dashboard
+        </a>
+
+        <a
+          href="/equipment/new"
+          class="my-equipment-btn my-equipment-btn-primary"
+        >
+          + Add Equipment
+        </a>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         ALERTS
+         ===================================================== -->
+
+    <% if (success) { %>
+
+      <div class="my-equipment-alert my-equipment-alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (error) { %>
+
+      <div class="my-equipment-alert my-equipment-alert-error">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <!-- =====================================================
+         SUMMARY
+         ===================================================== -->
+
+    <section class="my-equipment-summary">
+
+
+      <article class="my-equipment-summary-card">
+
+        <span>
+          Total Listings
+        </span>
+
+        <strong>
+          <%= equipment ? equipment.length : 0 %>
+        </strong>
+
+      </article>
+
+
+      <article class="my-equipment-summary-card">
+
+        <span>
+          Available
+        </span>
+
+        <strong>
+          <%= equipment
+            ? equipment.filter(
+                item =>
+                  Number(item.availableQuantity || 0) > 0
+              ).length
+            : 0
+          %>
+        </strong>
+
+      </article>
+
+
+      <article class="my-equipment-summary-card">
+
+        <span>
+          Unavailable
+        </span>
+
+        <strong>
+          <%= equipment
+            ? equipment.filter(
+                item =>
+                  Number(item.availableQuantity || 0) <= 0
+              ).length
+            : 0
+          %>
+        </strong>
+
+      </article>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+         ===================================================== -->
+
+    <% if (
+      !equipment ||
+      equipment.length === 0
+    ) { %>
+
+
+      <section class="my-equipment-empty">
+
+        <div class="my-equipment-empty-icon">
+          E
+        </div>
+
+        <span class="my-equipment-eyebrow">
+          NO LISTINGS
+        </span>
+
+        <h2>
+          You haven't listed any equipment yet
+        </h2>
+
+        <p>
+          Add your first academic equipment listing so
+          other students can discover and borrow it.
+        </p>
+
+        <a
+          href="/equipment/new"
+          class="my-equipment-btn my-equipment-btn-primary"
+        >
+          + Add Equipment
+        </a>
+
+      </section>
+
+
+    <% } else { %>
+
+
+      <!-- ===================================================
+           EQUIPMENT GRID
+           =================================================== -->
+
+      <section class="my-equipment-grid">
+
+
+        <% equipment.forEach(function(item) { %>
+
+
+          <article class="my-equipment-card">
+
+
+            <!-- IMAGE -->
+
+            <div class="my-equipment-card-image-wrap">
+
+              <% if (
+                item.images &&
+                item.images.length > 0 &&
+                item.images[0]
+              ) { %>
+
+                <img
+                  src="<%= item.images[0] %>"
+                  alt="<%= item.name || 'Equipment' %>"
+                  class="my-equipment-card-image"
+                  loading="lazy"
+                >
+
+              <% } else { %>
+
+                <div class="my-equipment-card-placeholder">
+                  <%= (
+                    item.name || "E"
+                  ).charAt(0).toUpperCase() %>
+                </div>
+
+              <% } %>
+
+
+              <% if (
+                Number(item.availableQuantity || 0) > 0
+              ) { %>
+
+                <span class="my-equipment-status available">
+                  Available
+                </span>
+
+              <% } else { %>
+
+                <span class="my-equipment-status unavailable">
+                  Unavailable
+                </span>
+
+              <% } %>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="my-equipment-card-body">
+
+
+              <span class="my-equipment-card-category">
+                <%= item.category || "Equipment" %>
+              </span>
+
+
+              <h2>
+                <%= item.name || "Unnamed Equipment" %>
+              </h2>
+
+
+              <% if (item.description) { %>
+
+                <p class="my-equipment-card-description">
+                  <%= item.description.length > 110
+                    ? item.description.substring(0, 110) + "..."
+                    : item.description
+                  %>
+                </p>
+
+              <% } %>
+
+
+              <div class="my-equipment-tags">
+
+                <% if (item.department) { %>
+
+                  <span>
+                    <%= item.department %>
+                  </span>
+
+                <% } %>
+
+
+                <% if (item.condition) { %>
+
+                  <span>
+                    <%= item.condition %>
+                  </span>
+
+                <% } %>
+
+              </div>
+
+
+              <div class="my-equipment-info">
+
+                <div>
+
+                  <span>
+                    Availability
+                  </span>
+
+                  <strong>
+                    <%= item.availableQuantity ?? 0 %>
+                    /
+                    <%= item.quantity ?? 0 %>
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Rental Fee
+                  </span>
+
+                  <strong>
+                    ₹<%= Number(
+                      item.rentalFee || 0
+                    ).toLocaleString("en-IN") %>
+                  </strong>
+
+                </div>
+
+
+              </div>
+
+
+              <div class="my-equipment-card-actions">
+
+                <a
+                  href="/equipment/<%= item._id %>"
+                  class="my-equipment-btn my-equipment-btn-secondary"
+                >
+                  View Details
+                </a>
+
+                <a
+                  href="/equipment/edit/<%= item._id %>"
+                  class="my-equipment-btn my-equipment-btn-primary"
+                >
+                  Edit
+                </a>
+
+              </div>
+
+
+            </div>
+
+          </article>
+
+
+        <% }) %>
+
+
+      </section>
+
+
+    <% } %>
+
+
+  </div>
+
+</main>
+
+
+<%- include("../partials/footer") %>

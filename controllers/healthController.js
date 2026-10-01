@@ -31,6 +31,50 @@ async function healthCheck(req, res) {
   });
 }
 
+async function myEquipment(req, res) {
+  try {
+    const user = req.session.user;
+
+    if (!user) {
+      return res.redirect(
+        "/auth/login?error=Please+login+first."
+      );
+    }
+
+    const equipment = await Equipment.find({
+      owner: user._id
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    return res.render(
+      "equipment/mine",
+      {
+        title: "My Equipment",
+        currentUser: user,
+        equipment,
+        success: req.query.success || null,
+        error: req.query.error || null
+      }
+    );
+
+  } catch (error) {
+    console.error(
+      "MY EQUIPMENT ERROR:",
+      error
+    );
+
+    return res.status(500).render(
+      "errors/500",
+      {
+        title: "My Equipment Error",
+        message:
+          "Unable to load your equipment."
+      }
+    );
+  }
+}
+
 module.exports = {
   healthCheck
 };

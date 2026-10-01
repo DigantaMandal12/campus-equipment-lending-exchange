@@ -1,0 +1,156 @@
+<%- include("../partials/head", { title: "Create Account" }) %>
+
+<link
+  rel="stylesheet"
+  href="/css/login.css?v=7e2"
+/>
+
+<main class="auth-page">
+
+  <div class="auth-background"></div>
+
+  <section
+    class="auth-card signup-choice-card"
+    aria-labelledby="signup-title"
+  >
+
+    <!-- BRAND -->
+
+    <div class="auth-brand">
+
+      <a
+        href="/"
+        class="auth-brand-link"
+        aria-label="Campus Exchange Home"
+      >
+
+        <span class="auth-brand-mark">
+          CE
+        </span>
+
+        <span class="auth-brand-text">
+
+          <strong>
+            Campus Exchange
+          </strong>
+
+          <small>
+            Campus Equipment Lending
+          </small>
+
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <div class="auth-header">
+
+      <p class="auth-eyebrow">
+        CAMPUS EXCHANGE
+      </p>
+
+      <h1 id="signup-title">
+        Create your account
+      </h1>
+
+      <p class="auth-subtitle">
+        Choose how you will use Campus Exchange.
+      </p>
+
+    </div>
+
+
+    <!-- ROLE OPTIONS -->
+
+    <div class="signup-role-grid">
+
+
+      <!-- BORROWER -->
+
+      <a
+        href="/auth/student-signup"
+        class="signup-role-card"
+      >
+
+        <div class="signup-role-icon">
+          B
+        </div>
+
+        <div class="signup-role-content">
+
+          <h2>
+            Borrower
+          </h2>
+
+          <p>
+            Find, request and borrow academic equipment
+            from other students.
+          </p>
+
+          <span>
+            Continue as Borrower →
+          </span>
+
+        </div>
+
+      </a>
+
+
+      <!-- LENDER -->
+
+      <a
+        href="/auth/teacher-signup"
+        class="signup-role-card"
+      >
+
+        <div class="signup-role-icon">
+          L
+        </div>
+
+        <div class="signup-role-content">
+
+          <h2>
+            Lender
+          </h2>
+
+          <p>
+            List your academic equipment and manage
+            borrowing requests.
+          </p>
+
+          <span>
+            Continue as Lender →
+          </span>
+
+        </div>
+
+      </a>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="auth-footer">
+
+      <span>
+        Already have an account?
+      </span>
+
+      <a href="/auth/login">
+        Login
+      </a>
+
+    </div>
+
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

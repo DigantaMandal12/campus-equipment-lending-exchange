@@ -1,54 +1,134 @@
-<%- include("../partials/head", { title }) %>
+<%- include("../partials/head", { title: "Login" }) %>
 
-<%- include("../partials/header") %>
+<link
+  rel="stylesheet"
+  href="/css/login.css?v=7e2"
+/>
+
 
 <main class="auth-page">
 
-  <div class="auth-card">
+  <div class="auth-background"></div>
 
-    <div class="auth-heading">
 
-      <span class="eyebrow">
+  <section
+    class="auth-card"
+    aria-labelledby="login-title"
+  >
+
+    <!-- =====================================================
+         BRAND
+         ===================================================== -->
+
+    <div class="auth-brand">
+
+      <a
+        href="/"
+        class="auth-brand-link"
+        aria-label="Campus Exchange Home"
+      >
+
+        <span class="auth-brand-mark">
+          CE
+        </span>
+
+        <span class="auth-brand-text">
+
+          <strong>
+            Campus Exchange
+          </strong>
+
+          <small>
+            Campus Equipment Lending
+          </small>
+
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="auth-header">
+
+      <p class="auth-eyebrow">
         CAMPUS EXCHANGE
-      </span>
+      </p>
 
-      <h1>
+      <h1 id="login-title">
         Welcome back
       </h1>
 
-      <p>
+      <p class="auth-subtitle">
         Login to continue to your campus equipment account.
       </p>
 
     </div>
 
-    <% if (error) { %>
-      <div class="alert alert-error">
-        <%= error %>
-      </div>
-    <% } %>
 
-    <% if (message) { %>
-      <div class="alert alert-success">
+    <!-- =====================================================
+         SUCCESS MESSAGE
+         ===================================================== -->
+
+    <% if (
+      typeof message !== "undefined" &&
+      message
+    ) { %>
+
+      <div
+        class="auth-alert auth-alert-success"
+        role="status"
+      >
         <%= message %>
       </div>
+
     <% } %>
 
+
+    <!-- =====================================================
+         ERROR MESSAGE
+         ===================================================== -->
+
+    <% if (
+      typeof error !== "undefined" &&
+      error
+    ) { %>
+
+      <div
+        class="auth-alert auth-alert-error"
+        role="alert"
+      >
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <!-- =====================================================
+         LOGIN FORM
+         ===================================================== -->
+
     <form
-      action="/auth/login"
       method="POST"
+      action="/auth/login"
       class="auth-form"
     >
 
-      <div class="form-group">
+      <!-- EMAIL -->
+
+      <div class="auth-field">
 
         <label for="email">
           Institutional Email
         </label>
 
         <input
-          id="email"
           type="email"
+          id="email"
           name="email"
           placeholder="you@college.edu"
           autocomplete="email"
@@ -57,15 +137,18 @@
 
       </div>
 
-      <div class="form-group">
+
+      <!-- PASSWORD -->
+
+      <div class="auth-field">
 
         <label for="password">
           Password
         </label>
 
         <input
-          id="password"
           type="password"
+          id="password"
           name="password"
           placeholder="Enter your password"
           autocomplete="current-password"
@@ -74,27 +157,39 @@
 
       </div>
 
+
+      <!-- LOGIN BUTTON -->
+
       <button
         type="submit"
-        class="btn btn-primary btn-full"
+        class="auth-submit"
       >
         Login
       </button>
 
     </form>
 
-    <p class="auth-footer-text">
 
-      Don't have an account?
+    <!-- =====================================================
+         SIGNUP
+         ===================================================== -->
+
+    <div class="auth-footer">
+
+      <span>
+        Don't have an account?
+      </span>
 
       <a href="/auth/register">
         Create one
       </a>
 
-    </p>
+    </div>
 
-  </div>
+
+  </section>
 
 </main>
+
 
 <%- include("../partials/footer") %>

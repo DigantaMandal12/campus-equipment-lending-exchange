@@ -1,99 +1,205 @@
-<%- include("../partials/head", { title }) %>
+<%- include("../partials/head", { title: "Verify Email" }) %>
 
-<%- include("../partials/header") %>
+<link
+  rel="stylesheet"
+  href="/css/login.css?v=7e4"
+/>
 
 <main class="auth-page">
 
-  <div class="auth-card">
+  <div class="auth-background"></div>
 
-    <div class="auth-heading">
+  <section
+    class="auth-card"
+    aria-labelledby="verify-title"
+  >
 
-      <span class="eyebrow">
+    <!-- BRAND -->
+
+    <div class="auth-brand">
+
+      <a
+        href="/"
+        class="auth-brand-link"
+        aria-label="Campus Exchange Home"
+      >
+
+        <span class="auth-brand-mark">
+          CE
+        </span>
+
+        <span class="auth-brand-text">
+
+          <strong>
+            Campus Exchange
+          </strong>
+
+          <small>
+            Campus Equipment Lending
+          </small>
+
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <div class="auth-header">
+
+      <p class="auth-eyebrow">
         EMAIL VERIFICATION
-      </span>
+      </p>
 
-      <h1>
+      <h1 id="verify-title">
         Verify your email
       </h1>
 
-      <p>
-        Enter the 6-digit code sent to:
+      <p class="auth-subtitle">
+        Enter the 6-digit verification code sent to your
+        institutional email address.
       </p>
 
-      <strong class="verification-email">
-        <%= email %>
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <div class="verification-email">
+
+      <span>
+        Verification email
+      </span>
+
+      <strong>
+        <%= email || "your institutional email" %>
       </strong>
 
     </div>
 
-    <% if (error) { %>
-      <div class="alert alert-error">
-        <%= error %>
-      </div>
-    <% } %>
 
-    <% if (message) { %>
-      <div class="alert alert-success">
+    <!-- SUCCESS MESSAGE -->
+
+    <% if (
+      typeof message !== "undefined" &&
+      message
+    ) { %>
+
+      <div
+        class="auth-alert auth-alert-success"
+        role="status"
+      >
         <%= message %>
       </div>
+
     <% } %>
 
+
+    <!-- ERROR MESSAGE -->
+
+    <% if (
+      typeof error !== "undefined" &&
+      error
+    ) { %>
+
+      <div
+        class="auth-alert auth-alert-error"
+        role="alert"
+      >
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <!-- OTP FORM -->
+
     <form
-      action="/auth/verify-email"
       method="POST"
+      action="/auth/verify-email"
       class="auth-form"
     >
 
-      <div class="form-group">
+      <div class="auth-field">
 
         <label for="otp">
           Verification Code
         </label>
 
         <input
-          id="otp"
           type="text"
+          id="otp"
           name="otp"
           inputmode="numeric"
           autocomplete="one-time-code"
           pattern="[0-9]{6}"
-          minlength="6"
           maxlength="6"
-          placeholder="123456"
+          minlength="6"
+          placeholder="Enter 6-digit code"
           required
           autofocus
         >
 
       </div>
 
+
       <button
         type="submit"
-        class="btn btn-primary btn-full"
+        class="auth-submit"
       >
         Verify Email
       </button>
 
     </form>
 
+
+    <!-- RESEND -->
+
     <form
-      action="/auth/resend-otp"
       method="POST"
+      action="/auth/resend-otp"
       class="resend-form"
     >
+
       <button
         type="submit"
-        class="text-button"
+        class="resend-button"
       >
         Resend OTP
       </button>
+
     </form>
 
-    <p class="auth-footer-text">
-      The OTP expires automatically and has a limited
-      number of attempts.
-    </p>
 
-  </div>
+    <!-- INFO -->
+
+    <div class="verification-info">
+
+      <span class="verification-icon">
+        ⓘ
+      </span>
+
+      <p>
+        The OTP expires automatically and has a limited
+        number of verification attempts.
+      </p>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <div class="auth-footer">
+
+      <a href="/auth/login">
+        Back to Login
+      </a>
+
+    </div>
+
+  </section>
 
 </main>
 

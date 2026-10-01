@@ -1,0 +1,2531 @@
+/* =========================================================
+   CAMPUS EXCHANGE
+   UX SHELL / GLOBAL UI
+   PHASE 7E
+   ========================================================= */
+
+:root {
+  --primary: #315cf5;
+  --primary-dark: #2448d8;
+  --primary-soft: #eef2ff;
+
+  --success: #16a34a;
+  --success-soft: #ecfdf3;
+
+  --warning: #d97706;
+  --warning-soft: #fff7ed;
+
+  --danger: #dc2626;
+  --danger-soft: #fef2f2;
+
+  --text: #111827;
+  --text-soft: #4b5563;
+  --muted: #6b7280;
+
+  --border: #e5e7eb;
+  --border-soft: #eef1f5;
+
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --page-bg: #f5f7fb;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --shadow-sm:
+    0 2px 8px rgba(15, 23, 42, 0.05);
+
+  --shadow-md:
+    0 8px 24px rgba(15, 23, 42, 0.08);
+
+  --shadow-lg:
+    0 16px 40px rgba(15, 23, 42, 0.10);
+
+  --container:
+    1240px;
+
+  --header-height:
+    72px;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 15px;
+  line-height: 1.6;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.container,
+.header-container,
+.dashboard-container,
+.dashboard-page > .container {
+  width: min(
+    calc(100% - 40px),
+    var(--container)
+  );
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid var(--border);
+
+  box-shadow:
+    0 1px 8px rgba(15, 23, 42, 0.04);
+
+  backdrop-filter: blur(14px);
+}
+
+.header-container {
+  min-height: var(--header-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 220px;
+
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #315cf5,
+      #5678ff
+    );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  letter-spacing: 0.02em;
+
+  box-shadow:
+    0 6px 18px
+    rgba(49, 92, 245, 0.24);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.brand-text strong {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 15px;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+.brand-text small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DESKTOP NAV
+   ========================================================= */
+
+.main-nav {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  flex: 1;
+
+  justify-content: center;
+}
+
+.main-nav .nav-link {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 40px;
+
+  padding:
+    8px
+    11px;
+
+  border-radius: 9px;
+
+  color: #4b5563;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.main-nav .nav-link:hover {
+  background: #f3f5f9;
+  color: var(--text);
+}
+
+.main-nav .nav-link:focus-visible {
+  outline:
+    3px solid
+    rgba(49, 92, 245, 0.18);
+
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   NOTIFICATION BADGE
+   ========================================================= */
+
+.nav-notification {
+  gap: 7px;
+}
+
+.notification-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  background: var(--danger);
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   USER AREA
+   ========================================================= */
+
+.header-user {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 230px;
+
+  justify-content: flex-end;
+}
+
+.user-avatar {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e8edff,
+      #dbe4ff
+    );
+
+  color: var(--primary);
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.user-info strong {
+  max-width: 150px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: var(--text);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.user-info small {
+  max-width: 150px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 42px;
+
+  padding:
+    9px
+    16px;
+
+  border: 1px solid transparent;
+
+  border-radius:
+    var(--radius-md);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 16px
+    rgba(49, 92, 245, 0.20);
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: #ffffff;
+
+  color: var(--text);
+
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+}
+
+.btn-outline {
+  background: #ffffff;
+
+  color: var(--primary);
+
+  border-color:
+    rgba(49, 92, 245, 0.28);
+}
+
+.btn-outline:hover {
+  background: var(--primary-soft);
+}
+
+.btn-success {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.btn-sm {
+  min-height: 36px;
+
+  padding:
+    8px
+    12px;
+
+  font-size: 12px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.mobile-menu {
+  display: none;
+
+  position: relative;
+}
+
+.mobile-menu summary {
+  list-style: none;
+}
+
+.mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-menu-button {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--border);
+
+  border-radius:
+    var(--radius-md);
+
+  background: #ffffff;
+
+  cursor: pointer;
+}
+
+.mobile-menu-button span {
+  display: block;
+
+  width: 100%;
+  height: 2px;
+
+  border-radius: 2px;
+
+  background: var(--text);
+}
+
+.mobile-menu-panel {
+  position: absolute;
+
+  top: calc(100% + 10px);
+  right: 0;
+
+  width: min(
+    320px,
+    calc(100vw - 24px)
+  );
+
+  padding: 16px;
+
+  border: 1px solid var(--border);
+
+  border-radius:
+    var(--radius-lg);
+
+  background: #ffffff;
+
+  box-shadow:
+    var(--shadow-lg);
+}
+
+.mobile-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding-bottom: 14px;
+
+  border-bottom:
+    1px solid
+    var(--border-soft);
+}
+
+.mobile-user > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.mobile-user strong {
+  font-size: 13px;
+}
+
+.mobile-user small {
+  color: var(--muted);
+  font-size: 11px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-nav-links {
+  display: grid;
+
+  gap: 4px;
+
+  margin-top: 12px;
+}
+
+.mobile-nav-links a {
+  display: flex;
+
+  align-items: center;
+
+  min-height: 42px;
+
+  padding:
+    9px 11px;
+
+  border-radius: 9px;
+
+  color: var(--text-soft);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mobile-nav-links a:hover {
+  background: #f5f7fb;
+  color: var(--text);
+}
+
+.mobile-menu-footer {
+  margin-top: 14px;
+}
+
+
+/* =========================================================
+   PAGE SHELL
+   ========================================================= */
+
+main {
+  min-height: calc(
+    100vh - var(--header-height)
+  );
+}
+
+.dashboard-page {
+  padding:
+    34px 0
+    60px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faff 0%,
+      #f5f7fb 100%
+    );
+}
+
+.dashboard-container {
+  max-width: var(--container);
+}
+
+
+/* =========================================================
+   DASHBOARD HERO
+   ========================================================= */
+
+.dashboard-hero {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 28px;
+
+  padding:
+    30px;
+
+  border:
+    1px solid
+    #e3e8f2;
+
+  border-radius:
+    var(--radius-xl);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f7f9ff 100%
+    );
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+.dashboard-hero-content {
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+
+  color: var(--primary);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.dashboard-hero h1,
+.dashboard-page h1 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: clamp(
+    28px,
+    4vw,
+    40px
+  );
+
+  line-height: 1.12;
+}
+
+.dashboard-hero p {
+  margin: 10px 0 0;
+
+  max-width: 700px;
+
+  color: var(--text-soft);
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   DASHBOARD ACTIONS
+   ========================================================= */
+
+.dashboard-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   DASHBOARD STATS
+   ========================================================= */
+
+.dashboard-stats,
+.stats-grid,
+.stat-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 34px;
+}
+
+.stat-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding:
+    20px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+.stat-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  border-radius:
+    3px 3px 0 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--primary),
+      #7c93ff
+    );
+}
+
+.stat-card-label,
+.stat-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
+}
+
+.stat-card strong,
+.stat-value {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.stat-card p {
+  margin: 7px 0 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   DASHBOARD SECTIONS
+   ========================================================= */
+
+.dashboard-section {
+  margin-top: 30px;
+}
+
+.section-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 22px;
+
+  line-height: 1.2;
+}
+
+.section-header p {
+  margin: 4px 0 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   EQUIPMENT GRID
+   ========================================================= */
+
+.equipment-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   EQUIPMENT CARD
+   ========================================================= */
+
+.equipment-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-lg);
+
+  background: #ffffff;
+
+  box-shadow:
+    var(--shadow-sm);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.equipment-card:hover {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    var(--shadow-md);
+
+  border-color:
+    #d7ddea;
+}
+
+.equipment-card-visual,
+.equipment-image,
+.card-image {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  aspect-ratio: 16 / 10;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #f8fafc
+    );
+}
+
+.equipment-card-visual img,
+.equipment-image img,
+.card-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.equipment-letter,
+.card-placeholder,
+.image-placeholder {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  border-radius: 16px;
+
+  background:
+    #e6edff;
+
+  color:
+    var(--primary);
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.equipment-status-badge {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    5px 9px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,0.92);
+
+  color:
+    #166534;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.status-available {
+  color: #166534;
+}
+
+.status-unavailable {
+  color: #991b1b;
+}
+
+
+/* =========================================================
+   EQUIPMENT CONTENT
+   ========================================================= */
+
+.equipment-card-content {
+  padding:
+    18px;
+}
+
+.equipment-card-category {
+  display: inline-block;
+
+  margin-bottom: 6px;
+
+  color: var(--primary);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.equipment-card h2,
+.equipment-card h3 {
+  margin:
+    0 0 7px;
+
+  color: var(--text);
+
+  font-size: 18px;
+
+  line-height: 1.25;
+
+  overflow-wrap: anywhere;
+}
+
+.equipment-card p,
+.equipment-card-description {
+  margin:
+    0 0 14px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.equipment-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-bottom: 12px;
+}
+
+.equipment-meta span {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding:
+    4px 8px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f3f5f9;
+
+  color:
+    #596273;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.equipment-info-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding:
+    9px 0;
+
+  border-top:
+    1px solid
+    var(--border-soft);
+
+  font-size: 12px;
+}
+
+.equipment-info-row span {
+  color: var(--muted);
+}
+
+.equipment-info-row strong {
+  color: var(--text);
+
+  text-align: right;
+}
+
+.equipment-price {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 12px;
+}
+
+.equipment-price strong {
+  color: var(--text);
+
+  font-size: 18px;
+}
+
+.equipment-price span {
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.condition-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding:
+    5px 8px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f3f4f6;
+
+  color:
+    #374151;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.equipment-card-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+.equipment-card-actions .btn {
+  flex: 1;
+}
+
+
+/* =========================================================
+   GENERIC CARDS
+   ========================================================= */
+
+.card {
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.alert {
+  margin-bottom: 18px;
+
+  padding:
+    13px 15px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-md);
+
+  font-size: 13px;
+}
+
+.alert-success {
+  border-color:
+    #bbf7d0;
+
+  background:
+    var(--success-soft);
+
+  color:
+    #166534;
+}
+
+.alert-error,
+.alert-danger {
+  border-color:
+    #fecaca;
+
+  background:
+    var(--danger-soft);
+
+  color:
+    #991b1b;
+}
+
+.alert-warning {
+  border-color:
+    #fed7aa;
+
+  background:
+    var(--warning-soft);
+
+  color:
+    #9a3412;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 280px;
+
+  padding:
+    30px;
+
+  border:
+    1px dashed
+    #cfd6e2;
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    rgba(255,255,255,0.72);
+
+  text-align: center;
+}
+
+.empty-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  margin-bottom: 12px;
+
+  border-radius: 50%;
+
+  background:
+    var(--primary-soft);
+
+  color:
+    var(--primary);
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.empty-state h2 {
+  margin: 0 0 7px;
+
+  color:
+    var(--text);
+
+  font-size: 20px;
+}
+
+.empty-state p {
+  margin: 0;
+
+  max-width: 500px;
+
+  color:
+    var(--muted);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    var(--text);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+input.form-control,
+select.form-control,
+textarea.form-control {
+  width: 100%;
+
+  min-height: 44px;
+
+  padding:
+    10px 12px;
+
+  border:
+    1px solid
+    #d6dce7;
+
+  border-radius:
+    var(--radius-md);
+
+  background:
+    #ffffff;
+
+  color:
+    var(--text);
+
+  outline: none;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.form-group textarea,
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(49,92,245,0.12);
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+.status-badge,
+.badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    5px 9px;
+
+  border-radius:
+    999px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  text-transform: uppercase;
+}
+
+.status-approved,
+.badge-success {
+  background:
+    #dcfce7;
+
+  color:
+    #166534;
+}
+
+.status-pending,
+.badge-warning {
+  background:
+    #fef3c7;
+
+  color:
+    #92400e;
+}
+
+.status-rejected,
+.badge-danger {
+  background:
+    #fee2e2;
+
+  color:
+    #991b1b;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .header-user {
+    min-width: auto;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .dashboard-stats,
+  .stats-grid,
+  .stat-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .equipment-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE HEADER
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  :root {
+    --header-height: 64px;
+  }
+
+  .header-container {
+    width:
+      calc(100% - 24px);
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand-text small {
+    display: none;
+  }
+
+  .main-nav,
+  .header-user {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .dashboard-page {
+    padding:
+      24px 0
+      44px;
+  }
+
+  .dashboard-hero {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    padding:
+      22px;
+
+    border-radius:
+      var(--radius-lg);
+  }
+
+  .dashboard-actions {
+    width: 100%;
+  }
+
+  .dashboard-actions .btn {
+    flex: 1;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .container,
+  .dashboard-container {
+    width:
+      calc(100% - 20px);
+  }
+
+  .dashboard-hero h1,
+  .dashboard-page h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-stats,
+  .stats-grid,
+  .stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding:
+      16px;
+  }
+
+  .stat-card strong,
+  .stat-value {
+    font-size: 23px;
+  }
+
+  .equipment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-card-content {
+    padding:
+      16px;
+  }
+
+  .section-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .dashboard-actions {
+    flex-direction: column;
+  }
+
+  .dashboard-actions .btn {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .brand-text strong {
+    font-size: 13px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .dashboard-stats,
+  .stats-grid,
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-menu-panel {
+    right: -4px;
+  }
+
+}
+/* =========================================================
+   PHASE 7E — BORROWER DASHBOARD FINAL OVERRIDES
+   ========================================================= */
+
+/*
+ * These rules intentionally use !important in a few places.
+ * The existing dashboard/equipment CSS contains older rules
+ * that are overriding the new design system.
+ */
+
+/* =========================================================
+   FULL DASHBOARD WIDTH
+   ========================================================= */
+
+.dashboard-page {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 36px 0 64px !important;
+}
+
+.dashboard-page .dashboard-container,
+.dashboard-page .container,
+.dashboard-page .dashboard-main,
+.dashboard-page .dashboard-content,
+.dashboard-page .dashboard-shell {
+  width: min(
+    calc(100% - 48px),
+    1200px
+  ) !important;
+
+  max-width: 1200px !important;
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER / HERO
+   ========================================================= */
+
+.dashboard-page .page-header,
+.dashboard-page .dashboard-header,
+.dashboard-page .dashboard-hero {
+  width: 100% !important;
+
+  margin-bottom: 28px !important;
+
+  padding: 30px !important;
+
+  border: 1px solid #e3e8f2 !important;
+
+  border-radius: 20px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f7f9ff 100%
+    ) !important;
+
+  box-shadow:
+    0 8px 24px
+    rgba(15, 23, 42, 0.07) !important;
+}
+
+
+/* =========================================================
+   DASHBOARD TITLE
+   ========================================================= */
+
+.dashboard-page h1 {
+  margin: 0 !important;
+
+  color: #111827 !important;
+
+  font-size: clamp(
+    30px,
+    4vw,
+    42px
+  ) !important;
+
+  font-weight: 800 !important;
+
+  line-height: 1.12 !important;
+}
+
+.dashboard-page .page-subtitle,
+.dashboard-page .dashboard-subtitle,
+.dashboard-page .dashboard-hero p {
+  margin-top: 10px !important;
+
+  color: #6b7280 !important;
+
+  font-size: 14px !important;
+
+  line-height: 1.6 !important;
+}
+
+
+/* =========================================================
+   TRUST SCORE
+   ========================================================= */
+
+.dashboard-page .trust-score {
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  gap: 7px !important;
+
+  margin-top: 12px !important;
+
+  padding: 7px 11px !important;
+
+  border-radius: 999px !important;
+
+  background: #eef2ff !important;
+
+  color: #315cf5 !important;
+
+  font-size: 12px !important;
+
+  font-weight: 700 !important;
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.dashboard-page .stats-grid,
+.dashboard-page .dashboard-stats,
+.dashboard-page .stat-grid {
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr)) !important;
+
+  gap: 16px !important;
+
+  width: 100% !important;
+
+  margin:
+    0 0 34px !important;
+}
+
+.dashboard-page .stat-card,
+.dashboard-page .stat-item,
+.dashboard-page .stat-box {
+  min-width: 0 !important;
+
+  min-height: 110px !important;
+
+  padding: 20px !important;
+
+  border:
+    1px solid
+    #e5e7eb !important;
+
+  border-radius: 16px !important;
+
+  background: #ffffff !important;
+
+  box-shadow:
+    0 4px 14px
+    rgba(15, 23, 42, 0.05) !important;
+}
+
+.dashboard-page .stat-card strong,
+.dashboard-page .stat-item strong,
+.dashboard-page .stat-box strong {
+  display: block !important;
+
+  margin-top: 4px !important;
+
+  color: #111827 !important;
+
+  font-size: 28px !important;
+
+  line-height: 1.1 !important;
+}
+
+.dashboard-page .stat-card span,
+.dashboard-page .stat-item span,
+.dashboard-page .stat-box span {
+  color: #6b7280 !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700 !important;
+}
+
+
+/* =========================================================
+   MARKETPLACE SECTION
+   ========================================================= */
+
+.dashboard-page .marketplace-section,
+.dashboard-page .available-equipment,
+.dashboard-page .equipment-section {
+  width: 100% !important;
+
+  margin-top: 30px !important;
+}
+
+.dashboard-page .section-header,
+.dashboard-page .equipment-section-header {
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  gap: 20px !important;
+
+  width: 100% !important;
+
+  margin-bottom: 18px !important;
+}
+
+.dashboard-page .section-header h2,
+.dashboard-page .equipment-section-header h2 {
+  margin: 0 !important;
+
+  color: #111827 !important;
+
+  font-size: 24px !important;
+
+  font-weight: 800 !important;
+}
+
+
+/* =========================================================
+   EQUIPMENT GRID
+   ========================================================= */
+
+/*
+ * Cover multiple possible class names used by the
+ * existing borrower dashboard.
+ */
+
+.dashboard-page .equipment-grid,
+.dashboard-page .equipment-list,
+.dashboard-page .available-equipment-grid,
+.dashboard-page .dashboard-equipment-grid,
+.dashboard-page .marketplace-grid,
+.dashboard-page .equipment-cards {
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr)) !important;
+
+  gap: 20px !important;
+
+  width: 100% !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+}
+
+
+/* =========================================================
+   EQUIPMENT CARD
+   ========================================================= */
+
+.dashboard-page .equipment-card,
+.dashboard-page .equipment-item,
+.dashboard-page .equipment-list-item,
+.dashboard-page .marketplace-card {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  min-width: 0 !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    #e5e7eb !important;
+
+  border-radius:
+    18px !important;
+
+  background:
+    #ffffff !important;
+
+  box-shadow:
+    0 6px 20px
+    rgba(15, 23, 42, 0.06) !important;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease !important;
+}
+
+.dashboard-page .equipment-card:hover,
+.dashboard-page .equipment-item:hover,
+.dashboard-page .equipment-list-item:hover,
+.dashboard-page .marketplace-card:hover {
+  transform:
+    translateY(-4px) !important;
+
+  border-color:
+    #d4dbea !important;
+
+  box-shadow:
+    0 14px 32px
+    rgba(15, 23, 42, 0.10) !important;
+}
+
+
+/* =========================================================
+   EQUIPMENT IMAGE
+   ========================================================= */
+
+.dashboard-page .equipment-card img,
+.dashboard-page .equipment-item img,
+.dashboard-page .equipment-list-item img {
+  display: block !important;
+
+  width: 100% !important;
+
+  height: 190px !important;
+
+  object-fit: cover !important;
+
+  background: #f1f4f9 !important;
+}
+
+
+/* =========================================================
+   IMAGE / EMPTY IMAGE AREA
+   ========================================================= */
+
+.dashboard-page .equipment-card .image-placeholder,
+.dashboard-page .equipment-item .image-placeholder,
+.dashboard-page .equipment-list-item .image-placeholder,
+.dashboard-page .equipment-card .equipment-placeholder {
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  width: 100% !important;
+
+  height: 190px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #f8fafc
+    ) !important;
+
+  color:
+    #315cf5 !important;
+
+  font-size: 28px !important;
+
+  font-weight: 800 !important;
+}
+
+
+/* =========================================================
+   EQUIPMENT CARD CONTENT
+   ========================================================= */
+
+.dashboard-page .equipment-card-content,
+.dashboard-page .equipment-item-content,
+.dashboard-page .equipment-body,
+.dashboard-page .equipment-info,
+.dashboard-page .card-content {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  flex: 1 !important;
+
+  padding: 18px !important;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.dashboard-page .equipment-category,
+.dashboard-page .equipment-card-category {
+  margin-bottom: 6px !important;
+
+  color:
+    #315cf5 !important;
+
+  font-size: 10px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing:
+    0.08em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+/* =========================================================
+   EQUIPMENT NAME
+   ========================================================= */
+
+.dashboard-page .equipment-card h2,
+.dashboard-page .equipment-card h3,
+.dashboard-page .equipment-item h2,
+.dashboard-page .equipment-item h3,
+.dashboard-page .equipment-list-item h2,
+.dashboard-page .equipment-list-item h3 {
+  margin:
+    0 0 8px !important;
+
+  color:
+    #111827 !important;
+
+  font-size:
+    18px !important;
+
+  font-weight:
+    800 !important;
+
+  line-height:
+    1.25 !important;
+
+  overflow-wrap:
+    anywhere !important;
+}
+
+
+/* =========================================================
+   DEPARTMENT / META
+   ========================================================= */
+
+.dashboard-page .equipment-meta,
+.dashboard-page .equipment-details,
+.dashboard-page .equipment-card-meta {
+  display: flex !important;
+
+  flex-wrap: wrap !important;
+
+  gap: 7px !important;
+
+  margin:
+    0 0 12px !important;
+}
+
+.dashboard-page .equipment-meta span,
+.dashboard-page .equipment-details span,
+.dashboard-page .equipment-card-meta span {
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  padding:
+    4px 8px !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    #f3f5f9 !important;
+
+  color:
+    #596273 !important;
+
+  font-size:
+    10px !important;
+
+  font-weight:
+    700 !important;
+}
+
+
+/* =========================================================
+   EQUIPMENT DESCRIPTION
+   ========================================================= */
+
+.dashboard-page .equipment-card-description,
+.dashboard-page .equipment-description {
+  margin:
+    0 0 14px !important;
+
+  color:
+    #6b7280 !important;
+
+  font-size:
+    13px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+
+/* =========================================================
+   INFORMATION
+   ========================================================= */
+
+.dashboard-page .equipment-info-row,
+.dashboard-page .equipment-price-row {
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  gap: 12px !important;
+
+  padding:
+    9px 0 !important;
+
+  border-top:
+    1px solid
+    #f0f2f5 !important;
+
+  font-size:
+    12px !important;
+}
+
+.dashboard-page .equipment-info-row span,
+.dashboard-page .equipment-price-row span {
+  color:
+    #6b7280 !important;
+}
+
+.dashboard-page .equipment-info-row strong,
+.dashboard-page .equipment-price-row strong {
+  color:
+    #111827 !important;
+
+  font-weight:
+    800 !important;
+
+  text-align:
+    right !important;
+}
+
+
+/* =========================================================
+   PRICE
+   ========================================================= */
+
+.dashboard-page .equipment-price,
+.dashboard-page .price {
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  gap: 12px !important;
+
+  margin-top:
+    auto !important;
+
+  padding-top:
+    12px !important;
+}
+
+.dashboard-page .equipment-price strong,
+.dashboard-page .price strong {
+  color:
+    #111827 !important;
+
+  font-size:
+    19px !important;
+
+  font-weight:
+    800 !important;
+}
+
+
+/* =========================================================
+   VIEW DETAILS BUTTON
+   ========================================================= */
+
+.dashboard-page .equipment-card .btn,
+.dashboard-page .equipment-item .btn,
+.dashboard-page .equipment-list-item .btn,
+.dashboard-page .marketplace-card .btn {
+  width: 100% !important;
+
+  min-height:
+    42px !important;
+
+  margin-top:
+    14px !important;
+
+  border-radius:
+    10px !important;
+}
+
+
+/*
+ * In case the current dashboard uses a plain anchor
+ * instead of a .btn class.
+ */
+
+.dashboard-page .equipment-card a[href*="/equipment/"],
+.dashboard-page .equipment-item a[href*="/equipment/"],
+.dashboard-page .equipment-list-item a[href*="/equipment/"] {
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  width: 100% !important;
+
+  min-height: 42px !important;
+
+  margin-top:
+    14px !important;
+
+  padding:
+    10px 14px !important;
+
+  border:
+    1px solid
+    #315cf5 !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    #315cf5 !important;
+
+  color:
+    #ffffff !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    800 !important;
+}
+
+
+/* =========================================================
+   BROWSE ALL BUTTON
+   ========================================================= */
+
+.dashboard-page .browse-all,
+.dashboard-page .browse-button,
+.dashboard-page a[href="/equipment"].btn {
+  min-height:
+    42px !important;
+
+  padding:
+    10px 16px !important;
+
+  border-radius:
+    10px !important;
+
+  font-size:
+    12px !important;
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (max-width: 1150px) {
+
+  .dashboard-page .equipment-grid,
+  .dashboard-page .equipment-list,
+  .dashboard-page .available-equipment-grid,
+  .dashboard-page .dashboard-equipment-grid,
+  .dashboard-page .marketplace-grid,
+  .dashboard-page .equipment-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-page .stats-grid,
+  .dashboard-page .dashboard-stats,
+  .dashboard-page .stat-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr)) !important;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .dashboard-page
+  .dashboard-container,
+  .dashboard-page
+  .container,
+  .dashboard-page
+  .dashboard-main,
+  .dashboard-page
+  .dashboard-content,
+  .dashboard-page
+  .dashboard-shell {
+    width:
+      calc(100% - 32px) !important;
+  }
+
+  .dashboard-page .equipment-grid,
+  .dashboard-page .equipment-list,
+  .dashboard-page .available-equipment-grid,
+  .dashboard-page .dashboard-equipment-grid,
+  .dashboard-page .marketplace-grid,
+  .dashboard-page .equipment-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+
+    gap:
+      16px !important;
+  }
+
+  .dashboard-page .stats-grid,
+  .dashboard-page .dashboard-stats,
+  .dashboard-page .stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .dashboard-page {
+    padding:
+      24px 0 48px !important;
+  }
+
+  .dashboard-page
+  .dashboard-container,
+  .dashboard-page
+  .container,
+  .dashboard-page
+  .dashboard-main,
+  .dashboard-page
+  .dashboard-content,
+  .dashboard-page
+  .dashboard-shell {
+    width:
+      calc(100% - 20px) !important;
+  }
+
+  .dashboard-page .page-header,
+  .dashboard-page .dashboard-header,
+  .dashboard-page .dashboard-hero {
+    padding:
+      20px !important;
+
+    border-radius:
+      16px !important;
+  }
+
+  .dashboard-page .equipment-grid,
+  .dashboard-page .equipment-list,
+  .dashboard-page .available-equipment-grid,
+  .dashboard-page .dashboard-equipment-grid,
+  .dashboard-page .marketplace-grid,
+  .dashboard-page .equipment-cards {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .dashboard-page .stats-grid,
+  .dashboard-page .dashboard-stats,
+  .dashboard-page .stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-page .equipment-card img,
+  .dashboard-page .equipment-item img,
+  .dashboard-page .equipment-list-item img,
+  .dashboard-page .equipment-card .image-placeholder,
+  .dashboard-page .equipment-item .image-placeholder,
+  .dashboard-page .equipment-list-item .image-placeholder {
+    height:
+      180px !important;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .dashboard-page .stats-grid,
+  .dashboard-page .dashboard-stats,
+  .dashboard-page .stat-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+}
+
+/* =========================================================
+   LOGOUT FORM
+   ========================================================= */
+
+.logout-form {
+  margin: 0;
+  padding: 0;
+}
+
+.logout-form button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.header-user .logout-form {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu-footer .logout-form {
+  width: 100%;
+}

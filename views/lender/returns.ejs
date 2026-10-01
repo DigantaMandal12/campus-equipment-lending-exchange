@@ -1,0 +1,649 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          LENDER
+        </span>
+
+        <h1>
+          Return Management
+        </h1>
+
+        <p>
+          Receive returned equipment, inspect condition, and manage deposits.
+        </p>
+
+      </div>
+
+      <div>
+
+        <a
+          href="/lender/requests"
+          class="btn btn-secondary"
+        >
+          Borrow Requests
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <% if (success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (error) { %>
+
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <% if (
+      !transactions ||
+      transactions.length === 0
+    ) { %>
+
+      <section class="empty-state">
+
+        <div class="empty-icon">
+          ✓
+        </div>
+
+        <h2>
+          No active return records
+        </h2>
+
+        <p>
+          Active borrowings and return requests will appear here.
+        </p>
+
+      </section>
+
+
+    <% } else { %>
+
+
+      <div class="equipment-grid">
+
+
+        <% for (
+          let i = 0;
+          i < transactions.length;
+          i++
+        ) { %>
+
+
+          <%
+            const transaction =
+              transactions[i];
+
+            const equipment =
+              transaction.equipment;
+
+            const borrower =
+              transaction.borrower;
+
+            const status =
+              transaction.status;
+
+            const paymentStatus =
+              transaction.paymentStatus;
+          %>
+
+
+          <article class="equipment-card">
+
+
+            <div class="equipment-card-visual">
+
+
+              <% if (
+                equipment &&
+                Array.isArray(equipment.images) &&
+                equipment.images.length > 0
+              ) { %>
+
+                <img
+                  src="<%= equipment.images[0] %>"
+                  alt="<%= equipment.name || 'Equipment' %>"
+                  class="equipment-card-image"
+                >
+
+              <% } else { %>
+
+                <span class="equipment-letter">
+                  <%= equipment
+                    ? equipment.name.charAt(0).toUpperCase()
+                    : "?"
+                  %>
+                </span>
+
+              <% } %>
+
+
+              <span class="equipment-status-badge status-available">
+
+                <%= status.replace(
+                  /_/g,
+                  " "
+                ) %>
+
+              </span>
+
+            </div>
+
+
+
+            <div class="equipment-card-content">
+
+
+              <span class="equipment-card-category">
+
+                <%= equipment
+                  ? equipment.category || "Equipment"
+                  : "Equipment"
+                %>
+
+              </span>
+
+
+              <h2>
+
+                <%= equipment
+                  ? equipment.name || "Unknown Equipment"
+                  : "Unknown Equipment"
+                %>
+
+              </h2>
+
+
+
+              <div class="borrower-box">
+
+
+                <div class="borrower-title">
+                  Borrower
+                </div>
+
+
+                <strong>
+
+                  <%= borrower
+                    ? borrower.name || "Unknown User"
+                    : "Unknown User"
+                  %>
+
+                </strong>
+
+
+                <span>
+
+                  <%= borrower
+                    ? borrower.email || "No email"
+                    : "No email"
+                  %>
+
+                </span>
+
+
+                <% if (
+                  borrower &&
+                  borrower.department
+                ) { %>
+
+                  <span>
+
+                    <%= borrower.department %>
+
+                    <% if (borrower.year) { %>
+
+                      · Year
+                      <%= borrower.year %>
+
+                    <% } %>
+
+                  </span>
+
+                <% } %>
+
+
+                <% if (
+                  borrower &&
+                  typeof borrower.trustScore === "number"
+                ) { %>
+
+                  <span class="trust-score">
+
+                    Trust Score:
+
+                    <strong>
+                      <%= borrower.trustScore %>
+                    </strong>
+
+                  </span>
+
+                <% } %>
+
+
+              </div>
+
+
+
+              <div class="detail-list">
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Quantity
+                  </span>
+
+                  <strong>
+                    <%= transaction.quantity %>
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Requested Return
+                  </span>
+
+                  <strong>
+
+                    <%= new Date(
+                      transaction.requestedReturnDate
+                    ).toLocaleDateString(
+                      "en-IN"
+                    ) %>
+
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Payment Status
+                  </span>
+
+                  <strong>
+
+                    <%= paymentStatus.replace(
+                      /_/g,
+                      " "
+                    ) %>
+
+                  </strong>
+
+                </div>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Deposit Refund
+                  </span>
+
+                  <strong>
+
+                    <%= transaction.depositRefundStatus.replace(
+                      /_/g,
+                      " "
+                    ) %>
+
+                  </strong>
+
+                </div>
+
+
+                <% if (
+                  transaction.actualReturnDate
+                ) { %>
+
+                  <div class="detail-list-item">
+
+                    <span>
+                      Actual Return
+                    </span>
+
+                    <strong>
+
+                      <%= new Date(
+                        transaction.actualReturnDate
+                      ).toLocaleString(
+                        "en-IN"
+                      ) %>
+
+                    </strong>
+
+                  </div>
+
+                <% } %>
+
+
+                <% if (
+                  transaction.returnedCondition
+                ) { %>
+
+                  <div class="detail-list-item">
+
+                    <span>
+                      Returned Condition
+                    </span>
+
+                    <strong>
+                      <%= transaction.returnedCondition %>
+                    </strong>
+
+                  </div>
+
+                <% } %>
+
+
+                <% if (
+                  typeof transaction.lateDays === "number"
+                ) { %>
+
+                  <div class="detail-list-item">
+
+                    <span>
+                      Late Days
+                    </span>
+
+                    <strong>
+                      <%= transaction.lateDays %>
+                    </strong>
+
+                  </div>
+
+                <% } %>
+
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Trust Points Change
+                  </span>
+
+                  <strong>
+                    <%= transaction.trustPointsChange || 0 %>
+                  </strong>
+
+                </div>
+
+
+              </div>
+
+
+
+              <!-- ================================= -->
+              <!-- ACTIVE -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "ACTIVE"
+              ) { %>
+
+                <div
+                  class="decision-box"
+                  style="margin-top: 15px;"
+                >
+
+                  <strong>
+                    Equipment Currently Borrowed
+                  </strong>
+
+                  <p>
+                    Waiting for the borrower to submit a return request.
+                  </p>
+
+                </div>
+
+
+              <% } %>
+
+
+
+              <!-- ================================= -->
+              <!-- RETURN REQUESTED -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "RETURN_REQUESTED"
+              ) { %>
+
+
+                <div
+                  class="return-verification-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 18px;
+                    border: 1px solid #f59e0b;
+                    border-radius: 12px;
+                    background: #fffbeb;
+                  "
+                >
+
+                  <h3 style="margin-top: 0;">
+                    Return Verification Required
+                  </h3>
+
+
+                  <p>
+                    The borrower has requested to return this equipment.
+                  </p>
+
+
+                  <form
+                    method="POST"
+                    action="/return/lender/<%= transaction._id %>/confirm"
+                  >
+
+
+                    <label
+                      for="condition-<%= transaction._id %>"
+                    >
+                      Returned Condition
+                    </label>
+
+
+                    <select
+                      id="condition-<%= transaction._id %>"
+                      name="returnedCondition"
+                      required
+                      style="
+                        width: 100%;
+                        margin-top: 8px;
+                        margin-bottom: 12px;
+                        padding: 10px;
+                        border: 1px solid #d1d5db;
+                        border-radius: 8px;
+                      "
+                    >
+
+                      <option value="">
+                        Select condition
+                      </option>
+
+                      <option value="GOOD">
+                        Good — No Damage
+                      </option>
+
+                      <option value="MINOR_DAMAGE">
+                        Minor Damage
+                      </option>
+
+                      <option value="MAJOR_DAMAGE">
+                        Major Damage
+                      </option>
+
+                    </select>
+
+
+                    <button
+                      type="submit"
+                      class="btn btn-success btn-full"
+                      onclick="return confirm('Confirm that you received the returned equipment?')"
+                    >
+                      Confirm Return & Restore Stock
+                    </button>
+
+                  </form>
+
+
+                </div>
+
+
+              <% } %>
+
+
+
+              <!-- ================================= -->
+              <!-- RETURNED + REFUND PENDING -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "RETURNED" &&
+                paymentStatus === "REFUND_PENDING"
+              ) { %>
+
+
+                <div
+                  class="decision-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 18px;
+                    border-radius: 12px;
+                    background: #eff6ff;
+                  "
+                >
+
+                  <strong>
+                    Return Completed
+                  </strong>
+
+
+                  <p>
+                    Inventory has been restored.
+                  </p>
+
+
+                  <p>
+                    Security deposit is ready for refund processing.
+                  </p>
+
+
+                  <p>
+                    Trust point change:
+
+                    <strong>
+                      <%= transaction.trustPointsChange || 0 %>
+                    </strong>
+
+                  </p>
+
+
+                  <form
+                    method="POST"
+                    action="/return/lender/<%= transaction._id %>/refund"
+                  >
+
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-full"
+                      onclick="return confirm('Mark the security deposit as refunded?')"
+                    >
+                      Mark Deposit Refunded
+                    </button>
+
+                  </form>
+
+
+                </div>
+
+
+              <% } %>
+
+
+
+              <!-- ================================= -->
+              <!-- FULLY REFUNDED -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "RETURNED" &&
+                paymentStatus === "REFUNDED"
+              ) { %>
+
+
+                <div
+                  class="decision-box approved-box"
+                  style="margin-top: 15px;"
+                >
+
+                  <strong>
+                    Return Completed & Deposit Refunded
+                  </strong>
+
+
+                  <p>
+                    Equipment is back in inventory.
+                  </p>
+
+
+                  <p>
+
+                    Trust point change:
+
+                    <strong>
+                      <%= transaction.trustPointsChange || 0 %>
+                    </strong>
+
+                  </p>
+
+                </div>
+
+
+              <% } %>
+
+
+            </div>
+
+          </article>
+
+
+        <% } %>
+
+
+      </div>
+
+
+    <% } %>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

@@ -1,3 +1,5 @@
+"use strict";
+
 const fs = require("fs");
 const path = require("path");
 
@@ -8,19 +10,30 @@ const {
   getMyEquipment,
   getMyEquipmentById,
   updateMyEquipment,
-  deleteMyEquipment
+  deleteMyEquipment,
 } = require("../services/equipmentService");
+
+
+/* =========================================================
+   CLEANUP UPLOADED FILES
+   ========================================================= */
 
 /**
  * Delete files uploaded by multer when an operation fails.
  */
 function cleanupUploadedFiles(files) {
-  if (!Array.isArray(files) || files.length === 0) {
+  if (
+    !Array.isArray(files) ||
+    files.length === 0
+  ) {
     return;
   }
 
   for (const file of files) {
-    if (!file || !file.filename) {
+    if (
+      !file ||
+      !file.filename
+    ) {
       continue;
     }
 
@@ -34,7 +47,9 @@ function cleanupUploadedFiles(files) {
     );
 
     try {
-      if (fs.existsSync(filePath)) {
+      if (
+        fs.existsSync(filePath)
+      ) {
         fs.unlinkSync(filePath);
       }
     } catch (cleanupError) {
@@ -47,265 +62,522 @@ function cleanupUploadedFiles(files) {
   }
 }
 
+
+/* =========================================================
+   RENDER CREATE EQUIPMENT
+   ========================================================= */
+
 /**
  * Render equipment creation form.
  */
 function renderCreateEquipment(req, res) {
-  return res.render("equipment/new", {
-    title: "Add Equipment",
-    error: req.query.error || null,
+  return res.render(
+    "equipment/new",
+    {
+      title: "Add Equipment",
 
-    formData: {
-      name: "",
-      description: "",
-      category: "",
-      department: req.session.user.department || "",
-      condition: "GOOD",
-      quantity: "1",
-      rentalFee: "0",
-      securityDeposit: "0",
-      borrowingTerms: ""
+      error:
+        req.query.error ||
+        null,
+
+      formData: {
+        name: "",
+        description: "",
+        category: "",
+
+        department:
+          req.session.user?.department ||
+          "",
+
+        condition: "GOOD",
+
+        quantity: "1",
+
+        rentalFee: "0",
+
+        securityDeposit: "0",
+
+        borrowingTerms: "",
+      },
     }
-  });
+  );
 }
+
+
+/* =========================================================
+   CREATE EQUIPMENT
+   ========================================================= */
 
 /**
  * Create new equipment.
  */
 async function create(req, res) {
   try {
-    const imagePaths = (req.files || []).map(
-      (file) => `/uploads/equipment/${file.filename}`
+
+    const imagePaths =
+      (req.files || []).map(
+        (file) =>
+          `/uploads/equipment/${file.filename}`
+      );
+
+
+    await createEquipment(
+      req.session.user.id,
+      {
+        ...req.body,
+        images: imagePaths,
+      }
     );
 
-    await createEquipment(req.session.user.id, {
-      ...req.body,
-      images: imagePaths
-    });
 
     return res.redirect(
       "/equipment/mine?success=Equipment+listed+successfully."
     );
+
   } catch (error) {
-    cleanupUploadedFiles(req.files);
 
-    return res.status(400).render("equipment/new", {
-      title: "Add Equipment",
-      error: error.message,
+    cleanupUploadedFiles(
+      req.files
+    );
 
-      formData: {
-        name: req.body.name || "",
-        description: req.body.description || "",
-        category: req.body.category || "",
 
-        department:
-          req.body.department ||
-          req.session.user.department ||
-          "",
+    return res
+      .status(400)
+      .render(
+        "equipment/new",
+        {
+          title:
+            "Add Equipment",
 
-        condition: req.body.condition || "GOOD",
-        quantity: req.body.quantity || "1",
-        rentalFee: req.body.rentalFee || "0",
-        securityDeposit:
-          req.body.securityDeposit || "0",
+          error:
+            error.message,
 
-        borrowingTerms:
-          req.body.borrowingTerms || ""
-      }
-    });
+          formData: {
+            name:
+              req.body.name ||
+              "",
+
+            description:
+              req.body.description ||
+              "",
+
+            category:
+              req.body.category ||
+              "",
+
+            department:
+              req.body.department ||
+              req.session.user?.department ||
+              "",
+
+            condition:
+              req.body.condition ||
+              "GOOD",
+
+            quantity:
+              req.body.quantity ||
+              "1",
+
+            rentalFee:
+              req.body.rentalFee ||
+              "0",
+
+            securityDeposit:
+              req.body.securityDeposit ||
+              "0",
+
+            borrowingTerms:
+              req.body.borrowingTerms ||
+              "",
+          },
+        }
+      );
   }
 }
+
+
+/* =========================================================
+   BROWSE AVAILABLE EQUIPMENT
+   ========================================================= */
 
 /**
  * Browse available equipment.
  */
-async function browse(req, res, next) {
+async function browse(
+  req,
+  res,
+  next
+) {
   try {
-    const equipment = await getAvailableEquipment();
 
-    return res.render("equipment/browse", {
-      title: "Browse Equipment",
-      equipment,
+    const equipment =
+      await getAvailableEquipment();
 
-      currentUser: req.session.user,
 
-      isOwnerView: false
-    });
+    return res.render(
+      "equipment/browse",
+      {
+        title:
+          "Browse Equipment",
+
+        equipment,
+
+        currentUser:
+          req.session.user,
+
+        isOwnerView:
+          false,
+
+        success:
+          req.query.success ||
+          null,
+
+        error:
+          req.query.error ||
+          null,
+      }
+    );
+
   } catch (error) {
+
     next(error);
+
   }
 }
+
+
+/* =========================================================
+   MY EQUIPMENT
+   ========================================================= */
 
 /**
  * Show lender's own equipment.
+ *
+ * IMPORTANT:
+ * Use the existing service instead of querying
+ * MongoDB directly from the controller.
  */
-async function mine(req, res, next) {
+async function mine(
+  req,
+  res,
+  next
+) {
   try {
-    const equipment = await getMyEquipment(
-      req.session.user.id
+
+    const user =
+      req.session.user;
+
+
+    if (!user) {
+
+      return res.redirect(
+        "/auth/login?error=Please+login+first."
+      );
+
+    }
+
+
+    const equipment =
+      await getMyEquipment(
+        user.id
+      );
+
+
+    return res.render(
+      "equipment/mine",
+      {
+        title:
+          "My Equipment",
+
+        equipment,
+
+        currentUser:
+          user,
+
+        isOwnerView:
+          true,
+
+        success:
+          req.query.success ||
+          null,
+
+        error:
+          req.query.error ||
+          null,
+      }
     );
 
-    return res.render("equipment/browse", {
-      title: "My Equipment",
-      equipment,
-
-      currentUser: req.session.user,
-
-      isOwnerView: true,
-
-      success: req.query.success || null
-    });
   } catch (error) {
+
+    console.error(
+      "My equipment error:",
+      error
+    );
+
     next(error);
+
   }
 }
+
+
+/* =========================================================
+   EQUIPMENT DETAILS
+   ========================================================= */
 
 /**
  * Show equipment details.
  */
-async function details(req, res, next) {
+async function details(
+  req,
+  res,
+  next
+) {
   try {
-    const equipment = await getEquipmentById(
-      req.params.id
+
+    const equipment =
+      await getEquipmentById(
+        req.params.id
+      );
+
+
+    if (!equipment) {
+
+      return res
+        .status(404)
+        .render(
+          "errors/404",
+          {
+            title:
+              "Equipment Not Found",
+
+            message:
+              "The requested equipment could not be found.",
+          }
+        );
+
+    }
+
+
+    return res.render(
+      "equipment/detail",
+      {
+        title:
+          equipment.name,
+
+        equipment,
+
+        currentUser:
+          req.session.user,
+      }
     );
 
-    return res.render("equipment/detail", {
-      title: equipment.name,
-      equipment,
-
-      currentUser: req.session.user
-    });
   } catch (error) {
+
     next(error);
+
   }
 }
+
+
+/* =========================================================
+   RENDER EDIT EQUIPMENT
+   ========================================================= */
 
 /**
  * Render equipment edit form.
  * Ownership is checked inside the service.
  */
-async function renderEditEquipment(req, res, next) {
+async function renderEditEquipment(
+  req,
+  res,
+  next
+) {
   try {
-    const equipment = await getMyEquipmentById(
-      req.session.user.id,
-      req.params.id
+
+    const equipment =
+      await getMyEquipmentById(
+        req.session.user.id,
+        req.params.id
+      );
+
+
+    return res.render(
+      "equipment/edit",
+      {
+        title:
+          `Edit ${equipment.name}`,
+
+        error:
+          null,
+
+        equipment,
+      }
     );
 
-    return res.render("equipment/edit", {
-      title: `Edit ${equipment.name}`,
-      error: null,
-      equipment
-    });
   } catch (error) {
+
     next(error);
+
   }
 }
+
+
+/* =========================================================
+   UPDATE EQUIPMENT
+   ========================================================= */
 
 /**
  * Update lender's equipment.
  */
-async function update(req, res, next) {
+async function update(
+  req,
+  res,
+  next
+) {
   try {
-    const imagePaths = (req.files || []).map(
-      (file) => `/uploads/equipment/${file.filename}`
-    );
+
+    const imagePaths =
+      (req.files || []).map(
+        (file) =>
+          `/uploads/equipment/${file.filename}`
+      );
+
 
     await updateMyEquipment(
       req.session.user.id,
       req.params.id,
       {
         ...req.body,
-        images: imagePaths
+        images: imagePaths,
       }
     );
+
 
     return res.redirect(
       `/equipment/mine?success=${encodeURIComponent(
         "Equipment updated successfully."
       )}`
     );
+
   } catch (error) {
-    /**
+
+    /*
      * New files were already stored by multer.
      * Remove them when database update fails.
      */
-    cleanupUploadedFiles(req.files);
+    cleanupUploadedFiles(
+      req.files
+    );
+
 
     try {
-      const equipment = await getMyEquipmentById(
-        req.session.user.id,
-        req.params.id
-      );
 
-      return res.status(400).render("equipment/edit", {
-        title: `Edit ${equipment.name}`,
-        error: error.message,
+      const equipment =
+        await getMyEquipmentById(
+          req.session.user.id,
+          req.params.id
+        );
 
-        equipment: {
-          ...equipment,
 
-          name:
-            req.body.name ||
-            equipment.name,
+      return res
+        .status(400)
+        .render(
+          "equipment/edit",
+          {
+            title:
+              `Edit ${equipment.name}`,
 
-          description:
-            req.body.description ||
-            equipment.description,
+            error:
+              error.message,
 
-          category:
-            req.body.category ||
-            equipment.category,
+            equipment: {
+              ...equipment,
 
-          department:
-            req.body.department ||
-            equipment.department,
+              name:
+                req.body.name ||
+                equipment.name,
 
-          condition:
-            req.body.condition ||
-            equipment.condition,
+              description:
+                req.body.description ||
+                equipment.description,
 
-          quantity:
-            req.body.quantity ||
-            equipment.quantity,
+              category:
+                req.body.category ||
+                equipment.category,
 
-          rentalFee:
-            req.body.rentalFee ??
-            equipment.rentalFee,
+              department:
+                req.body.department ||
+                equipment.department,
 
-          securityDeposit:
-            req.body.securityDeposit ??
-            equipment.securityDeposit,
+              condition:
+                req.body.condition ||
+                equipment.condition,
 
-          borrowingTerms:
-            req.body.borrowingTerms ??
-            equipment.borrowingTerms
-        }
-      });
+              quantity:
+                req.body.quantity ||
+                equipment.quantity,
+
+              rentalFee:
+                req.body.rentalFee ??
+                equipment.rentalFee,
+
+              securityDeposit:
+                req.body.securityDeposit ??
+                equipment.securityDeposit,
+
+              borrowingTerms:
+                req.body.borrowingTerms ??
+                equipment.borrowingTerms,
+            },
+          }
+        );
+
     } catch (renderError) {
+
       next(renderError);
+
     }
   }
 }
 
+
+/* =========================================================
+   DELETE EQUIPMENT
+   ========================================================= */
+
 /**
  * Delete lender's equipment.
  */
-async function remove(req, res, next) {
+async function remove(
+  req,
+  res,
+  next
+) {
   try {
+
     await deleteMyEquipment(
       req.session.user.id,
       req.params.id
     );
+
 
     return res.redirect(
       `/equipment/mine?success=${encodeURIComponent(
         "Equipment deleted successfully."
       )}`
     );
+
   } catch (error) {
+
     next(error);
+
   }
 }
+
+
+/* =========================================================
+   EXPORTS
+   ========================================================= */
 
 module.exports = {
   renderCreateEquipment,
@@ -315,5 +587,5 @@ module.exports = {
   details,
   renderEditEquipment,
   update,
-  remove
+  remove,
 };

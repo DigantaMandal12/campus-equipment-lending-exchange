@@ -1,0 +1,222 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+
+<main class="rating-page">
+
+  <div class="container">
+
+    <div class="rating-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          PHASE 5
+        </span>
+
+        <h1>
+          <%= mode === "received"
+            ? "Ratings Received"
+            : "My Submitted Ratings"
+          %>
+        </h1>
+
+        <p>
+          Review your rating history.
+        </p>
+
+      </div>
+
+      <a
+        href="/dashboard"
+        class="btn btn-secondary"
+      >
+        Dashboard
+      </a>
+
+    </div>
+
+
+    <% if (success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (error) { %>
+
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <% if (!ratings || ratings.length === 0) { %>
+
+      <section class="rating-card empty-rating">
+
+        <div class="rating-card-icon">
+          —
+        </div>
+
+        <h2>
+          No ratings yet
+        </h2>
+
+        <p>
+          Rating history will appear here after completed
+          transactions are rated.
+        </p>
+
+      </section>
+
+
+    <% } else { %>
+
+      <div class="rating-history-grid">
+
+        <% ratings.forEach(function(rating) { %>
+
+          <article class="rating-history-card">
+
+            <div class="rating-history-header">
+
+              <div>
+
+                <span class="context-label">
+                  Equipment
+                </span>
+
+                <h2>
+                  <%= rating.equipment
+                    ? rating.equipment.name
+                    : "Equipment"
+                  %>
+                </h2>
+
+              </div>
+
+              <span class="rating-score">
+                <%= rating.overallRating %>/5
+              </span>
+
+            </div>
+
+
+            <div class="rating-history-person">
+
+              <span>
+                <%= mode === "received"
+                  ? "From"
+                  : "To"
+                %>
+              </span>
+
+              <strong>
+                <%= mode === "received"
+                  ? (
+                      rating.giver
+                        ? rating.giver.name
+                        : "Unknown"
+                    )
+                  : (
+                      rating.receiver
+                        ? rating.receiver.name
+                        : "Unknown"
+                    )
+                %>
+              </strong>
+
+            </div>
+
+
+            <div class="rating-history-grid-small">
+
+              <div>
+
+                <span>
+                  Condition
+                </span>
+
+                <strong>
+                  <%= rating.equipmentConditionRating %>/5
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  Punctuality
+                </span>
+
+                <strong>
+                  <%= rating.punctualityRating %>/5
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  Overall
+                </span>
+
+                <strong>
+                  <%= rating.overallRating %>/5
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <% if (rating.comment) { %>
+
+              <div class="rating-history-comment">
+
+                <strong>
+                  Comment
+                </strong>
+
+                <p>
+                  <%= rating.comment %>
+                </p>
+
+              </div>
+
+            <% } %>
+
+
+            <span class="rating-history-date">
+
+              <%= rating.createdAt
+                ? new Date(
+                    rating.createdAt
+                  ).toLocaleString("en-IN")
+                : ""
+              %>
+
+            </span>
+
+          </article>
+
+        <% }); %>
+
+      </div>
+
+    <% } %>
+
+  </div>
+
+</main>
+
+
+<%- include("../partials/footer") %>

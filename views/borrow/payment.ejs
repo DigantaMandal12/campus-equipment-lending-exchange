@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    <%= title %> | Campus Exchange
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/css/style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/payment.css"
+  >
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="payment-nav">
+
+      <a
+        href="/"
+        class="brand"
+      >
+        <span class="brand-mark">
+          CE
+        </span>
+
+        <span>
+          Campus Exchange
+        </span>
+      </a>
+
+      <nav class="main-nav">
+
+        <a href="/dashboard">
+          Dashboard
+        </a>
+
+        <a href="/equipment">
+          Equipment
+        </a>
+
+        <a href="/borrow/my-requests">
+          My Requests
+        </a>
+
+        <% if (currentUser) { %>
+
+          <span>
+            Hi, <%= currentUser.name %>
+          </span>
+
+          <a href="/auth/logout">
+            Logout
+          </a>
+
+        <% } %>
+
+      </nav>
+
+    </div>
+  </header>
+
+
+  <main class="payment-page">
+
+    <div class="payment-container">
+
+      <div class="payment-heading">
+
+        <span class="eyebrow">
+          SECURITY DEPOSIT
+        </span>
+
+        <h1>
+          Complete Payment Verification
+        </h1>
+
+        <p>
+          Pay the refundable security deposit
+          and submit the UTR/reference for
+          lender verification.
+        </p>
+
+      </div>
+
+
+      <% if (error) { %>
+
+        <div class="payment-alert error">
+          <%= error %>
+        </div>
+
+      <% } %>
+
+
+      <div class="payment-grid">
+
+        <section class="payment-card">
+
+          <div class="equipment-summary">
+
+            <div class="equipment-thumb">
+
+              <% if (
+                transaction.equipment?.images &&
+                transaction.equipment.images.length
+              ) { %>
+
+                <img
+                  src="<%= transaction.equipment.images[0] %>"
+                  alt="<%= transaction.equipment.name %>"
+                >
+
+              <% } else { %>
+
+                <div>
+                  No Image
+                </div>
+
+              <% } %>
+
+            </div>
+
+            <div>
+
+              <span class="summary-label">
+                Equipment
+              </span>
+
+              <h2>
+                <%= transaction.equipment?.name %>
+              </h2>
+
+              <p>
+                Quantity:
+                <strong>
+                  <%= transaction.quantity %>
+                </strong>
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="amount-box">
+
+            <span>
+              Required Security Deposit
+            </span>
+
+            <strong>
+              ₹<%= transaction.securityDeposit %>
+            </strong>
+
+          </div>
+
+
+          <% if (
+            transaction.paymentStatus ===
+            "DEPOSIT_CONFIRMED"
+          ) { %>
+
+            <div class="payment-alert success">
+
+              <strong>
+                Deposit already verified
+              </strong>
+
+              <p>
+                Your lender has confirmed the
+                security deposit.
+              </p>
+
+            </div>
+
+            <a
+              href="/checkout/<%= transaction._id %>"
+              class="primary-button"
+            >
+              Continue to Checkout
+            </a>
+
+          <% } else if (
+            transaction.paymentStatus ===
+            "PENDING_VERIFICATION"
+          ) { %>
+
+            <div class="payment-alert pending">
+
+              <strong>
+                Payment submitted
+              </strong>
+
+              <p>
+                Your UTR/reference is waiting
+                for lender verification.
+              </p>
+
+              <% if (transaction.paymentReference) { %>
+
+                <span>
+                  Reference:
+                  <strong>
+                    <%= transaction.paymentReference %>
+                  </strong>
+                </span>
+
+              <% } %>
+
+            </div>
+
+            <a
+              href="/borrow/my-requests"
+              class="secondary-button"
+            >
+              Back to My Requests
+            </a>
+
+          <% } else { %>
+
+            <% if (qrCodeDataUrl) { %>
+
+              <div class="qr-section">
+
+                <div class="qr-wrapper">
+
+                  <img
+                    src="<%= qrCodeDataUrl %>"
+                    alt="UPI payment QR code"
+                  >
+
+                </div>
+
+                <strong>
+                  Scan with your UPI app
+                </strong>
+
+                <p>
+                  Pay exactly
+                  ₹<%= transaction.securityDeposit %>
+                </p>
+
+              </div>
+
+            <% } %>
+
+
+            <% if (upiUri) { %>
+
+              <a
+                href="<%= upiUri %>"
+                class="upi-button"
+              >
+                Open UPI Payment App
+              </a>
+
+            <% } %>
+
+
+            <div class="payment-instructions">
+
+              <h3>
+                How to complete payment
+              </h3>
+
+              <ol>
+
+                <li>
+                  Scan the QR or open the UPI payment link.
+                </li>
+
+                <li>
+                  Pay the exact security deposit amount.
+                </li>
+
+                <li>
+                  Copy the UTR / transaction reference.
+                </li>
+
+                <li>
+                  Enter the reference below.
+                </li>
+
+                <li>
+                  Submit it for lender verification.
+                </li>
+
+              </ol>
+
+            </div>
+
+
+            <form
+              method="POST"
+              action="/payment/<%= transaction._id %>"
+              class="payment-form"
+            >
+
+              <div class="form-group">
+
+                <label for="paymentReference">
+                  UTR / Transaction Reference
+                </label>
+
+                <input
+                  id="paymentReference"
+                  name="paymentReference"
+                  type="text"
+                  minlength="6"
+                  maxlength="80"
+                  required
+                  autocomplete="off"
+                  placeholder="Enter UTR / transaction ID"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="amount">
+                  Amount Paid
+                </label>
+
+                <input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="<%= transaction.securityDeposit %>"
+                  required
+                >
+
+              </div>
+
+
+              <button
+                type="submit"
+                class="primary-button"
+              >
+                Submit Payment Reference
+              </button>
+
+            </form>
+
+
+            <div class="manual-note">
+
+              <strong>
+                Manual verification
+              </strong>
+
+              <p>
+                Scanning the QR does not automatically
+                verify your bank payment. The lender
+                must verify the submitted reference.
+              </p>
+
+            </div>
+
+          <% } %>
+
+        </section>
+
+
+        <aside class="payment-card">
+
+          <h2>
+            Transaction
+          </h2>
+
+          <div class="transaction-info">
+
+            <div>
+              <span>Status</span>
+
+              <strong>
+                <%= transaction.status.replace(
+                  /_/g,
+                  " "
+                ) %>
+              </strong>
+            </div>
+
+            <div>
+              <span>Payment Status</span>
+
+              <strong>
+                <%= transaction.paymentStatus.replace(
+                  /_/g,
+                  " "
+                ) %>
+              </strong>
+            </div>
+
+            <div>
+              <span>Lender</span>
+
+              <strong>
+                <%= transaction.lender?.name || "—" %>
+              </strong>
+            </div>
+
+            <div>
+              <span>Return Date</span>
+
+              <strong>
+                <%= new Date(
+                  transaction.requestedReturnDate
+                ).toLocaleDateString(
+                  "en-IN"
+                ) %>
+              </strong>
+            </div>
+
+          </div>
+
+          <div class="security-note">
+
+            <strong>
+              Refundable deposit
+            </strong>
+
+            <p>
+              The deposit is tracked separately
+              from the rental fee and its refund
+              status will be handled during the
+              return lifecycle.
+            </p>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

@@ -1,20 +1,68 @@
-<%- include("../partials/head", { title }) %>
+<%- include("../partials/head", {
+  title: equipment.name || "Equipment Details"
+}) %>
+
+<link
+  rel="stylesheet"
+  href="/css/equipment.css?v=detail-3"
+/>
 
 <%- include("../partials/header") %>
+
 
 <main class="equipment-page">
 
   <div class="container">
 
-    <div class="equipment-detail">
+    <!-- ==================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          EQUIPMENT
+        </span>
+
+        <h1>
+          Equipment Details
+        </h1>
+
+        <p>
+          View equipment information, availability, condition and borrowing details.
+        </p>
+
+      </div>
+
+      <a
+        href="/equipment"
+        class="btn btn-secondary"
+      >
+        ← Back to Marketplace
+      </a>
+
+    </div>
 
 
-      <!-- LEFT -->
-      <section class="detail-panel">
+    <!-- ==================================================
+         DETAIL LAYOUT
+    ================================================== -->
+
+    <section class="equipment-detail">
+
+
+      <!-- ==================================================
+           LEFT : IMAGE
+      ================================================== -->
+
+      <div class="detail-panel">
 
         <div class="detail-hero">
 
           <% if (
+            equipment &&
             Array.isArray(equipment.images) &&
             equipment.images.length > 0
           ) { %>
@@ -27,16 +75,26 @@
 
           <% } else { %>
 
-            <span class="detail-hero-letter">
-              <%= equipment.name.charAt(0).toUpperCase() %>
-            </span>
+            <div class="detail-hero-letter">
+
+              <%= equipment && equipment.name
+                ? equipment.name.charAt(0).toUpperCase()
+                : "E"
+              %>
+
+            </div>
 
           <% } %>
 
         </div>
 
 
+        <!-- ==================================================
+             IMAGE GALLERY
+        ================================================== -->
+
         <% if (
+          equipment &&
           Array.isArray(equipment.images) &&
           equipment.images.length > 1
         ) { %>
@@ -49,150 +107,88 @@
 
                 <img
                   src="<%= image %>"
-                  alt="<%= equipment.name %> photo <%= index + 1 %>"
+                  alt="<%= equipment.name %> image <%= index + 1 %>"
                   loading="lazy"
                 >
 
               </div>
 
-            <% }); %>
+            <% }) %>
 
           </div>
 
         <% } %>
 
-      </section>
+      </div>
 
 
-      <!-- RIGHT -->
-      <section class="detail-panel">
+      <!-- ==================================================
+           RIGHT : INFORMATION
+      ================================================== -->
 
-        <span class="eyebrow">
-          <%= equipment.category %>
+      <div class="detail-panel detail-information">
+
+
+        <!-- CATEGORY -->
+
+        <span class="equipment-card-category">
+          <%= equipment.category || "Equipment" %>
         </span>
 
 
+        <!-- NAME -->
+
         <h1>
-          <%= equipment.name %>
+          <%= equipment.name || "Unnamed Equipment" %>
         </h1>
 
 
+        <!-- DESCRIPTION -->
+
         <p class="detail-description">
-          <%= equipment.description %>
+
+          <%= equipment.description ||
+              "No description available for this equipment."
+          %>
+
         </p>
 
 
-        <%
-          const totalQuantity =
-            Number(equipment.quantity) || 0;
-
-          const availableQuantity =
-            Number(equipment.availableQuantity) || 0;
-
-          const availabilityPercentage =
-            totalQuantity > 0
-              ? Math.round(
-                  (availableQuantity / totalQuantity) * 100
-                )
-              : 0;
-
-          const isAvailable =
-            equipment.status === "AVAILABLE" &&
-            availableQuantity > 0;
-        %>
-
-
         <!-- STATUS -->
+
         <div class="detail-status-card">
 
           <span>
-            Availability Status
+            Availability
           </span>
 
-          <strong
-            class="<%= isAvailable
-              ? 'status-text-available'
-              : 'status-text-unavailable'
-            %>"
-          >
-            <%= isAvailable
-              ? "AVAILABLE"
-              : "UNAVAILABLE"
-            %>
-          </strong>
+          <% if (
+            Number(equipment.availableQuantity || 0) > 0
+          ) { %>
+
+            <strong class="status-text-available">
+              AVAILABLE
+            </strong>
+
+          <% } else { %>
+
+            <strong class="status-text-unavailable">
+              UNAVAILABLE
+            </strong>
+
+          <% } %>
 
         </div>
 
 
-        <!-- STOCK -->
-        <div class="detail-stock-section">
+        <!-- ==================================================
+             DETAILS
+        ================================================== -->
 
-          <div class="detail-stock-header">
-
-            <div>
-
-              <span class="detail-stock-label">
-                Stock Availability
-              </span>
-
-              <strong class="detail-stock-count">
-                <%= availableQuantity %>
-                /
-                <%= totalQuantity %>
-              </strong>
-
-            </div>
-
-            <span class="detail-stock-percentage">
-              <%= availabilityPercentage %>%
-            </span>
-
-          </div>
-
-
-          <div class="equipment-stock-bar detail-stock-bar">
-
-            <div
-              class="equipment-stock-fill
-              <%= isAvailable
-                ? 'stock-available'
-                : 'stock-empty'
-              %>"
-              style="width: <%= availabilityPercentage %>%"
-            ></div>
-
-          </div>
-
-
-          <p class="detail-stock-message">
-
-            <% if (!isAvailable) { %>
-
-              This equipment is currently out of stock.
-
-            <% } else if (availableQuantity < totalQuantity) { %>
-
-              <%= availableQuantity %>
-              of
-              <%= totalQuantity %>
-              item(s) are currently available.
-
-            <% } else { %>
-
-              All
-              <%= totalQuantity %>
-              item(s) are currently available.
-
-            <% } %>
-
-          </p>
-
-        </div>
-
-
-        <!-- DETAILS -->
         <div class="detail-list">
 
+
+          <!-- DEPARTMENT -->
 
           <div class="detail-list-item">
 
@@ -201,11 +197,13 @@
             </span>
 
             <strong>
-              <%= equipment.department %>
+              <%= equipment.department || "Not specified" %>
             </strong>
 
           </div>
 
+
+          <!-- CONDITION -->
 
           <div class="detail-list-item">
 
@@ -214,11 +212,15 @@
             </span>
 
             <strong>
-              <%= equipment.condition.replace("_", " ") %>
+              <span class="condition-badge">
+                <%= equipment.condition || "GOOD" %>
+              </span>
             </strong>
 
           </div>
 
+
+          <!-- TOTAL QUANTITY -->
 
           <div class="detail-list-item">
 
@@ -227,37 +229,45 @@
             </span>
 
             <strong>
-              <%= totalQuantity %>
+              <%= equipment.quantity || 0 %>
             </strong>
 
           </div>
 
+
+          <!-- AVAILABLE QUANTITY -->
 
           <div class="detail-list-item">
 
             <span>
-              Available Quantity
+              Available Now
             </span>
 
             <strong>
-              <%= availableQuantity %>
+              <%= equipment.availableQuantity || 0 %>
             </strong>
 
           </div>
 
+
+          <!-- RENTAL FEE -->
 
           <div class="detail-list-item">
 
             <span>
-              Borrow Fee
+              Rental Fee
             </span>
 
             <strong>
-              ₹<%= equipment.rentalFee %>
+              ₹<%= Number(
+                equipment.rentalFee || 0
+              ).toLocaleString("en-IN") %>
             </strong>
 
           </div>
 
+
+          <!-- SECURITY DEPOSIT -->
 
           <div class="detail-list-item">
 
@@ -266,95 +276,122 @@
             </span>
 
             <strong>
-              ₹<%= equipment.securityDeposit %>
+              ₹<%= Number(
+                equipment.securityDeposit || 0
+              ).toLocaleString("en-IN") %>
             </strong>
 
           </div>
 
 
-          <div class="detail-list-item">
+          <!-- BORROWING TERMS -->
 
-            <span>
-              Lender
-            </span>
+          <% if (equipment.borrowingTerms) { %>
 
-            <strong>
-              <%= equipment.owner.name %>
-            </strong>
+            <div class="detail-list-item">
 
-          </div>
+              <span>
+                Borrowing Terms
+              </span>
 
+              <strong>
+                <%= equipment.borrowingTerms %>
+              </strong>
 
-          <div class="detail-list-item">
+            </div>
 
-            <span>
-              Lender Department
-            </span>
-
-            <strong>
-              <%= equipment.owner.department %>
-            </strong>
-
-          </div>
+          <% } %>
 
         </div>
 
 
-        <% if (equipment.borrowingTerms) { %>
+        <!-- ==================================================
+             ACTIONS
+        ================================================== -->
 
-          <div style="margin-top: 28px;">
-
-            <span class="eyebrow">
-              BORROWING TERMS
-            </span>
-
-            <p class="detail-description">
-              <%= equipment.borrowingTerms %>
-            </p>
-
-          </div>
-
-        <% } %>
+        <div class="equipment-detail-actions">
 
 
-       <% if (currentUser.role === "BORROWER") { %>
+          <!-- BORROW -->
 
-  <div style="margin-top: 28px;">
+          <% if (
+            Number(equipment.availableQuantity || 0) > 0
+          ) { %>
 
-    <% if (
-      equipment.status === "AVAILABLE" &&
-      equipment.availableQuantity > 0
-    ) { %>
+            <a
+              href="/borrow?equipmentId=<%= equipment._id %>"
+              class="btn btn-primary btn-full"
+            >
+              Request to Borrow
+            </a>
 
-      <a
-        href="/borrow/request/<%= equipment._id %>"
-        class="btn btn-primary btn-full"
-      >
-        Request to Borrow
-      </a>
+          <% } else { %>
 
-    <% } else { %>
+            <button
+              type="button"
+              class="btn btn-disabled btn-full"
+              disabled
+            >
+              Currently Unavailable
+            </button>
 
-      <button
-        type="button"
-        class="btn btn-secondary btn-full"
-        disabled
-      >
-        Currently Unavailable
-      </button>
+          <% } %>
 
-    <% } %>
 
-  </div>
+          <!-- OWNER EDIT -->
 
-<% } %>
+          <%
+            const ownerId =
+              equipment &&
+              equipment.owner
+                ? String(
+                    equipment.owner._id ||
+                    equipment.owner
+                  )
+                : null;
 
-      </section>
+            const viewerId =
+              typeof currentUser !== "undefined" &&
+              currentUser
+                ? String(
+                    currentUser._id ||
+                    currentUser.id
+                  )
+                : null;
 
-    </div>
+            const ownerView =
+              typeof isOwnerView !== "undefined"
+                ? Boolean(isOwnerView)
+                : false;
+
+            const canEdit =
+              ownerView ||
+              (
+                ownerId &&
+                viewerId &&
+                ownerId === viewerId
+              );
+          %>
+
+
+          <% if (canEdit) { %>
+
+            <a
+              href="/equipment/<%= equipment._id %>/edit"
+              class="btn btn-secondary btn-full"
+            >
+              Edit Equipment
+            </a>
+
+          <% } %>
+
+
+        </div>
+
+      </div>
+
+    </section>
 
   </div>
 
 </main>
-
-<%- include("../partials/footer") %>

@@ -1,0 +1,2901 @@
+/* ==================================================
+   CAMPUS EXCHANGE
+   LENDER REQUESTS PAGE
+   ================================================== */
+
+:root {
+  --ce-primary: #315efb;
+  --ce-primary-dark: #2449d8;
+
+  --ce-success: #16a34a;
+  --ce-success-dark: #15803d;
+
+  --ce-danger: #dc2626;
+  --ce-danger-dark: #b91c1c;
+
+  --ce-warning: #d97706;
+
+  --ce-text: #111827;
+  --ce-text-soft: #4b5563;
+  --ce-text-muted: #6b7280;
+
+  --ce-border: #e5e7eb;
+  --ce-border-dark: #d1d5db;
+
+  --ce-bg: #f4f7fb;
+  --ce-card: #ffffff;
+
+  --ce-radius-sm: 8px;
+  --ce-radius-md: 12px;
+  --ce-radius-lg: 18px;
+  --ce-radius-xl: 22px;
+
+  --ce-shadow-sm:
+    0 4px 14px rgba(15, 23, 42, 0.05);
+
+  --ce-shadow-md:
+    0 10px 30px rgba(15, 23, 42, 0.08);
+
+  --ce-shadow-lg:
+    0 18px 50px rgba(15, 23, 42, 0.10);
+}
+
+
+/* ==================================================
+   GLOBAL PAGE
+   ================================================== */
+
+body {
+  margin: 0;
+  background: var(--ce-bg);
+  color: var(--ce-text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* ==================================================
+   HEADER
+   Self-contained so lender page does not depend
+   completely on style.css
+   ================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--ce-border);
+  backdrop-filter: blur(12px);
+}
+
+.nav-container {
+  width: min(1240px, calc(100% - 40px));
+  min-height: 72px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+
+  text-decoration: none;
+  color: var(--ce-text);
+
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--ce-primary),
+      #4f7cff
+    );
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  box-shadow:
+    0 8px 18px rgba(49, 94, 251, 0.25);
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 20px;
+
+  color: var(--ce-text-soft);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.main-nav a {
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.main-nav a:hover {
+  color: var(--ce-primary);
+  transform: translateY(-1px);
+}
+
+.main-nav span {
+  color: var(--ce-text);
+  font-weight: 700;
+}
+
+
+/* ==================================================
+   PAGE
+   ================================================== */
+
+.lender-page {
+  min-height: calc(100vh - 72px);
+  padding: 48px 20px 80px;
+}
+
+.lender-container {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+
+/* ==================================================
+   PAGE HEADER
+   ================================================== */
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.page-title-block {
+  max-width: 720px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+
+  color: var(--ce-primary);
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.page-header h1 {
+  margin: 0;
+
+  color: var(--ce-text);
+
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.1;
+
+  letter-spacing: -1.1px;
+}
+
+.page-subtitle {
+  margin: 11px 0 0;
+
+  color: var(--ce-text-muted);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+
+/* ==================================================
+   BUTTONS
+   ================================================== */
+
+.btn {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 16px;
+
+  border: 0;
+  border-radius: 10px;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--ce-primary);
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 18px rgba(49, 94, 251, 0.20);
+}
+
+.btn-primary:hover {
+  background: var(--ce-primary-dark);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--ce-text);
+
+  border: 1px solid var(--ce-border-dark);
+}
+
+.btn-secondary:hover {
+  border-color: #b8c0cc;
+  background: #f9fafb;
+}
+
+.btn-success {
+  background: var(--ce-success);
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background: var(--ce-success-dark);
+}
+
+.btn-danger {
+  background: var(--ce-danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: var(--ce-danger-dark);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+
+/* ==================================================
+   ALERTS
+   ================================================== */
+
+.alert {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 22px;
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.alert-success {
+  color: #166534;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+
+/* ==================================================
+   SUMMARY CARDS
+   ================================================== */
+
+.request-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 28px;
+}
+
+.summary-card {
+  position: relative;
+
+  min-height: 105px;
+
+  padding: 20px;
+
+  overflow: hidden;
+
+  background: var(--ce-card);
+
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+
+  box-shadow: var(--ce-shadow-sm);
+}
+
+.summary-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background: var(--ce-primary);
+}
+
+.summary-card:nth-child(2)::before {
+  background: var(--ce-warning);
+}
+
+.summary-card:nth-child(3)::before {
+  background: var(--ce-success);
+}
+
+.summary-card:nth-child(4)::before {
+  background: var(--ce-danger);
+}
+
+.summary-label {
+  display: block;
+
+  color: var(--ce-text-muted);
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.summary-card strong {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--ce-text);
+
+  font-size: 31px;
+  line-height: 1;
+
+  letter-spacing: -0.8px;
+}
+
+
+/* ==================================================
+   REQUEST GRID
+   ================================================== */
+
+.requests-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 24px;
+}
+
+
+/* ==================================================
+   REQUEST CARD
+   ================================================== */
+
+.request-card {
+  overflow: hidden;
+
+  background: var(--ce-card);
+
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-xl);
+
+  box-shadow: var(--ce-shadow-md);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #d8def0;
+
+  box-shadow: var(--ce-shadow-lg);
+}
+
+
+/* ==================================================
+   IMAGE
+   ================================================== */
+
+.request-image {
+  position: relative;
+
+  height: 280px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #edf2f7,
+      #e2e8f0
+    );
+}
+
+.request-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.35s ease;
+}
+
+.request-card:hover .request-image img {
+  transform: scale(1.025);
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--ce-text-muted);
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* ==================================================
+   STATUS BADGE
+   ================================================== */
+
+.status-badge {
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.10);
+}
+
+.status-pending_approval {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-approved {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.status-rejected {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+
+/* ==================================================
+   CARD CONTENT
+   ================================================== */
+
+.request-body {
+  padding: 24px;
+}
+
+.equipment-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-bottom: 9px;
+}
+
+.equipment-meta span {
+  color: var(--ce-primary);
+
+  font-size: 11px;
+  font-weight: 850;
+
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.request-body h2 {
+  margin: 0 0 20px;
+
+  color: var(--ce-text);
+
+  font-size: 25px;
+  line-height: 1.2;
+
+  letter-spacing: -0.4px;
+}
+
+
+/* ==================================================
+   BORROWER BOX
+   ================================================== */
+
+.borrower-box {
+  margin-bottom: 20px;
+  padding: 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e6ebf2;
+  border-radius: 13px;
+}
+
+.borrower-title {
+  margin-bottom: 7px;
+
+  color: var(--ce-text-muted);
+
+  font-size: 11px;
+  font-weight: 850;
+
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.borrower-box > strong {
+  display: block;
+
+  color: var(--ce-text);
+
+  font-size: 16px;
+}
+
+.borrower-box > span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--ce-text-muted);
+
+  font-size: 13px;
+}
+
+.trust-score {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+
+  margin-top: 10px !important;
+
+  color: var(--ce-text) !important;
+}
+
+
+/* ==================================================
+   DETAILS
+   ================================================== */
+
+.request-details {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  border-top: 1px solid var(--ce-border);
+  border-bottom: 1px solid var(--ce-border);
+}
+
+.request-details > div {
+  min-width: 0;
+
+  padding: 15px 0;
+}
+
+.request-details > div:nth-child(even) {
+  padding-left: 16px;
+
+  border-left: 1px solid var(--ce-border);
+}
+
+.request-details > div:nth-child(odd) {
+  padding-right: 16px;
+}
+
+.request-details span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--ce-text-muted);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.request-details strong {
+  display: block;
+
+  color: var(--ce-text);
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+
+/* ==================================================
+   ACTION AREA
+   ================================================== */
+
+.action-section {
+  display: grid;
+
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+.action-section > form:first-child .btn {
+  min-height: 46px;
+}
+
+.reject-form {
+  padding: 15px;
+
+  background: #fff8f8;
+
+  border: 1px solid #fecaca;
+  border-radius: 13px;
+}
+
+.reject-form label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #7f1d1d;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.reject-form textarea {
+  width: 100%;
+  min-height: 86px;
+
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  padding: 11px 12px;
+  margin-bottom: 10px;
+
+  color: var(--ce-text);
+
+  background: #ffffff;
+
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+
+  font: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.reject-form textarea:focus {
+  border-color: var(--ce-danger);
+
+  box-shadow:
+    0 0 0 3px rgba(220, 38, 38, 0.10);
+}
+
+
+/* ==================================================
+   DECISION BOX
+   ================================================== */
+
+.decision-box {
+  margin-top: 20px;
+  padding: 16px;
+
+  border-radius: 13px;
+}
+
+.decision-box strong {
+  display: block;
+
+  font-size: 14px;
+}
+
+.decision-box p {
+  margin: 8px 0 0;
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.approved-box {
+  color: #1d4ed8;
+
+  background: #eff6ff;
+
+  border: 1px solid #bfdbfe;
+}
+
+.rejected-box {
+  color: #991b1b;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+}
+
+
+/* ==================================================
+   EMPTY STATE
+   ================================================== */
+
+.empty-state {
+  padding: 76px 24px;
+
+  text-align: center;
+
+  background: var(--ce-card);
+
+  border: 1px dashed #cfd6e1;
+  border-radius: var(--ce-radius-xl);
+
+  box-shadow: var(--ce-shadow-sm);
+}
+
+.empty-icon {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 0 auto 16px;
+
+  border-radius: 50%;
+
+  color: #166534;
+  background: #dcfce7;
+
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.empty-state h2 {
+  margin: 0;
+
+  color: var(--ce-text);
+
+  font-size: 22px;
+}
+
+.empty-state p {
+  margin: 8px 0 0;
+
+  color: var(--ce-text-muted);
+
+  font-size: 14px;
+}
+
+
+/* ==================================================
+   RESPONSIVE — TABLET
+   ================================================== */
+
+@media (max-width: 1000px) {
+  .request-summary {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .requests-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .request-image {
+    height: 300px;
+  }
+}
+
+
+/* ==================================================
+   RESPONSIVE — MOBILE
+   ================================================== */
+
+@media (max-width: 680px) {
+  .nav-container {
+    width: min(100% - 28px, 1240px);
+
+    min-height: auto;
+
+    padding: 14px 0;
+
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .main-nav {
+    width: 100%;
+
+    justify-content: flex-start;
+
+    gap: 13px;
+
+    flex-wrap: wrap;
+
+    font-size: 13px;
+  }
+
+  .lender-page {
+    padding: 30px 14px 60px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions .btn {
+    flex: 1;
+  }
+
+  .request-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .request-image {
+    height: 240px;
+  }
+
+  .request-body {
+    padding: 19px;
+  }
+
+  .request-details {
+    grid-template-columns: 1fr;
+  }
+
+  .request-details > div:nth-child(even) {
+    padding-left: 0;
+
+    border-left: 0;
+  }
+
+  .request-details > div:nth-child(odd) {
+    padding-right: 0;
+  }
+
+  .request-details > div + div {
+    border-top: 1px solid var(--ce-border);
+  }
+
+  .equipment-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+
+/* ==================================================
+   REDUCED MOTION
+   ================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   CAMPUS EXCHANGE
+   LENDER DASHBOARD — PHASE 7E
+   FINAL UX OVERRIDES
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.lender-page {
+  min-height: calc(100vh - 72px);
+
+  padding:
+    36px 0
+    70px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faff 0%,
+      #f5f7fb 100%
+    );
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.lender-container {
+  width:
+    min(
+      calc(100% - 40px),
+      1200px
+    );
+
+  max-width: 1200px;
+
+  margin:
+    0 auto;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+   ========================================================= */
+
+.lender-page .dashboard-heading,
+.lender-page .dashboard-header,
+.lender-page .page-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 28px;
+
+  width: 100%;
+
+  margin-bottom: 28px;
+
+  padding:
+    30px;
+
+  border:
+    1px solid
+    #e2e7f0;
+
+  border-radius:
+    20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f7f9ff 100%
+    );
+
+  box-shadow:
+    0 8px 24px
+    rgba(15, 23, 42, 0.07);
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.lender-page .eyebrow {
+  display: block;
+
+  margin:
+    0 0 8px;
+
+  color:
+    #315cf5;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    0.14em;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* =========================================================
+   MAIN TITLE
+   ========================================================= */
+
+.lender-page .dashboard-heading h1,
+.lender-page .dashboard-header h1,
+.lender-page .page-header h1 {
+  margin:
+    0;
+
+  color:
+    #101828;
+
+  font-size:
+    clamp(
+      30px,
+      4vw,
+      44px
+    );
+
+  font-weight:
+    850;
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -0.03em;
+}
+
+
+/* =========================================================
+   SUBTITLE
+   ========================================================= */
+
+.lender-page .dashboard-heading p,
+.lender-page .dashboard-header p,
+.lender-page .page-header .page-subtitle {
+  margin:
+    10px 0 0;
+
+  color:
+    #667085;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.6;
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+   ========================================================= */
+
+.lender-page .header-actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  flex-shrink:
+    0;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.lender-page .btn {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    42px;
+
+  padding:
+    10px 15px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.lender-page .btn:hover {
+  transform:
+    translateY(-1px);
+}
+
+.lender-page .btn-primary {
+  border:
+    1px solid
+    #315cf5;
+
+  background:
+    #315cf5;
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 7px 16px
+    rgba(49, 92, 245, 0.18);
+}
+
+.lender-page .btn-primary:hover {
+  background:
+    #2448d8;
+}
+
+.lender-page .btn-secondary {
+  border:
+    1px solid
+    #d9dfeb;
+
+  background:
+    #ffffff;
+
+  color:
+    #344054;
+}
+
+.lender-page .btn-secondary:hover {
+  background:
+    #f8fafc;
+}
+
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.lender-page .stat-grid,
+.lender-page .stats-grid,
+.lender-page .dashboard-stats,
+.lender-page .lender-stats,
+.lender-page .stat-cards {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap:
+    16px;
+
+  width:
+    100%;
+
+  margin:
+    0 0 38px;
+}
+
+
+/* =========================================================
+   STAT CARD
+   ========================================================= */
+
+.lender-page .stat-card,
+.lender-page .stat-item,
+.lender-page .stat-box {
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  min-height:
+    112px;
+
+  padding:
+    21px;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    #e2e7f0;
+
+  border-radius:
+    16px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 5px 16px
+    rgba(15, 23, 42, 0.05);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.lender-page .stat-card::before,
+.lender-page .stat-item::before,
+.lender-page .stat-box::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  width:
+    100%;
+
+  height:
+    3px;
+
+  border-radius:
+    3px 3px 0 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #315cf5,
+      #7d95ff
+    );
+}
+
+.lender-page .stat-card:hover,
+.lender-page .stat-item:hover,
+.lender-page .stat-box:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 26px
+    rgba(15, 23, 42, 0.08);
+}
+
+
+/* STAT LABEL */
+
+.lender-page .stat-card span,
+.lender-page .stat-card .stat-label,
+.lender-page .stat-item span {
+  display:
+    block;
+
+  margin-bottom:
+    7px;
+
+  color:
+    #667085;
+
+  font-size:
+    10px;
+
+  font-weight:
+    750;
+
+  letter-spacing:
+    0.05em;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* STAT NUMBER */
+
+.lender-page .stat-card strong,
+.lender-page .stat-item strong,
+.lender-page .stat-box strong {
+  display:
+    block;
+
+  color:
+    #101828;
+
+  font-size:
+    28px;
+
+  font-weight:
+    850;
+
+  line-height:
+    1.1;
+}
+
+
+/* =========================================================
+   EQUIPMENT SECTION
+   ========================================================= */
+
+.lender-page .dashboard-panel,
+.lender-page .equipment-panel,
+.lender-page .equipment-management {
+  width:
+    100%;
+
+  margin-top:
+    10px;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    #e2e7f0;
+
+  border-radius:
+    20px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 8px 26px
+    rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.lender-page .panel-heading,
+.lender-page .equipment-heading,
+.lender-page .section-header {
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+
+  margin-bottom:
+    22px;
+}
+
+.lender-page .panel-heading h2,
+.lender-page .equipment-heading h2,
+.lender-page .section-header h2 {
+  margin:
+    5px 0 0;
+
+  color:
+    #101828;
+
+  font-size:
+    24px;
+
+  font-weight:
+    850;
+
+  line-height:
+    1.2;
+}
+
+
+/* =========================================================
+   ADD EQUIPMENT BUTTON
+   ========================================================= */
+
+.lender-page a[href*="/equipment/new"],
+.lender-page a[href*="/equipment/create"],
+.lender-page .add-equipment,
+.lender-page .create-listing {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    42px;
+
+  padding:
+    10px 16px;
+
+  border-radius:
+    10px;
+
+  background:
+    #315cf5;
+
+  color:
+    #ffffff;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  box-shadow:
+    0 7px 16px
+    rgba(49, 92, 245, 0.18);
+
+  transition:
+    transform 0.15s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.lender-page a[href*="/equipment/new"]:hover,
+.lender-page a[href*="/equipment/create"]:hover,
+.lender-page .add-equipment:hover,
+.lender-page .create-listing:hover {
+  background:
+    #2448d8;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   EQUIPMENT QUICK LINKS
+   ========================================================= */
+
+/*
+   Fixes the current:
+   "My Equipment 0 Create Listing +"
+   text-collapse visible in the screenshot.
+ */
+
+.lender-page .equipment-links,
+.lender-page .equipment-actions,
+.lender-page .management-links,
+.lender-page .quick-links {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    10px;
+
+  margin-top:
+    12px;
+}
+
+.lender-page .equipment-links a,
+.lender-page .equipment-actions a,
+.lender-page .management-links a,
+.lender-page .quick-links a {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    38px;
+
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    #e1e6ef;
+
+  border-radius:
+    9px;
+
+  background:
+    #ffffff;
+
+  color:
+    #344054;
+
+  font-size:
+    11px;
+
+  font-weight:
+    750;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.lender-page .equipment-links a:hover,
+.lender-page .equipment-actions a:hover,
+.lender-page .management-links a:hover,
+.lender-page .quick-links a:hover {
+  border-color:
+    #c6d0e2;
+
+  background:
+    #f8faff;
+
+  color:
+    #315cf5;
+}
+
+
+/* =========================================================
+   EMPTY EQUIPMENT STATE
+   ========================================================= */
+
+.lender-page .empty-state {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    260px;
+
+  padding:
+    32px;
+
+  border:
+    1px dashed
+    #cfd6e2;
+
+  border-radius:
+    16px;
+
+  background:
+    #fafbfc;
+
+  text-align:
+    center;
+}
+
+.lender-page .empty-icon {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    52px;
+
+  height:
+    52px;
+
+  margin-bottom:
+    12px;
+
+  border-radius:
+    50%;
+
+  background:
+    #eef2ff;
+
+  color:
+    #315cf5;
+
+  font-size:
+    18px;
+
+  font-weight:
+    800;
+}
+
+.lender-page .empty-state h2,
+.lender-page .empty-state h3 {
+  margin:
+    0 0 7px;
+
+  color:
+    #101828;
+
+  font-size:
+    20px;
+}
+
+.lender-page .empty-state p {
+  max-width:
+    500px;
+
+  margin:
+    0;
+
+  color:
+    #667085;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.6;
+}
+
+
+/* =========================================================
+   REQUEST SUMMARY
+   ========================================================= */
+
+.lender-page .request-summary {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap:
+    14px;
+
+  margin-bottom:
+    24px;
+}
+
+.lender-page .summary-card {
+  min-width:
+    0;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    #e5e7eb;
+
+  border-radius:
+    14px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 4px 14px
+    rgba(15, 23, 42, 0.04);
+}
+
+.lender-page .summary-label {
+  display:
+    block;
+
+  margin-bottom:
+    6px;
+
+  color:
+    #667085;
+
+  font-size:
+    10px;
+
+  font-weight:
+    750;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.05em;
+}
+
+.lender-page .summary-card strong {
+  color:
+    #101828;
+
+  font-size:
+    25px;
+
+  font-weight:
+    850;
+}
+
+
+/* =========================================================
+   REQUEST CARDS
+   ========================================================= */
+
+.lender-page .requests-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap:
+    18px;
+}
+
+.lender-page .request-card {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    #e3e7ef;
+
+  border-radius:
+    16px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 5px 16px
+    rgba(15, 23, 42, 0.05);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.lender-page .request-card:hover {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 14px 28px
+    rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   REQUEST IMAGE
+   ========================================================= */
+
+.lender-page .request-image {
+  position:
+    relative;
+
+  width:
+    100%;
+
+  height:
+    175px;
+
+  overflow:
+    hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #f8fafc
+    );
+}
+
+.lender-page .request-image img {
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+}
+
+.lender-page .request-image .image-placeholder {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  color:
+    #315cf5;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+}
+
+
+/* =========================================================
+   REQUEST BODY
+   ========================================================= */
+
+.lender-page .request-body {
+  padding:
+    18px;
+}
+
+.lender-page .request-body h2 {
+  margin:
+    8px 0 14px;
+
+  color:
+    #101828;
+
+  font-size:
+    18px;
+
+  font-weight:
+    850;
+
+  line-height:
+    1.25;
+}
+
+
+/* =========================================================
+   META TAGS
+   ========================================================= */
+
+.lender-page .equipment-meta {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    6px;
+}
+
+.lender-page .equipment-meta span {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  padding:
+    4px 8px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f2f4f7;
+
+  color:
+    #475467;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   BORROWER BOX
+   ========================================================= */
+
+.lender-page .borrower-box {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    3px;
+
+  margin:
+    14px 0;
+
+  padding:
+    12px;
+
+  border:
+    1px solid
+    #e9edf3;
+
+  border-radius:
+    11px;
+
+  background:
+    #f9fafb;
+}
+
+.lender-page .borrower-title {
+  color:
+    #315cf5;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+}
+
+.lender-page .borrower-box strong {
+  color:
+    #101828;
+
+  font-size:
+    13px;
+}
+
+.lender-page .borrower-box span {
+  color:
+    #667085;
+
+  font-size:
+    11px;
+}
+
+
+/* =========================================================
+   REQUEST DETAILS
+   ========================================================= */
+
+.lender-page .request-details {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    8px;
+
+  margin-top:
+    12px;
+}
+
+.lender-page .request-details > div {
+  padding:
+    9px;
+
+  border:
+    1px solid
+    #edf0f4;
+
+  border-radius:
+    9px;
+
+  background:
+    #ffffff;
+}
+
+.lender-page .request-details span {
+  display:
+    block;
+
+  margin-bottom:
+    3px;
+
+  color:
+    #667085;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+}
+
+.lender-page .request-details strong {
+  display:
+    block;
+
+  color:
+    #101828;
+
+  font-size:
+    11px;
+}
+
+
+/* =========================================================
+   MOBILE / TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .lender-page .stat-grid,
+  .lender-page .stats-grid,
+  .lender-page .dashboard-stats,
+  .lender-page .lender-stats,
+  .lender-page .stat-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .lender-page .requests-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .lender-page .dashboard-heading,
+  .lender-page .dashboard-header,
+  .lender-page .page-header {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    padding:
+      24px;
+  }
+
+  .lender-page .header-actions {
+    width:
+      100%;
+  }
+
+  .lender-page .header-actions .btn {
+    flex:
+      1;
+  }
+
+  .lender-page .stat-grid,
+  .lender-page .stats-grid,
+  .lender-page .dashboard-stats,
+  .lender-page .lender-stats,
+  .lender-page .stat-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .lender-page .requests-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .lender-page {
+    padding:
+      22px 0 48px;
+  }
+
+  .lender-container {
+    width:
+      calc(100% - 20px);
+  }
+
+  .lender-page .dashboard-heading,
+  .lender-page .dashboard-header,
+  .lender-page .page-header,
+  .lender-page .dashboard-panel,
+  .lender-page .equipment-panel,
+  .lender-page .equipment-management {
+    padding:
+      20px;
+  }
+
+  .lender-page .dashboard-heading h1,
+  .lender-page .dashboard-header h1,
+  .lender-page .page-header h1 {
+    font-size:
+      29px;
+  }
+
+  .lender-page .stat-grid,
+  .lender-page .stats-grid,
+  .lender-page .dashboard-stats,
+  .lender-page .lender-stats,
+  .lender-page .stat-cards,
+  .lender-page .request-summary {
+    grid-template-columns:
+      1fr;
+  }
+
+  .lender-page .header-actions {
+    flex-direction:
+      column;
+  }
+
+  .lender-page .header-actions .btn {
+    width:
+      100%;
+  }
+
+  .lender-page .panel-heading,
+  .lender-page .equipment-heading,
+  .lender-page .section-header {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+  }
+
+  .lender-page .panel-heading .btn,
+  .lender-page .equipment-heading .btn,
+  .lender-page .section-header .btn {
+    width:
+      100%;
+  }
+
+}
+/* =========================================================
+   LENDER DASHBOARD — FINAL POLISH
+   ========================================================= */
+
+.lender-page {
+  background:
+    linear-gradient(
+      180deg,
+      #f8faff 0%,
+      #f4f7fb 100%
+    );
+}
+
+
+/* Main content spacing */
+
+.lender-page .lender-container {
+  padding-bottom: 70px;
+}
+
+
+/* Hero */
+
+.lender-page .page-header {
+  margin-bottom: 30px;
+}
+
+
+/* Statistics */
+
+.lender-page .stat-grid,
+.lender-page .stats-grid,
+.lender-page .dashboard-stats,
+.lender-page .lender-stats,
+.lender-page .stat-cards {
+  margin-bottom: 42px;
+}
+
+
+/* Equipment heading */
+
+.lender-page .equipment-section,
+.lender-page .dashboard-panel,
+.lender-page .equipment-management {
+  position: relative;
+
+  margin-top: 6px;
+}
+
+
+/* Equipment section title */
+
+.lender-page .dashboard-panel h2,
+.lender-page .equipment-management h2,
+.lender-page .equipment-section h2 {
+  font-size: 24px;
+  font-weight: 850;
+
+  color: #101828;
+
+  margin-bottom: 16px;
+}
+
+
+/* Add button */
+
+.lender-page .dashboard-panel > a:first-of-type,
+.lender-page .equipment-management > a:first-of-type,
+.lender-page .equipment-section > a:first-of-type {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 10px 17px;
+
+  margin-bottom: 18px;
+
+  border-radius: 11px;
+
+  background: #315cf5;
+
+  color: #fff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 18px
+    rgba(49, 92, 245, .20);
+}
+
+.lender-page .dashboard-panel > a:first-of-type:hover,
+.lender-page .equipment-management > a:first-of-type:hover,
+.lender-page .equipment-section > a:first-of-type:hover {
+  background: #2448d8;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   EQUIPMENT QUICK ACTIONS
+   ========================================================= */
+
+.lender-page .equipment-actions,
+.lender-page .equipment-links,
+.lender-page .management-links,
+.lender-page .quick-links {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 6px;
+}
+
+
+/* Links inside action areas */
+
+.lender-page .equipment-actions a,
+.lender-page .equipment-links a,
+.lender-page .management-links a,
+.lender-page .quick-links a {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 40px;
+
+  padding: 9px 13px;
+
+  border: 1px solid #dfe4ec;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  color: #344054;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+  text-decoration: none;
+}
+
+.lender-page .equipment-actions a:hover,
+.lender-page .equipment-links a:hover,
+.lender-page .management-links a:hover,
+.lender-page .quick-links a:hover {
+  border-color: #c8d2e4;
+
+  background: #f7f9ff;
+
+  color: #315cf5;
+}
+
+
+/* =========================================================
+   EQUIPMENT EMPTY STATE
+   ========================================================= */
+
+.lender-page .equipment-empty,
+.lender-page .no-equipment,
+.lender-page .empty-equipment {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+
+  margin-top: 18px;
+
+  padding: 30px;
+
+  border: 1px dashed #cdd5e1;
+
+  border-radius: 16px;
+
+  background: #fafbfc;
+
+  text-align: center;
+}
+
+.lender-page .equipment-empty h3,
+.lender-page .no-equipment h3,
+.lender-page .empty-equipment h3 {
+  margin: 0 0 8px;
+
+  color: #101828;
+
+  font-size: 19px;
+}
+
+.lender-page .equipment-empty p,
+.lender-page .no-equipment p,
+.lender-page .empty-equipment p {
+  margin: 0;
+
+  max-width: 480px;
+
+  color: #667085;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .lender-page .stat-grid,
+  .lender-page .stats-grid,
+  .lender-page .dashboard-stats,
+  .lender-page .lender-stats,
+  .lender-page .stat-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .lender-page .stat-grid,
+  .lender-page .stats-grid,
+  .lender-page .dashboard-stats,
+  .lender-page .lender-stats,
+  .lender-page .stat-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .lender-page .equipment-actions,
+  .lender-page .equipment-links,
+  .lender-page .management-links,
+  .lender-page .quick-links {
+    flex-direction: column;
+  }
+
+  .lender-page .equipment-actions a,
+  .lender-page .equipment-links a,
+  .lender-page .management-links a,
+  .lender-page .quick-links a {
+    width: 100%;
+  }
+
+}
+
+/* =========================================================
+   LENDER DASHBOARD ACTION CARDS
+   ========================================================= */
+
+.lender-management-section {
+  margin-top: 34px;
+}
+
+.lender-management-section .section-header {
+  margin-bottom: 20px;
+}
+
+.lender-management-section .section-header h2 {
+  margin: 4px 0 6px;
+
+  color: #111827;
+
+  font-size: 24px;
+
+  font-weight: 850;
+
+  line-height: 1.2;
+}
+
+.lender-management-section .section-header p:not(.eyebrow) {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ACTION GRID
+   ========================================================= */
+
+.lender-action-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   ACTION CARD
+   ========================================================= */
+
+.lender-action-card {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  min-width: 0;
+
+  min-height: 140px;
+
+  padding: 22px;
+
+  border:
+    1px solid
+    #e3e7ef;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  box-shadow:
+    0 5px 18px
+    rgba(15, 23, 42, 0.05);
+
+  text-decoration: none;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.lender-action-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    #d1d8e6;
+
+  box-shadow:
+    0 14px 30px
+    rgba(15, 23, 42, 0.09);
+
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   PRIMARY ACTION
+   ========================================================= */
+
+.lender-action-primary {
+  border-color:
+    #dbe3ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f7f9ff
+    );
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.lender-action-icon {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 50px;
+
+  height: 50px;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background:
+    #eef2ff;
+
+  color:
+    #315cf5;
+
+  font-size: 15px;
+
+  font-weight: 850;
+}
+
+.lender-action-icon-primary {
+  background:
+    #315cf5;
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 7px 16px
+    rgba(49, 92, 245, 0.20);
+}
+
+
+/* =========================================================
+   TEXT CONTENT
+   ========================================================= */
+
+.lender-action-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.lender-action-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    #315cf5;
+
+  font-size:
+    9px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    0.10em;
+
+  text-transform:
+    uppercase;
+}
+
+.lender-action-content h3 {
+  margin:
+    0 0 5px;
+
+  color:
+    #111827;
+
+  font-size:
+    17px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.25;
+}
+
+.lender-action-content p {
+  margin:
+    0;
+
+  color:
+    #6b7280;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.55;
+}
+
+
+/* =========================================================
+   COUNT
+   ========================================================= */
+
+.lender-action-count {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-end;
+
+  flex-shrink:
+    0;
+}
+
+.lender-action-count strong {
+  color:
+    #111827;
+
+  font-size:
+    24px;
+
+  font-weight:
+    850;
+
+  line-height:
+    1;
+}
+
+.lender-action-count span {
+  margin-top:
+    5px;
+
+  color:
+    #98a2b3;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.05em;
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.lender-action-arrow {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  flex-shrink:
+    0;
+
+  border-radius:
+    50%;
+
+  background:
+    #f3f5f9;
+
+  color:
+    #315cf5;
+
+  font-size:
+    17px;
+
+  font-weight:
+    800;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.lender-action-card:hover .lender-action-arrow {
+  transform:
+    translateX(3px);
+
+  background:
+    #eef2ff;
+}
+
+
+/* =========================================================
+   SECONDARY GRID
+   ========================================================= */
+
+.lender-action-grid-secondary {
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .lender-action-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .lender-action-card {
+    align-items:
+      flex-start;
+
+    padding:
+      18px;
+  }
+
+  .lender-action-count {
+    display:
+      none;
+  }
+
+  .lender-action-arrow {
+    margin-left:
+      auto;
+  }
+
+}

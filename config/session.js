@@ -1,5 +1,9 @@
+"use strict";
+
 const session = require("express-session");
-const { MongoStore } = require("connect-mongo");
+const MongoStore = require("connect-mongo");
+
+
 
 function createSessionMiddleware() {
   if (!process.env.SESSION_SECRET) {
@@ -14,8 +18,7 @@ function createSessionMiddleware() {
     );
   }
 
-  const isProduction =
-    process.env.NODE_ENV === "production";
+  const isProduction = process.env.NODE_ENV === "production";
 
   return session({
     secret: process.env.SESSION_SECRET,

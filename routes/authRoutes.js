@@ -8,15 +8,18 @@ const {
   renderVerifyEmail,
   verifyEmail,
   resendOtp,
-  logout
+  logout,
 } = require("../controllers/authController");
 
 const {
-  requireGuest
+  requireGuest,
 } = require("../middleware/authMiddleware");
 
-const router =
-  express.Router();
+const router = express.Router();
+
+/* =========================================================
+   REGISTRATION
+   ========================================================= */
 
 router.get(
   "/register",
@@ -30,6 +33,25 @@ router.post(
   register
 );
 
+
+/* =========================================================
+   SIGNUP ALIAS
+   /auth/signup -> /auth/register
+   ========================================================= */
+
+router.get(
+  "/signup",
+  requireGuest,
+  (req, res) => {
+    return res.redirect("/auth/register");
+  }
+);
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
 router.get(
   "/login",
   requireGuest,
@@ -41,6 +63,11 @@ router.post(
   requireGuest,
   login
 );
+
+
+/* =========================================================
+   EMAIL VERIFICATION / OTP
+   ========================================================= */
 
 router.get(
   "/verify-email",
@@ -60,9 +87,19 @@ router.post(
   resendOtp
 );
 
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
 router.post(
   "/logout",
   logout
 );
+
+
+/* =========================================================
+   EXPORT
+   ========================================================= */
 
 module.exports = router;

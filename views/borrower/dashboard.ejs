@@ -2,18 +2,22 @@
 
 <%- include("../partials/header") %>
 
+
 <main class="dashboard-page">
 
-  <div class="container">
+  <div class="dashboard-container">
 
-    <!-- HEADER -->
-    <div class="dashboard-heading">
+    <!-- =====================================================
+         DASHBOARD HERO
+         ===================================================== -->
 
-      <div>
+    <section class="dashboard-hero">
 
-        <span class="eyebrow">
+      <div class="dashboard-hero-content">
+
+        <p class="eyebrow">
           BORROWER
-        </span>
+        </p>
 
         <h1>
           Welcome, <%= currentUser.name %>
@@ -23,200 +27,501 @@
           Discover academic equipment available on campus.
         </p>
 
+
+        <!-- TRUST SCORE -->
+
+        <div class="trust-score">
+
+          <span>
+            Trust Score
+          </span>
+
+          <strong>
+            <%= stats.user.trustScore ?? 0 %>
+          </strong>
+
+        </div>
+
       </div>
 
-      <!-- TRUST SCORE -->
-      <div class="trust-box">
 
-        <span>
-          Trust Score
-        </span>
+      <!-- HERO ACTION -->
 
-        <strong>
-          <%= stats.user.trustScore %>
-        </strong>
+      <div class="dashboard-actions">
+
+        <a
+          href="/equipment"
+          class="btn btn-primary"
+        >
+          Browse Marketplace
+        </a>
 
       </div>
-
-    </div>
-
-
-    <!-- STATISTICS -->
-    <section class="stat-grid">
-
-      <article class="stat-card">
-
-        <span>
-          Available Equipment
-        </span>
-
-        <strong>
-          <%= stats.availableEquipment %>
-        </strong>
-
-      </article>
-
-
-      <article class="stat-card">
-
-        <span>
-          Active Borrowings
-        </span>
-
-        <strong>
-          <%= stats.activeBorrowings %>
-        </strong>
-
-      </article>
-
-
-      <article class="stat-card">
-
-        <span>
-          Pending Requests
-        </span>
-
-        <strong>
-          <%= stats.pendingRequests %>
-        </strong>
-
-      </article>
-
-
-      <article class="stat-card">
-
-        <span>
-          Due Soon
-        </span>
-
-        <strong>
-          <%= stats.dueSoon %>
-        </strong>
-
-      </article>
 
     </section>
 
 
-    <!-- AVAILABLE EQUIPMENT -->
-    <section class="dashboard-panel">
 
-  <div class="panel-heading">
+    <!-- =====================================================
+         DASHBOARD STATISTICS
+         ===================================================== -->
 
-    <div>
-
-      <span class="eyebrow">
-        MARKETPLACE
-      </span>
-
-      <h2>
-        Available Equipment
-      </h2>
-
-    </div>
-
-    <a
-      href="/equipment"
-      class="btn btn-primary"
-    >
-      Browse All
-    </a>
-
-  </div>
+    <section class="dashboard-stats">
 
 
-  <% if (stats.recommendedEquipment.length === 0) { %>
+      <!-- AVAILABLE EQUIPMENT -->
 
-    <div class="empty-state">
+      <article class="stat-card">
 
-      <div class="empty-icon">
-        —
+        <span class="stat-card-label">
+          Available Equipment
+        </span>
+
+        <strong>
+          <%= stats.availableEquipment ?? 0 %>
+        </strong>
+
+        <p>
+          Items currently available
+        </p>
+
+      </article>
+
+
+      <!-- ACTIVE BORROWINGS -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Active Borrowings
+        </span>
+
+        <strong>
+          <%= stats.activeBorrowings ?? 0 %>
+        </strong>
+
+        <p>
+          Equipment you're currently using
+        </p>
+
+      </article>
+
+
+      <!-- PENDING REQUESTS -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Pending Requests
+        </span>
+
+        <strong>
+          <%= stats.pendingRequests ?? 0 %>
+        </strong>
+
+        <p>
+          Requests awaiting approval
+        </p>
+
+      </article>
+
+
+      <!-- DUE SOON -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Due Soon
+        </span>
+
+        <strong>
+          <%= stats.dueSoon ?? 0 %>
+        </strong>
+
+        <p>
+          Borrowings approaching deadline
+        </p>
+
+      </article>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MARKETPLACE
+         ===================================================== -->
+
+    <section class="dashboard-section marketplace-section">
+
+
+      <!-- MARKETPLACE HEADER -->
+
+      <div class="section-header">
+
+        <div class="section-header-content">
+
+          <p class="eyebrow">
+            MARKETPLACE
+          </p>
+
+          <h2>
+            Available Equipment
+          </h2>
+
+          <p class="section-description">
+            Find the equipment you need and view its details.
+          </p>
+
+        </div>
+
+
+        <div class="section-header-action">
+
+          <a
+            href="/equipment"
+            class="btn btn-primary"
+          >
+            Browse All
+          </a>
+
+        </div>
+
       </div>
 
-      <h3>
-        No equipment listed yet
-      </h3>
 
-      <p>
-        Equipment will appear here when lenders
-        add their listings.
-      </p>
 
-    </div>
+      <!-- ===================================================
+           EMPTY MARKETPLACE
+           =================================================== -->
 
-  <% } else { %>
+      <% if (
+        !stats.recommendedEquipment ||
+        stats.recommendedEquipment.length === 0
+      ) { %>
 
-    <div class="equipment-preview-grid">
 
-      <% stats.recommendedEquipment.forEach(function(equipment) { %>
+        <div class="empty-state">
 
-        <article class="equipment-mini-card">
-
-          <div class="equipment-placeholder">
-
-            <span>
-              <%= equipment.name.charAt(0).toUpperCase() %>
-            </span>
-
+          <div class="empty-icon">
+            —
           </div>
 
+          <h2>
+            No equipment available
+          </h2>
 
-          <div class="equipment-mini-content">
+          <p>
+            Equipment will appear here when lenders
+            add their listings.
+          </p>
 
-            <span class="category-label">
-              <%= equipment.category %>
-            </span>
+          <a
+            href="/equipment"
+            class="btn btn-primary"
+          >
+            Open Marketplace
+          </a>
 
-            <h3>
-              <%= equipment.name %>
-            </h3>
-
-            <p>
-              <%= equipment.department %>
-            </p>
-
-
-            <div class="equipment-meta">
-
-              <span>
-                Available:
-                <strong>
-                  <%= equipment.availableQuantity %>
-                </strong>
-              </span>
-
-              <span>
-                ₹<%= equipment.rentalFee %>
-              </span>
-
-            </div>
+        </div>
 
 
-            <div style="margin-top: 15px;">
+      <% } else { %>
 
-              <a
-                href="/equipment/<%= equipment._id %>"
-                class="btn btn-secondary btn-full"
-              >
-                View Details
-              </a>
 
-            </div>
 
-          </div>
+        <!-- =================================================
+             EQUIPMENT GRID
+             ================================================= -->
 
-        </article>
+        <div class="equipment-grid">
 
-      <% }); %>
 
-    </div>
+          <% stats.recommendedEquipment.forEach(function(equipment) { %>
 
-  <% } %>
 
-</section>
+            <!-- =============================================
+                 EQUIPMENT CARD
+                 ============================================= -->
+
+            <article class="equipment-card">
+
+
+              <!-- ===========================================
+                   IMAGE
+                   =========================================== -->
+
+              <div class="equipment-card-visual">
+
+
+                <% if (
+                  equipment.images &&
+                  Array.isArray(equipment.images) &&
+                  equipment.images.length > 0 &&
+                  equipment.images[0]
+                ) { %>
+
+
+                  <img
+                    src="<%= equipment.images[0] %>"
+                    alt="<%= equipment.name || 'Equipment' %>"
+                    class="equipment-card-image"
+                    loading="lazy"
+                  >
+
+
+                <% } else { %>
+
+
+                  <div class="equipment-letter">
+
+                    <%= (
+                      equipment.name || "E"
+                    )
+                      .charAt(0)
+                      .toUpperCase()
+                    %>
+
+                  </div>
+
+
+                <% } %>
+
+
+
+                <!-- =========================================
+                     AVAILABILITY
+                     ========================================= -->
+
+                <% if (
+                  Number(
+                    equipment.availableQuantity || 0
+                  ) > 0
+                ) { %>
+
+
+                  <span
+                    class="equipment-status-badge status-available"
+                  >
+                    Available
+                  </span>
+
+
+                <% } else { %>
+
+
+                  <span
+                    class="equipment-status-badge status-unavailable"
+                  >
+                    Unavailable
+                  </span>
+
+
+                <% } %>
+
+
+              </div>
+
+
+
+              <!-- ===========================================
+                   CARD CONTENT
+                   =========================================== -->
+
+              <div class="equipment-card-content">
+
+
+                <!-- CATEGORY -->
+
+                <span class="equipment-card-category">
+
+                  <%= equipment.category || "Equipment" %>
+
+                </span>
+
+
+
+                <!-- NAME -->
+
+                <h2>
+
+                  <%= equipment.name || "Unnamed Equipment" %>
+
+                </h2>
+
+
+
+                <!-- META -->
+
+                <div class="equipment-meta">
+
+
+                  <% if (equipment.department) { %>
+
+                    <span>
+                      <%= equipment.department %>
+                    </span>
+
+                  <% } %>
+
+
+                  <% if (equipment.condition) { %>
+
+                    <span>
+                      <%= equipment.condition %>
+                    </span>
+
+                  <% } %>
+
+
+                </div>
+
+
+
+                <!-- AVAILABLE QUANTITY -->
+
+                <div class="equipment-info-row">
+
+                  <span>
+                    Available
+                  </span>
+
+                  <strong>
+                    <%= equipment.availableQuantity ?? 0 %>
+                  </strong>
+
+                </div>
+
+
+
+                <!-- TOTAL STOCK -->
+
+                <% if (
+                  typeof equipment.quantity !== "undefined"
+                ) { %>
+
+
+                  <div class="equipment-info-row">
+
+                    <span>
+                      Total Stock
+                    </span>
+
+                    <strong>
+                      <%= equipment.quantity ?? 0 %>
+                    </strong>
+
+                  </div>
+
+
+                <% } %>
+
+
+
+                <!-- RENTAL FEE -->
+
+                <div class="equipment-price">
+
+                  <div>
+
+                    <strong>
+
+                      ₹<%= Number(
+                        equipment.rentalFee || 0
+                      ).toLocaleString("en-IN") %>
+
+                    </strong>
+
+                    <span>
+                      / borrow
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+                <!-- SECURITY DEPOSIT -->
+
+                <% if (
+                  typeof equipment.securityDeposit !== "undefined"
+                ) { %>
+
+
+                  <div class="equipment-info-row">
+
+                    <span>
+                      Security Deposit
+                    </span>
+
+                    <strong>
+
+                      ₹<%= Number(
+                        equipment.securityDeposit || 0
+                      ).toLocaleString("en-IN") %>
+
+                    </strong>
+
+                  </div>
+
+
+                <% } %>
+
+
+
+                <!-- BORROWING TERMS -->
+
+                <% if (equipment.borrowingTerms) { %>
+
+
+                  <p class="equipment-card-description">
+
+                    <%= equipment.borrowingTerms %>
+
+                  </p>
+
+
+                <% } %>
+
+
+
+                <!-- VIEW DETAILS -->
+
+                <div class="equipment-card-actions">
+
+                  <a
+                    href="/equipment/<%= equipment._id %>"
+                    class="btn btn-primary"
+                  >
+                    View Details
+                  </a>
+
+                </div>
+
+
+              </div>
+
+
+            </article>
+
+
+          <% }); %>
+
+
+        </div>
+
+
+      <% } %>
+
+
+    </section>
+
 
   </div>
 
 </main>
+
 
 <%- include("../partials/footer") %>

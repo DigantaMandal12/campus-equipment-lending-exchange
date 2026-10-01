@@ -1,69 +1,357 @@
+<%
+  const user =
+    typeof currentUser !== "undefined" && currentUser
+      ? currentUser
+      : null;
+
+  const role = String(user?.role || "").toUpperCase();
+
+  const isLender = role === "LENDER";
+  const isAdmin = role === "ADMIN";
+
+  const displayName = user?.name || "Student";
+
+  const initials = displayName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("");
+
+  const unreadCount =
+    typeof unreadNotifications !== "undefined"
+      ? Number(unreadNotifications || 0)
+      : 0;
+%>
+
 <header class="site-header">
-  <div class="container header-inner">
+
+  <div class="header-container">
+
+    <!-- =====================================================
+         BRAND
+         ===================================================== -->
 
     <a
       href="/"
       class="brand"
       aria-label="Campus Exchange Home"
     >
+
       <span class="brand-mark">
         CE
       </span>
 
       <span class="brand-text">
-        Campus Exchange
+
+        <strong>
+          Campus Exchange
+        </strong>
+
+        <small>
+          Campus Equipment Lending
+        </small>
+
       </span>
+
     </a>
 
+
+    <!-- =====================================================
+         DESKTOP NAVIGATION
+         ===================================================== -->
+
     <nav
-      class="nav"
-      aria-label="Primary navigation"
+      class="main-nav"
+      aria-label="Main navigation"
     >
 
-      <a href="/">
-        Home
+      <a
+        href="/dashboard"
+        class="nav-link"
+      >
+        Dashboard
       </a>
 
-      <a href="/health">
-        Health
+
+      <a
+        href="/equipment"
+        class="nav-link"
+      >
+        Marketplace
       </a>
 
-      <% if (currentUser) { %>
 
-        <a href="/dashboard">
-          Dashboard
-        </a>
+      <a
+        href="/chatbot"
+        class="nav-link"
+      >
+        AI Assistant
+      </a>
 
-        <span class="nav-user">
-          Hi, <%= currentUser.name %>
-        </span>
 
-        <form
-          action="/auth/logout"
-          method="POST"
-          class="logout-form"
+      <a
+        href="/notifications"
+        class="nav-link nav-notification"
+      >
+
+        Notifications
+
+        <% if (unreadCount > 0) { %>
+
+          <span class="notification-badge">
+            <%= unreadCount > 99 ? "99+" : unreadCount %>
+          </span>
+
+        <% } %>
+
+      </a>
+
+
+      <!-- LENDER NAVIGATION -->
+
+      <% if (isLender) { %>
+
+        <a
+          href="/lender/requests"
+          class="nav-link"
         >
-          <button
-            type="submit"
-            class="nav-button"
-          >
-            Logout
-          </button>
-        </form>
-
-      <% } else { %>
-
-        <a href="/auth/login">
-          Login
+          Borrow Requests
         </a>
 
-        <a href="/auth/register">
-          Register
+
+        <a
+          href="/lender/returns"
+          class="nav-link"
+        >
+          Returns
+        </a>
+
+      <% } %>
+
+
+      <!-- ADMIN NAVIGATION -->
+
+      <% if (isAdmin) { %>
+
+        <a
+          href="/admin"
+          class="nav-link"
+        >
+          Admin
         </a>
 
       <% } %>
 
     </nav>
 
+
+    <!-- =====================================================
+         DESKTOP USER AREA
+         ===================================================== -->
+
+    <div class="header-user">
+
+
+      <!-- AVATAR -->
+
+      <div class="user-avatar">
+
+        <%= initials || "U" %>
+
+      </div>
+
+
+      <!-- USER INFORMATION -->
+
+      <div class="user-info">
+
+        <strong>
+          <%= displayName %>
+        </strong>
+
+
+        <% if (user?.email) { %>
+
+          <small>
+            <%= user.email %>
+          </small>
+
+        <% } %>
+
+      </div>
+
+
+      <!-- LOGOUT -->
+
+      <form
+        method="POST"
+        action="/auth/logout"
+        class="logout-form"
+      >
+
+        <button
+          type="submit"
+          class="btn btn-outline btn-sm"
+        >
+          Logout
+        </button>
+
+      </form>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         MOBILE MENU
+         ===================================================== -->
+
+    <details class="mobile-menu">
+
+
+      <summary
+        class="mobile-menu-button"
+        aria-label="Open navigation menu"
+      >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </summary>
+
+
+      <div class="mobile-menu-panel">
+
+
+        <!-- MOBILE USER -->
+
+        <div class="mobile-user">
+
+
+          <div class="user-avatar">
+
+            <%= initials || "U" %>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              <%= displayName %>
+            </strong>
+
+
+            <% if (user?.email) { %>
+
+              <small>
+                <%= user.email %>
+              </small>
+
+            <% } %>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- MOBILE NAVIGATION -->
+
+        <div class="mobile-nav-links">
+
+
+          <a href="/dashboard">
+            Dashboard
+          </a>
+
+
+          <a href="/equipment">
+            Marketplace
+          </a>
+
+
+          <a href="/chatbot">
+            AI Assistant
+          </a>
+
+
+          <a href="/notifications">
+
+            Notifications
+
+            <% if (unreadCount > 0) { %>
+
+              <span class="notification-badge">
+                <%= unreadCount > 99 ? "99+" : unreadCount %>
+              </span>
+
+            <% } %>
+
+          </a>
+
+
+          <!-- LENDER -->
+
+          <% if (isLender) { %>
+
+            <a href="/lender/requests">
+              Borrow Requests
+            </a>
+
+
+            <a href="/lender/returns">
+              Returns
+            </a>
+
+          <% } %>
+
+
+          <!-- ADMIN -->
+
+          <% if (isAdmin) { %>
+
+            <a href="/admin">
+              Admin
+            </a>
+
+          <% } %>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MOBILE LOGOUT
+             ================================================= -->
+
+        <div class="mobile-menu-footer">
+
+          <form
+            method="POST"
+            action="/auth/logout"
+            class="logout-form"
+          >
+
+            <button
+              type="submit"
+              class="btn btn-danger btn-block"
+            >
+              Logout
+            </button>
+
+          </form>
+
+        </div>
+
+
+      </div>
+
+    </details>
+
+
   </div>
+
 </header>

@@ -1,0 +1,171 @@
+.payment-verification-box {
+  margin-top: 18px;
+  padding: 16px;
+
+  background: #fffaf0;
+
+  border: 1px solid #f3d28a;
+  border-radius: 13px;
+}
+
+.payment-verification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
+.payment-pending-badge {
+  padding: 6px 9px;
+
+  border-radius: 999px;
+
+  color: #92400e;
+  background: #fef3c7;
+
+  font-size: 10px;
+  font-weight: 850;
+
+  letter-spacing: 0.5px;
+}
+
+.payment-reference {
+  padding: 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #eadfca;
+  border-radius: 10px;
+}
+
+.payment-reference span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #6b7280;
+
+  font-size: 11px;
+}
+
+.payment-reference strong {
+  word-break: break-all;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+
+  font-size: 13px;
+}
+
+.payment-verification-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 12px;
+
+  margin-top: 12px;
+}
+
+.payment-verification-info div {
+  padding: 11px;
+
+  background: #ffffff;
+
+  border: 1px solid #eadfca;
+  border-radius: 10px;
+}
+
+.payment-verification-info span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #6b7280;
+
+  font-size: 11px;
+}
+
+.payment-verification-info strong {
+  font-size: 13px;
+}
+
+.payment-verification-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+.payment-verify-button,
+.payment-reject-button {
+  width: 100%;
+  min-height: 42px;
+
+  border: 0;
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.payment-verify-button {
+  background: #16a34a;
+}
+
+.payment-verify-button:hover {
+  background: #15803d;
+}
+
+.payment-reject-button {
+  background: #dc2626;
+}
+
+.payment-reject-button:hover {
+  background: #b91c1c;
+}
+
+.payment-confirmed-box {
+  margin-top: 18px;
+  padding: 15px;
+
+  color: #166534;
+  background: #ecfdf3;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+}
+
+.payment-confirmed-box strong {
+  display: block;
+}
+
+.payment-confirmed-box p {
+  margin: 7px 0 0;
+
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .payment-verification-info,
+  .payment-verification-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-verification-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

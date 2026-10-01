@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require("express");
 
 const {
@@ -8,26 +10,26 @@ const {
   details,
   renderEditEquipment,
   update,
-  remove
+  remove,
 } = require("../controllers/equipmentController");
 
 const {
-  requireAuth
+  requireAuth,
 } = require("../middleware/authMiddleware");
 
 const requireRole =
   require("../middleware/roleMiddleware");
 
 const {
-  uploadEquipmentImages
+  uploadEquipmentImages,
 } = require("../middleware/uploadMiddleware");
 
-const router =
-  express.Router();
+const router = express.Router();
 
-// -----------------------------------------------
-// Create
-// -----------------------------------------------
+
+/* =========================================================
+   CREATE EQUIPMENT
+   ========================================================= */
 
 router.get(
   "/new",
@@ -47,9 +49,12 @@ router.post(
   create
 );
 
-// -----------------------------------------------
-// Owner equipment
-// -----------------------------------------------
+
+/* =========================================================
+   MY EQUIPMENT
+   IMPORTANT:
+   Keep this BEFORE /:id
+   ========================================================= */
 
 router.get(
   "/mine",
@@ -58,9 +63,12 @@ router.get(
   mine
 );
 
-// -----------------------------------------------
-// Edit
-// -----------------------------------------------
+
+/* =========================================================
+   EDIT EQUIPMENT
+   IMPORTANT:
+   Keep this BEFORE /:id
+   ========================================================= */
 
 router.get(
   "/:id/edit",
@@ -80,9 +88,10 @@ router.post(
   update
 );
 
-// -----------------------------------------------
-// Delete
-// -----------------------------------------------
+
+/* =========================================================
+   DELETE EQUIPMENT
+   ========================================================= */
 
 router.post(
   "/:id/delete",
@@ -91,9 +100,10 @@ router.post(
   remove
 );
 
-// -----------------------------------------------
-// Browse Equipment
-// -----------------------------------------------
+
+/* =========================================================
+   BROWSE EQUIPMENT
+   ========================================================= */
 
 router.get(
   "/",
@@ -101,16 +111,18 @@ router.get(
   browse
 );
 
-// -----------------------------------------------
-// Equipment Details
-// IMPORTANT:
-// Keep this after /new, /mine and /:id/edit.
-// -----------------------------------------------
+
+/* =========================================================
+   EQUIPMENT DETAILS
+   IMPORTANT:
+   This MUST be the LAST GET route.
+   ========================================================= */
 
 router.get(
   "/:id",
   requireAuth,
   details
 );
+
 
 module.exports = router;
