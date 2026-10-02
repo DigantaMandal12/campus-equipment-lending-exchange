@@ -20,14 +20,12 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const equipmentController = require('./controllers/equipmentController');
-
 const app = express();
 
-// Trust proxy for Vercel / reverse proxy edge environments (enables secure cookies and correct protocol detection)
+// Trust proxy for Vercel edge reverse proxy
 app.set('trust proxy', 1);
 
 // Normalize request URL for Vercel serverless rewrites
-// Ensures incoming paths match expected Express routes (/marketplace, /search, etc.)
 app.use((req, res, next) => {
   const matchedPath = req.headers['x-matched-path'] || req.headers['x-vercel-matched-path'] || req.headers['x-forwarded-uri'];
   if (matchedPath && (req.url.startsWith('/api/index') || req.url === '/api')) {
@@ -40,10 +38,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// View engine setup
-app.set('views', path.join(__dirname, 'views'));
+// View engine setup with serverless multi-path lookup
+app.set('views', [path.join(__dirname, 'views'), path.join(process.cwd(), 'views')]);
 app.set('view engine', 'ejs');
-
 // Static assets
 app.use(express.static(path.join(__dirname, 'public')));
 
