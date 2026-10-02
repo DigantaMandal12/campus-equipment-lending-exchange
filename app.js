@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const connectDB = require('./config/db');
-const { isValidMongoUri } = require('./config/db');
+const { isValidMongoUri, sanitizeMongoUri } = require('./config/db');
 const { populateUserLocals, requireAuth } = require('./middleware/auth');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
@@ -25,6 +25,20 @@ const app = express();
 
 // Trust proxy for Vercel / reverse proxy edge environments (enables secure cookies and correct protocol detection)
 app.set('trust proxy', 1);
+
+// Normalize request URL for Vercel serverless rewrites
+// Ensures incoming paths match expected Express routes (/marketplace, /search, etc.)
+app.use((req, res, next) => {
+  const matchedPath = req.headers['x-matched-path'] || req.headers['x-vercel-matched-path'] || req.headers['x-forwarded-uri'];
+  if (matchedPath && (req.url.startsWith('/api/index') || req.url === '/api')) {
+    req.url = matchedPath;
+  } else if (req.url === '/api/index' || req.url === '/api/index.js' || req.url === '/api') {
+    req.url = '/';
+  } else if (req.url.startsWith('/api/index/')) {
+    req.url = req.url.replace(/^\/api\/index/, '');
+  }
+  next();
+});
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -54,7 +68,7 @@ const sessionConfig = {
 const rawMongoUri = process.env.MONGODB_URI;
 if (isValidMongoUri(rawMongoUri)) {
   sessionConfig.store = MongoStore.create({
-    mongoUrl: rawMongoUri.trim(),
+    mongoUrl: sanitizeMongoUri(rawMongoUri),
     collectionName: 'sessions',
     ttl: 60 * 60 * 24 * 7,
   });
