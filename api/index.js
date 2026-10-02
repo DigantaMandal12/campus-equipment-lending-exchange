@@ -1,9 +1,5 @@
 const app = require('../app');
 
-// Vercel serverless function entrypoint
-// In Vercel CLI 62+, internal rewrites route requests using the destination path (/api/index).
-// This wrapper normalizes req.url to the original client request path (x-forwarded-uri)
-// before passing it to Express, ensuring all routes, query parameters, and view rendering work seamlessly.
 module.exports = (req, res) => {
   const forwardedUri = req.headers['x-forwarded-uri'] || req.headers['x-original-url'];
   if (forwardedUri && !forwardedUri.startsWith('/api/index')) {
