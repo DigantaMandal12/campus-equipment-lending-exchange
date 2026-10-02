@@ -1,0 +1,727 @@
+/* =========================================================
+   MY EQUIPMENT PAGE
+   ========================================================= */
+
+.my-equipment-page {
+  width: 100%;
+  min-height: calc(100vh - 72px);
+
+  padding: 38px 0 80px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faff 0%,
+      #f4f7fb 100%
+    );
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.my-equipment-container {
+  width: calc(100% - 48px);
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.my-equipment-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 26px;
+}
+
+.my-equipment-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #315cf5;
+
+  font-size: 10px;
+
+  font-weight: 850;
+
+  letter-spacing: .14em;
+
+  text-transform: uppercase;
+}
+
+.my-equipment-header h1 {
+  margin: 0;
+
+  color: #101828;
+
+  font-size: 40px;
+
+  font-weight: 850;
+
+  line-height: 1.08;
+
+  letter-spacing: -.03em;
+}
+
+.my-equipment-header p {
+  margin: 10px 0 0;
+
+  color: #667085;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+.my-equipment-header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+/* =========================================================
+   BUTTON SYSTEM
+   ========================================================= */
+
+.my-equipment-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.my-equipment-btn:hover {
+  transform: translateY(-1px);
+}
+
+.my-equipment-btn-primary {
+  border: 1px solid #315cf5;
+
+  background: #315cf5;
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 18px
+    rgba(49, 92, 245, .18);
+}
+
+.my-equipment-btn-primary:hover {
+  background: #2448d8;
+}
+
+.my-equipment-btn-secondary {
+  border: 1px solid #dce2eb;
+
+  background: #fff;
+
+  color: #344054;
+}
+
+.my-equipment-btn-secondary:hover {
+  background: #f8fafc;
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.my-equipment-alert {
+  width: 100%;
+
+  margin-bottom: 24px;
+
+  padding: 13px 15px;
+
+  border-radius: 11px;
+
+  font-size: 12px;
+}
+
+.my-equipment-alert-success {
+  border: 1px solid #bbf7d0;
+
+  background: #ecfdf3;
+
+  color: #166534;
+}
+
+.my-equipment-alert-error {
+  border: 1px solid #fecaca;
+
+  background: #fef2f2;
+
+  color: #991b1b;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.my-equipment-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 16px;
+
+  width: 100%;
+
+  margin-bottom: 30px;
+}
+
+.my-equipment-summary-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 20px;
+
+  overflow: hidden;
+
+  border: 1px solid #e2e7f0;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow:
+    0 6px 18px
+    rgba(15, 23, 42, .05);
+}
+
+.my-equipment-summary-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: #315cf5;
+}
+
+.my-equipment-summary-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #667085;
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+
+  letter-spacing: .06em;
+}
+
+.my-equipment-summary-card strong {
+  color: #101828;
+
+  font-size: 29px;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.my-equipment-grid {
+  display: grid !important;
+
+  width: 100% !important;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    ) !important;
+
+  gap: 24px !important;
+
+  align-items: stretch;
+
+  margin: 0;
+
+  padding: 0;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.my-equipment-card {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  border: 1px solid #e1e6ef;
+
+  border-radius: 18px;
+
+  background: #fff;
+
+  box-shadow:
+    0 8px 24px
+    rgba(15, 23, 42, .06);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.my-equipment-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 16px 34px
+    rgba(15, 23, 42, .10);
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.my-equipment-card-image-wrap {
+  position: relative;
+
+  width: 100%;
+
+  height: 220px;
+
+  overflow: hidden;
+
+  background: #eef2f7;
+}
+
+.my-equipment-card-image {
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.my-equipment-card-placeholder {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  height: 100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #f7f9ff
+    );
+
+  color: #315cf5;
+
+  font-size: 42px;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.my-equipment-status {
+  position: absolute;
+
+  top: 13px;
+
+  right: 13px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.95);
+
+  font-size: 10px;
+
+  font-weight: 850;
+}
+
+.my-equipment-status.available {
+  color: #166534;
+}
+
+.my-equipment-status.unavailable {
+  color: #991b1b;
+}
+
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.my-equipment-card-body {
+  display: flex;
+
+  flex-direction: column;
+
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 20px;
+}
+
+.my-equipment-card-category {
+  margin-bottom: 7px;
+
+  color: #315cf5;
+
+  font-size: 10px;
+
+  font-weight: 850;
+
+  letter-spacing: .10em;
+
+  text-transform: uppercase;
+}
+
+.my-equipment-card-body h2 {
+  margin: 0 0 8px;
+
+  color: #101828;
+
+  font-size: 20px;
+
+  font-weight: 850;
+
+  line-height: 1.25;
+
+  overflow-wrap: anywhere;
+}
+
+.my-equipment-card-description {
+  min-height: 42px;
+
+  margin: 0 0 14px;
+
+  color: #667085;
+
+  font-size: 12px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   TAGS
+   ========================================================= */
+
+.my-equipment-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-bottom: 15px;
+}
+
+.my-equipment-tags span {
+  max-width: 100%;
+
+  padding: 5px 9px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #f2f4f7;
+
+  color: #475467;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   INFO
+   ========================================================= */
+
+.my-equipment-info {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 8px;
+
+  margin-bottom: 18px;
+}
+
+.my-equipment-info > div {
+  padding: 10px;
+
+  border: 1px solid #edf0f4;
+
+  border-radius: 10px;
+
+  background: #fafbfc;
+}
+
+.my-equipment-info span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #667085;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.my-equipment-info strong {
+  color: #101828;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   CARD ACTIONS
+   ========================================================= */
+
+.my-equipment-card-actions {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 8px;
+
+  margin-top: auto;
+}
+
+.my-equipment-card-actions .my-equipment-btn {
+  width: 100%;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.my-equipment-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 350px;
+
+  padding: 40px;
+
+  border: 1px dashed #cbd5e1;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,.72);
+
+  text-align: center;
+}
+
+.my-equipment-empty-icon {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 60px;
+
+  height: 60px;
+
+  margin-bottom: 15px;
+
+  border-radius: 17px;
+
+  background: #eef2ff;
+
+  color: #315cf5;
+
+  font-size: 22px;
+
+  font-weight: 850;
+}
+
+.my-equipment-empty h2 {
+  margin: 0 0 8px;
+
+  color: #101828;
+
+  font-size: 22px;
+}
+
+.my-equipment-empty p:not(.my-equipment-eyebrow) {
+  max-width: 540px;
+
+  margin: 0 0 22px;
+
+  color: #667085;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .my-equipment-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr))
+    !important;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .my-equipment-container {
+    width:
+      calc(100% - 24px);
+  }
+
+  .my-equipment-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .my-equipment-header h1 {
+    font-size: 32px;
+  }
+
+  .my-equipment-header-actions {
+    width: 100%;
+  }
+
+  .my-equipment-header-actions .my-equipment-btn {
+    flex: 1;
+  }
+
+  .my-equipment-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .my-equipment-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .my-equipment-header-actions {
+    flex-direction: column;
+  }
+
+  .my-equipment-header-actions .my-equipment-btn {
+    width: 100%;
+  }
+
+  .my-equipment-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+}

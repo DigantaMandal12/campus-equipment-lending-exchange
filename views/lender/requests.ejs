@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    <%= title %> | Campus Exchange
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/css/style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/lender.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/payment-verification.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- ============================================== -->
+  <!-- HEADER -->
+  <!-- ============================================== -->
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a
+        href="/"
+        class="brand"
+      >
+
+        <span class="brand-mark">
+          CE
+        </span>
+
+        <span>
+          Campus Exchange
+        </span>
+
+      </a>
+
+
+      <nav class="main-nav">
+
+        <a href="/">
+          Home
+        </a>
+
+        <a href="/health">
+          Health
+        </a>
+
+        <a href="/dashboard">
+          Dashboard
+        </a>
+
+
+        <% if (currentUser) { %>
+
+          <span>
+            Hi,
+            <%= currentUser.name %>
+          </span>
+
+          <a href="/auth/logout">
+            Logout
+          </a>
+
+        <% } %>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ============================================== -->
+  <!-- MAIN -->
+  <!-- ============================================== -->
+
+  <main class="lender-page">
+
+    <div class="lender-container">
+
+
+      <!-- ========================================== -->
+      <!-- PAGE HEADER -->
+      <!-- ========================================== -->
+
+      <div class="page-header">
+
+        <div>
+
+          <p class="eyebrow">
+            LENDER
+          </p>
+
+          <h1>
+            Borrow Requests
+          </h1>
+
+          <p class="page-subtitle">
+            Review requests, verify deposits, and manage your equipment loans.
+          </p>
+
+        </div>
+
+
+        <div class="header-actions">
+
+          <a
+            href="/dashboard"
+            class="btn btn-secondary"
+          >
+            Dashboard
+          </a>
+
+          <a
+            href="/equipment"
+            class="btn btn-primary"
+          >
+            My Equipment
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ========================================== -->
+      <!-- ALERTS -->
+      <!-- ========================================== -->
+
+      <% if (success) { %>
+
+        <div class="alert alert-success">
+
+          <%= success %>
+
+        </div>
+
+      <% } %>
+
+
+      <% if (error) { %>
+
+        <div class="alert alert-error">
+
+          <%= error %>
+
+        </div>
+
+      <% } %>
+
+
+
+      <!-- ========================================== -->
+      <!-- EMPTY STATE -->
+      <!-- ========================================== -->
+
+      <% if (!requests || requests.length === 0) { %>
+
+        <section class="empty-state">
+
+          <div class="empty-icon">
+            ✓
+          </div>
+
+          <h2>
+            No borrow requests yet
+          </h2>
+
+          <p>
+            New requests from borrowers will appear here.
+          </p>
+
+        </section>
+
+
+      <% } else { %>
+
+
+
+        <!-- ======================================== -->
+        <!-- SUMMARY COUNTERS -->
+        <!-- ======================================== -->
+
+        <%
+          let pendingApprovalCount = 0;
+          let approvedCount = 0;
+          let rejectedCount = 0;
+          let pendingPaymentCount = 0;
+
+          for (let i = 0; i < requests.length; i++) {
+
+            if (
+              requests[i].status === "PENDING_APPROVAL"
+            ) {
+              pendingApprovalCount++;
+            }
+
+            if (
+              requests[i].status === "APPROVED"
+            ) {
+              approvedCount++;
+            }
+
+            if (
+              requests[i].status === "REJECTED"
+            ) {
+              rejectedCount++;
+            }
+
+            if (
+              requests[i].paymentStatus === "PENDING_VERIFICATION"
+            ) {
+              pendingPaymentCount++;
+            }
+
+          }
+        %>
+
+
+        <div class="request-summary">
+
+
+          <div class="summary-card">
+
+            <span class="summary-label">
+              Total Requests
+            </span>
+
+            <strong>
+              <%= requests.length %>
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span class="summary-label">
+              Pending Approval
+            </span>
+
+            <strong>
+              <%= pendingApprovalCount %>
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span class="summary-label">
+              Approved
+            </span>
+
+            <strong>
+              <%= approvedCount %>
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span class="summary-label">
+              Payment Verification
+            </span>
+
+            <strong>
+              <%= pendingPaymentCount %>
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span class="summary-label">
+              Rejected
+            </span>
+
+            <strong>
+              <%= rejectedCount %>
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- ======================================== -->
+        <!-- REQUEST GRID -->
+        <!-- ======================================== -->
+
+        <div class="requests-grid">
+
+
+          <% for (let i = 0; i < requests.length; i++) { %>
+
+            <%
+              const request = requests[i];
+
+              const equipment =
+                request.equipment || null;
+
+              const borrower =
+                request.borrower || null;
+
+              const requestStatus =
+                request.status || "UNKNOWN";
+
+              const paymentStatus =
+                request.paymentStatus || "NOT_STARTED";
+            %>
+
+
+            <article class="request-card">
+
+
+              <!-- ================================== -->
+              <!-- IMAGE -->
+              <!-- ================================== -->
+
+              <div class="request-image">
+
+
+                <% if (
+                  equipment &&
+                  Array.isArray(equipment.images) &&
+                  equipment.images.length > 0
+                ) { %>
+
+                  <img
+                    src="<%= equipment.images[0] %>"
+                    alt="<%= equipment.name || 'Equipment' %>"
+                  >
+
+
+                <% } else { %>
+
+                  <div class="image-placeholder">
+                    No Image
+                  </div>
+
+                <% } %>
+
+
+
+                <span
+                  class="status-badge status-<%= requestStatus.toLowerCase() %>"
+                >
+
+                  <%= requestStatus.replace(/_/g, " ") %>
+
+                </span>
+
+
+              </div>
+
+
+
+              <!-- ================================== -->
+              <!-- REQUEST BODY -->
+              <!-- ================================== -->
+
+              <div class="request-body">
+
+
+                <!-- EQUIPMENT META -->
+
+                <div class="equipment-meta">
+
+
+                  <span>
+
+                    <%= equipment
+                      ? equipment.category || "Equipment"
+                      : "Equipment"
+                    %>
+
+                  </span>
+
+
+                  <span>
+
+                    <%= equipment
+                      ? equipment.department || "—"
+                      : "—"
+                    %>
+
+                  </span>
+
+
+                </div>
+
+
+
+                <!-- EQUIPMENT NAME -->
+
+                <h2>
+
+                  <%= equipment
+                    ? equipment.name || "Unknown Equipment"
+                    : "Unknown Equipment"
+                  %>
+
+                </h2>
+
+
+
+                <!-- ================================= -->
+                <!-- BORROWER -->
+                <!-- ================================= -->
+
+                <div class="borrower-box">
+
+
+                  <div class="borrower-title">
+                    Borrower
+                  </div>
+
+
+                  <strong>
+
+                    <%= borrower
+                      ? borrower.name || "Unknown User"
+                      : "Unknown User"
+                    %>
+
+                  </strong>
+
+
+                  <span>
+
+                    <%= borrower
+                      ? borrower.email || "No email"
+                      : "No email"
+                    %>
+
+                  </span>
+
+
+                  <% if (
+                    borrower &&
+                    borrower.department
+                  ) { %>
+
+                    <span>
+
+                      <%= borrower.department %>
+
+                      <% if (borrower.year) { %>
+
+                        · Year
+                        <%= borrower.year %>
+
+                      <% } %>
+
+                    </span>
+
+                  <% } %>
+
+
+
+                  <% if (
+                    borrower &&
+                    typeof borrower.trustScore === "number"
+                  ) { %>
+
+                    <span class="trust-score">
+
+                      Trust Score:
+
+                      <strong>
+                        <%= borrower.trustScore %>
+                      </strong>
+
+                    </span>
+
+                  <% } %>
+
+
+                </div>
+
+
+
+                <!-- ================================= -->
+                <!-- REQUEST DETAILS -->
+                <!-- ================================= -->
+
+                <div class="request-details">
+
+
+                  <!-- Quantity -->
+
+                  <div>
+
+                    <span>
+                      Requested Quantity
+                    </span>
+
+                    <strong>
+                      <%= request.quantity %>
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Return Date -->
+
+                  <div>
+
+                    <span>
+                      Requested Return
+                    </span>
+
+                    <strong>
+
+                      <% if (request.requestedReturnDate) { %>
+
+                        <%= new Date(
+                          request.requestedReturnDate
+                        ).toLocaleDateString("en-IN") %>
+
+                      <% } else { %>
+
+                        Not specified
+
+                      <% } %>
+
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Rental Fee -->
+
+                  <div>
+
+                    <span>
+                      Borrow Fee
+                    </span>
+
+                    <strong>
+                      ₹<%= Number(
+                        request.rentalFee || 0
+                      ).toLocaleString("en-IN") %>
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Deposit -->
+
+                  <div>
+
+                    <span>
+                      Security Deposit
+                    </span>
+
+                    <strong>
+                      ₹<%= Number(
+                        request.securityDeposit || 0
+                      ).toLocaleString("en-IN") %>
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Available Stock -->
+
+                  <div>
+
+                    <span>
+                      Available Stock
+                    </span>
+
+                    <strong>
+
+                      <%= equipment
+                        ? (
+                            typeof equipment.availableQuantity === "number"
+                              ? equipment.availableQuantity
+                              : "—"
+                          )
+                        : "—"
+                      %>
+
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Request Date -->
+
+                  <div>
+
+                    <span>
+                      Requested On
+                    </span>
+
+                    <strong>
+
+                      <% if (request.requestDate) { %>
+
+                        <%= new Date(
+                          request.requestDate
+                        ).toLocaleDateString("en-IN") %>
+
+                      <% } else { %>
+
+                        —
+
+                      <% } %>
+
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Payment Status -->
+
+                  <div>
+
+                    <span>
+                      Payment Status
+                    </span>
+
+                    <strong>
+
+                      <%= paymentStatus.replace(
+                        /_/g,
+                        " "
+                      ) %>
+
+                    </strong>
+
+                  </div>
+
+
+
+                  <!-- Payment Reference -->
+
+                  <% if (request.paymentReference) { %>
+
+                    <div>
+
+                      <span>
+                        Payment Reference
+                      </span>
+
+                      <strong>
+                        <%= request.paymentReference %>
+                      </strong>
+
+                    </div>
+
+                  <% } %>
+
+
+                </div>
+
+
+
+                <!-- ================================= -->
+                <!-- PENDING APPROVAL -->
+                <!-- ================================= -->
+
+                <% if (
+                  requestStatus === "PENDING_APPROVAL"
+                ) { %>
+
+
+                  <div class="action-section">
+
+
+                    <!-- APPROVE -->
+
+                    <form
+                      method="POST"
+                      action="/lender/requests/<%= request._id %>/approve"
+                    >
+
+                      <button
+                        type="submit"
+                        class="btn btn-success btn-full"
+                        onclick="return confirm('Approve this borrow request?')"
+                      >
+                        Approve Request
+                      </button>
+
+                    </form>
+
+
+
+                    <!-- REJECT -->
+
+                    <form
+                      method="POST"
+                      action="/lender/requests/<%= request._id %>/reject"
+                      class="reject-form"
+                    >
+
+                      <label
+                        for="reason-<%= request._id %>"
+                      >
+                        Rejection reason
+                      </label>
+
+
+                      <textarea
+                        id="reason-<%= request._id %>"
+                        name="rejectionReason"
+                        rows="3"
+                        minlength="5"
+                        maxlength="500"
+                        required
+                        placeholder="Explain why the request is being rejected..."
+                      ></textarea>
+
+
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-full"
+                        onclick="return confirm('Reject this borrow request?')"
+                      >
+                        Reject Request
+                      </button>
+
+                    </form>
+
+
+                  </div>
+
+
+                <% } %>
+
+
+
+                <!-- ================================= -->
+                <!-- REJECTED -->
+                <!-- ================================= -->
+
+                <% if (
+                  requestStatus === "REJECTED"
+                ) { %>
+
+
+                  <div class="decision-box rejected-box">
+
+                    <strong>
+                      Request Rejected
+                    </strong>
+
+
+                    <% if (request.rejectionReason) { %>
+
+                      <p>
+
+                        <strong>
+                          Reason:
+                        </strong>
+
+                        <%= request.rejectionReason %>
+
+                      </p>
+
+                    <% } %>
+
+                  </div>
+
+
+                <% } %>
+
+
+
+                <!-- ================================= -->
+                <!-- APPROVED -->
+                <!-- ================================= -->
+
+                <% if (
+                  requestStatus === "APPROVED"
+                ) { %>
+
+
+                  <div class="decision-box approved-box">
+
+
+                    <strong>
+                      Request Approved
+                    </strong>
+
+
+                    <% if (request.approvedDate) { %>
+
+                      <p>
+
+                        Approved on:
+
+                        <%= new Date(
+                          request.approvedDate
+                        ).toLocaleString("en-IN") %>
+
+                      </p>
+
+                    <% } %>
+
+
+                  </div>
+
+
+
+                  <!-- ================================= -->
+                  <!-- PAYMENT NOT STARTED -->
+                  <!-- ================================= -->
+
+                  <% if (
+                    paymentStatus === "NOT_STARTED"
+                  ) { %>
+
+
+                    <div
+                      class="decision-box"
+                      style="
+                        margin-top: 15px;
+                        padding: 16px;
+                        border-radius: 10px;
+                      "
+                    >
+
+                      <strong>
+                        Waiting for Security Deposit
+                      </strong>
+
+
+                      <p>
+                        The borrower must pay the required security deposit.
+                      </p>
+
+
+                      <p>
+                        Deposit:
+
+                        <strong>
+                          ₹<%= Number(
+                            request.securityDeposit || 0
+                          ).toLocaleString("en-IN") %>
+                        </strong>
+                      </p>
+
+
+                      <p>
+                        Inventory will be changed only after
+                        confirmed payment and checkout.
+                      </p>
+
+                    </div>
+
+
+                  <% } %>
+
+
+
+                  <!-- ================================= -->
+                  <!-- PAYMENT REJECTED -->
+                  <!-- ================================= -->
+
+                  <% if (
+                    paymentStatus === "PAYMENT_REJECTED"
+                  ) { %>
+
+
+                    <div
+                      class="decision-box rejected-box"
+                      style="margin-top: 15px;"
+                    >
+
+                      <strong>
+                        Payment Rejected
+                      </strong>
+
+
+                      <p>
+                        The submitted payment could not be verified.
+                        The borrower can submit the payment again.
+                      </p>
+
+                    </div>
+
+
+                  <% } %>
+
+
+
+                  <!-- ================================= -->
+                  <!-- PAYMENT PENDING VERIFICATION -->
+                  <!-- ================================= -->
+
+                  <% if (
+                    paymentStatus === "PENDING_VERIFICATION"
+                  ) { %>
+
+
+                    <div
+                      class="payment-verification-box"
+                      style="
+                        margin-top: 15px;
+                        padding: 18px;
+                        border: 1px solid #f59e0b;
+                        border-radius: 12px;
+                        background: #fffbeb;
+                      "
+                    >
+
+
+                      <h3 style="margin-top: 0;">
+                        Payment Verification Required
+                      </h3>
+
+
+                      <p>
+                        The borrower has submitted a security-deposit payment.
+                      </p>
+
+
+                      <div
+                        style="
+                          margin: 12px 0;
+                          display: grid;
+                          gap: 8px;
+                        "
+                      >
+
+                        <div>
+
+                          <strong>
+                            Amount:
+                          </strong>
+
+                          ₹<%= Number(
+                            request.securityDeposit || 0
+                          ).toLocaleString("en-IN") %>
+
+                        </div>
+
+
+                        <div>
+
+                          <strong>
+                            UTR / Reference:
+                          </strong>
+
+                          <%= request.paymentReference || "Not provided" %>
+
+                        </div>
+
+
+                        <div>
+
+                          <strong>
+                            Borrower:
+                          </strong>
+
+                          <%= borrower
+                            ? borrower.name || "Unknown User"
+                            : "Unknown User"
+                          %>
+
+                        </div>
+
+
+                        <div>
+
+                          <strong>
+                            Equipment:
+                          </strong>
+
+                          <%= equipment
+                            ? equipment.name || "Unknown Equipment"
+                            : "Unknown Equipment"
+                          %>
+
+                        </div>
+
+                      </div>
+
+
+
+                      <!-- VERIFY PAYMENT -->
+
+                      <form
+                        method="POST"
+                        action="/lender/requests/<%= request._id %>/verify-payment"
+                        style="margin-bottom: 10px;"
+                      >
+
+                        <button
+                          type="submit"
+                          class="btn btn-success btn-full"
+                          onclick="return confirm('Verify this payment and confirm the security deposit?')"
+                        >
+                          Verify Payment
+                        </button>
+
+                      </form>
+
+
+
+                      <!-- REJECT PAYMENT -->
+
+                      <form
+                        method="POST"
+                        action="/lender/requests/<%= request._id %>/reject-payment"
+                      >
+
+                        <button
+                          type="submit"
+                          class="btn btn-danger btn-full"
+                          onclick="return confirm('Reject this payment verification?')"
+                        >
+                          Reject Payment
+                        </button>
+
+                      </form>
+
+
+                    </div>
+
+
+                  <% } %>
+
+
+
+                  <!-- ================================= -->
+                  <!-- DEPOSIT CONFIRMED -->
+                  <!-- ================================= -->
+
+                  <% if (
+                    paymentStatus === "DEPOSIT_CONFIRMED"
+                  ) { %>
+
+
+                    <div
+                      class="decision-box approved-box"
+                      style="margin-top: 15px;"
+                    >
+
+                      <strong>
+                        Security Deposit Confirmed
+                      </strong>
+
+
+                      <p>
+                        The borrower has completed payment verification.
+                      </p>
+
+
+                      <p>
+                        The borrower can now continue to checkout.
+                      </p>
+
+                    </div>
+
+
+                  <% } %>
+
+
+                <% } %>
+
+
+
+                <!-- ================================= -->
+                <!-- ACTIVE -->
+                <!-- ================================= -->
+
+                <% if (
+                  requestStatus === "ACTIVE"
+                ) { %>
+
+
+                  <div
+                    class="decision-box"
+                    style="margin-top: 15px;"
+                  >
+
+                    <strong>
+                      Equipment Currently Borrowed
+                    </strong>
+
+
+                    <p>
+                      This transaction is currently active.
+                    </p>
+
+
+                    <% if (request.handoverDate) { %>
+
+                      <p>
+
+                        Handover:
+
+                        <%= new Date(
+                          request.handoverDate
+                        ).toLocaleString("en-IN") %>
+
+                      </p>
+
+                    <% } %>
+
+
+                  </div>
+
+
+                <% } %>
+
+
+
+              </div>
+
+            </article>
+
+
+          <% } %>
+
+
+        </div>
+
+
+      <% } %>
+
+
+    </div>
+
+  </main>
+
+
+</body>
+</html>

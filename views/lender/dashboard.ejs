@@ -1,0 +1,415 @@
+<%- include("../partials/head", { title }) %>
+<link
+  rel="stylesheet"
+  href="/css/lender.css?v=7e6"
+>
+
+<%- include("../partials/header") %>
+
+
+<main class="dashboard-page">
+
+  <div class="dashboard-container">
+
+
+    <!-- =====================================================
+         LENDER HERO
+         ===================================================== -->
+
+    <section class="dashboard-hero">
+
+      <div class="dashboard-hero-content">
+
+        <p class="eyebrow">
+          LENDER
+        </p>
+
+        <h1>
+          Welcome, <%= currentUser.name %>
+        </h1>
+
+        <p>
+          Manage your academic equipment and future borrowing requests.
+        </p>
+
+      </div>
+
+
+      <div class="dashboard-actions">
+
+        <a
+          href="/equipment/new"
+          class="btn btn-primary"
+        >
+          + Add Equipment
+        </a>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         LENDER STATISTICS
+         ===================================================== -->
+
+    <section class="dashboard-stats">
+
+
+      <!-- MY EQUIPMENT -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          My Equipment
+        </span>
+
+        <strong>
+          <%= stats.myEquipment ?? 0 %>
+        </strong>
+
+        <p>
+          Total listings
+        </p>
+
+      </article>
+
+
+      <!-- AVAILABLE -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Available
+        </span>
+
+        <strong>
+          <%= stats.availableEquipment ?? 0 %>
+        </strong>
+
+        <p>
+          Ready to borrow
+        </p>
+
+      </article>
+
+
+      <!-- UNAVAILABLE -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Unavailable
+        </span>
+
+        <strong>
+          <%= stats.unavailableEquipment ?? 0 %>
+        </strong>
+
+        <p>
+          Currently unavailable
+        </p>
+
+      </article>
+
+
+      <!-- PENDING REQUESTS -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Pending Requests
+        </span>
+
+        <strong>
+          <%= stats.pendingRequests ?? 0 %>
+        </strong>
+
+        <p>
+          Awaiting your approval
+        </p>
+
+      </article>
+
+
+      <!-- ACTIVE LOANS -->
+
+      <article class="stat-card">
+
+        <span class="stat-card-label">
+          Active Loans
+        </span>
+
+        <strong>
+          <%= stats.activeLoans ?? 0 %>
+        </strong>
+
+        <p>
+          Currently borrowed
+        </p>
+
+      </article>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         EQUIPMENT MANAGEMENT
+         ===================================================== -->
+
+    <section class="dashboard-section lender-management-section">
+
+
+      <div class="section-header">
+
+        <div>
+
+          <p class="eyebrow">
+            EQUIPMENT
+          </p>
+
+          <h2>
+            Equipment Management
+          </h2>
+
+          <p>
+            Manage your listings and add new academic equipment.
+          </p>
+
+        </div>
+
+
+        <div class="section-header-action">
+
+          <a
+            href="/equipment/new"
+            class="btn btn-primary"
+          >
+            + Add Equipment
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           MANAGEMENT ACTIONS
+           =================================================== -->
+
+      <div class="lender-action-grid">
+
+
+        <!-- MY EQUIPMENT -->
+
+        <a
+          href="/equipment/mine"
+          class="lender-action-card"
+        >
+
+          <div class="lender-action-icon">
+            E
+          </div>
+
+          <div class="lender-action-content">
+
+            <span class="lender-action-label">
+              MY EQUIPMENT
+            </span>
+
+            <h3>
+              My Equipment
+            </h3>
+
+            <p>
+              View and manage all equipment you have listed.
+            </p>
+
+          </div>
+
+
+          <div class="lender-action-count">
+
+            <strong>
+              <%= stats.myEquipment ?? 0 %>
+            </strong>
+
+            <span>
+              listings
+            </span>
+
+          </div>
+
+        </a>
+
+
+
+        <!-- CREATE LISTING -->
+
+        <a
+          href="/equipment/new"
+          class="lender-action-card lender-action-primary"
+        >
+
+          <div class="lender-action-icon lender-action-icon-primary">
+            +
+          </div>
+
+          <div class="lender-action-content">
+
+            <span class="lender-action-label">
+              NEW LISTING
+            </span>
+
+            <h3>
+              Create Listing
+            </h3>
+
+            <p>
+              Add academic equipment for other students to borrow.
+            </p>
+
+          </div>
+
+
+          <div class="lender-action-arrow">
+            →
+          </div>
+
+        </a>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         BORROWING MANAGEMENT
+         ===================================================== -->
+
+    <section class="dashboard-section lender-management-section">
+
+
+      <div class="section-header">
+
+        <div>
+
+          <p class="eyebrow">
+            BORROWING
+          </p>
+
+          <h2>
+            Borrowing Management
+          </h2>
+
+          <p>
+            Review borrower requests and manage active returns.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="lender-action-grid lender-action-grid-secondary">
+
+
+        <!-- BORROW REQUESTS -->
+
+        <a
+          href="/lender/requests"
+          class="lender-action-card"
+        >
+
+          <div class="lender-action-icon">
+            R
+          </div>
+
+          <div class="lender-action-content">
+
+            <span class="lender-action-label">
+              REQUESTS
+            </span>
+
+            <h3>
+              Borrow Requests
+            </h3>
+
+            <p>
+              Review and approve equipment borrowing requests.
+            </p>
+
+          </div>
+
+
+          <div class="lender-action-count">
+
+            <strong>
+              <%= stats.pendingRequests ?? 0 %>
+            </strong>
+
+            <span>
+              pending
+            </span>
+
+          </div>
+
+        </a>
+
+
+
+        <!-- RETURNS -->
+
+        <a
+          href="/lender/returns"
+          class="lender-action-card"
+        >
+
+          <div class="lender-action-icon">
+            ↩
+          </div>
+
+          <div class="lender-action-content">
+
+            <span class="lender-action-label">
+              RETURNS
+            </span>
+
+            <h3>
+              Equipment Returns
+            </h3>
+
+            <p>
+              Review returned equipment and update its condition.
+            </p>
+
+          </div>
+
+
+          <div class="lender-action-arrow">
+            →
+          </div>
+
+        </a>
+
+
+      </div>
+
+
+    </section>
+
+
+  </div>
+
+</main>
+
+
+<%- include("../partials/footer") %>

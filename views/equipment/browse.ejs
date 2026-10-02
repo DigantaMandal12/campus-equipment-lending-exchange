@@ -1,0 +1,350 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          <%= isOwnerView ? "LENDER" : "MARKETPLACE" %>
+        </span>
+
+        <h1>
+          <%= isOwnerView ? "My Equipment" : "Browse Equipment" %>
+        </h1>
+
+        <p>
+          <%= isOwnerView
+            ? "Manage the equipment you have listed."
+            : "Discover academic equipment available for borrowing."
+          %>
+        </p>
+
+      </div>
+
+
+      <% if (currentUser.role === "LENDER" && !isOwnerView) { %>
+
+        <a
+          href="/equipment/new"
+          class="btn btn-primary"
+        >
+          Add Equipment
+        </a>
+
+      <% } %>
+
+    </div>
+
+
+    <% if (isOwnerView && currentUser.role === "LENDER") { %>
+
+      <div style="margin-bottom: 20px;">
+
+        <a
+          href="/equipment/new"
+          class="btn btn-primary"
+        >
+          + Add Equipment
+        </a>
+
+      </div>
+
+    <% } %>
+
+
+    <% if (typeof success !== "undefined" && success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (equipment.length === 0) { %>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          —
+        </div>
+
+        <h3>
+          <%= isOwnerView
+            ? "You have not listed any equipment yet."
+            : "No equipment is available yet."
+          %>
+        </h3>
+
+        <p>
+          <%= isOwnerView
+            ? "Create your first listing to make it available to students."
+            : "Lenders will appear here when they publish equipment."
+          %>
+        </p>
+
+      </div>
+
+    <% } else { %>
+
+      <div class="equipment-grid">
+
+        <% equipment.forEach(function(item) { %>
+
+          <%
+            const totalQuantity =
+              Number(item.quantity) || 0;
+
+            const availableQuantity =
+              Number(item.availableQuantity) || 0;
+
+            const availabilityPercentage =
+              totalQuantity > 0
+                ? Math.round(
+                    (availableQuantity / totalQuantity) * 100
+                  )
+                : 0;
+
+            const isAvailable =
+              item.status === "AVAILABLE" &&
+              availableQuantity > 0;
+
+            const isPartiallyAvailable =
+              isAvailable &&
+              availableQuantity < totalQuantity;
+          %>
+
+
+          <article class="equipment-card">
+
+
+            <!-- IMAGE -->
+            <div class="equipment-card-visual">
+
+              <% if (
+                Array.isArray(item.images) &&
+                item.images.length > 0
+              ) { %>
+
+                <img
+                  src="<%= item.images[0] %>"
+                  alt="<%= item.name %>"
+                  class="equipment-card-image"
+                  loading="lazy"
+                >
+
+              <% } else { %>
+
+                <span class="equipment-letter">
+                  <%= item.name.charAt(0).toUpperCase() %>
+                </span>
+
+              <% } %>
+
+
+              <span
+                class="equipment-status-badge
+                <%= isAvailable
+                  ? 'status-available'
+                  : 'status-unavailable'
+                %>"
+              >
+                <%= isAvailable
+                  ? "Available"
+                  : "Unavailable"
+                %>
+              </span>
+
+            </div>
+
+
+            <!-- CONTENT -->
+            <div class="equipment-card-content">
+
+              <span class="equipment-card-category">
+                <%= item.category %>
+              </span>
+
+
+              <h2>
+                <%= item.name %>
+              </h2>
+
+
+              <p class="equipment-card-description">
+                <%= item.description.length > 110
+                  ? item.description.substring(0, 110) + "..."
+                  : item.description
+                %>
+              </p>
+
+
+              <!-- DEPARTMENT -->
+              <div class="equipment-info-row">
+
+                <span>
+                  Department
+                </span>
+
+                <strong>
+                  <%= item.department %>
+                </strong>
+
+              </div>
+
+
+              <!-- STOCK -->
+              <div class="equipment-stock-section">
+
+                <div class="equipment-stock-header">
+
+                  <span>
+                    Availability
+                  </span>
+
+                  <strong>
+                    <%= availableQuantity %> /
+                    <%= totalQuantity %>
+                  </strong>
+
+                </div>
+
+
+                <div
+                  class="equipment-stock-bar"
+                  aria-label="<%= availableQuantity %> of <%= totalQuantity %> available"
+                >
+
+                  <div
+                    class="equipment-stock-fill
+                    <%= isAvailable
+                      ? 'stock-available'
+                      : 'stock-empty'
+                    %>"
+                    style="width: <%= availabilityPercentage %>%"
+                  ></div>
+
+                </div>
+
+
+                <div class="equipment-stock-meta">
+
+                  <span>
+                    <%= availabilityPercentage %>% available
+                  </span>
+
+                  <% if (isPartiallyAvailable) { %>
+
+                    <span class="stock-partial">
+                      Partially Available
+                    </span>
+
+                  <% } else if (!isAvailable) { %>
+
+                    <span class="stock-empty-text">
+                      Out of Stock
+                    </span>
+
+                  <% } else { %>
+
+                    <span class="stock-full">
+                      Fully Available
+                    </span>
+
+                  <% } %>
+
+                </div>
+
+              </div>
+
+
+              <!-- PRICE -->
+              <div class="equipment-price">
+
+                <div>
+
+                  <strong>
+                    ₹<%= item.rentalFee %>
+                  </strong>
+
+                  <span>
+                    / borrow
+                  </span>
+
+                </div>
+
+
+                <span class="condition-badge">
+                  <%= item.condition.replace("_", " ") %>
+                </span>
+
+              </div>
+
+
+              <!-- DETAILS -->
+              <div style="margin-top: 18px;">
+
+                <a
+                  href="/equipment/<%= item._id %>"
+                  class="btn btn-primary btn-full"
+                >
+                  View Details
+                </a>
+
+              </div>
+
+
+              <!-- OWNER ACTIONS -->
+              <% if (isOwnerView) { %>
+
+                <div class="equipment-owner-actions">
+
+                  <a
+                    href="/equipment/<%= item._id %>/edit"
+                    class="btn btn-secondary"
+                  >
+                    Edit
+                  </a>
+
+
+                  <form
+                    action="/equipment/<%= item._id %>/delete"
+                    method="POST"
+                    class="delete-equipment-form"
+                    onsubmit="return confirmDeleteEquipment();"
+                  >
+
+                    <button
+                      type="submit"
+                      class="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+
+                  </form>
+
+                </div>
+
+              <% } %>
+
+            </div>
+
+          </article>
+
+        <% }); %>
+
+      </div>
+
+    <% } %>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

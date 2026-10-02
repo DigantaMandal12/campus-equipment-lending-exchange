@@ -1,0 +1,397 @@
+<%- include("../partials/head", {
+  title: equipment.name || "Equipment Details"
+}) %>
+
+<link
+  rel="stylesheet"
+  href="/css/equipment.css?v=detail-3"
+/>
+
+<%- include("../partials/header") %>
+
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <!-- ==================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          EQUIPMENT
+        </span>
+
+        <h1>
+          Equipment Details
+        </h1>
+
+        <p>
+          View equipment information, availability, condition and borrowing details.
+        </p>
+
+      </div>
+
+      <a
+        href="/equipment"
+        class="btn btn-secondary"
+      >
+        ← Back to Marketplace
+      </a>
+
+    </div>
+
+
+    <!-- ==================================================
+         DETAIL LAYOUT
+    ================================================== -->
+
+    <section class="equipment-detail">
+
+
+      <!-- ==================================================
+           LEFT : IMAGE
+      ================================================== -->
+
+      <div class="detail-panel">
+
+        <div class="detail-hero">
+
+          <% if (
+            equipment &&
+            Array.isArray(equipment.images) &&
+            equipment.images.length > 0
+          ) { %>
+
+            <img
+              src="<%= equipment.images[0] %>"
+              alt="<%= equipment.name %>"
+              class="detail-image"
+            >
+
+          <% } else { %>
+
+            <div class="detail-hero-letter">
+
+              <%= equipment && equipment.name
+                ? equipment.name.charAt(0).toUpperCase()
+                : "E"
+              %>
+
+            </div>
+
+          <% } %>
+
+        </div>
+
+
+        <!-- ==================================================
+             IMAGE GALLERY
+        ================================================== -->
+
+        <% if (
+          equipment &&
+          Array.isArray(equipment.images) &&
+          equipment.images.length > 1
+        ) { %>
+
+          <div class="equipment-detail-gallery">
+
+            <% equipment.images.forEach(function(image, index) { %>
+
+              <div class="detail-gallery-item">
+
+                <img
+                  src="<%= image %>"
+                  alt="<%= equipment.name %> image <%= index + 1 %>"
+                  loading="lazy"
+                >
+
+              </div>
+
+            <% }) %>
+
+          </div>
+
+        <% } %>
+
+      </div>
+
+
+      <!-- ==================================================
+           RIGHT : INFORMATION
+      ================================================== -->
+
+      <div class="detail-panel detail-information">
+
+
+        <!-- CATEGORY -->
+
+        <span class="equipment-card-category">
+          <%= equipment.category || "Equipment" %>
+        </span>
+
+
+        <!-- NAME -->
+
+        <h1>
+          <%= equipment.name || "Unnamed Equipment" %>
+        </h1>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="detail-description">
+
+          <%= equipment.description ||
+              "No description available for this equipment."
+          %>
+
+        </p>
+
+
+        <!-- STATUS -->
+
+        <div class="detail-status-card">
+
+          <span>
+            Availability
+          </span>
+
+          <% if (
+            Number(equipment.availableQuantity || 0) > 0
+          ) { %>
+
+            <strong class="status-text-available">
+              AVAILABLE
+            </strong>
+
+          <% } else { %>
+
+            <strong class="status-text-unavailable">
+              UNAVAILABLE
+            </strong>
+
+          <% } %>
+
+        </div>
+
+
+        <!-- ==================================================
+             DETAILS
+        ================================================== -->
+
+        <div class="detail-list">
+
+
+          <!-- DEPARTMENT -->
+
+          <div class="detail-list-item">
+
+            <span>
+              Department
+            </span>
+
+            <strong>
+              <%= equipment.department || "Not specified" %>
+            </strong>
+
+          </div>
+
+
+          <!-- CONDITION -->
+
+          <div class="detail-list-item">
+
+            <span>
+              Condition
+            </span>
+
+            <strong>
+              <span class="condition-badge">
+                <%= equipment.condition || "GOOD" %>
+              </span>
+            </strong>
+
+          </div>
+
+
+          <!-- TOTAL QUANTITY -->
+
+          <div class="detail-list-item">
+
+            <span>
+              Total Quantity
+            </span>
+
+            <strong>
+              <%= equipment.quantity || 0 %>
+            </strong>
+
+          </div>
+
+
+          <!-- AVAILABLE QUANTITY -->
+
+          <div class="detail-list-item">
+
+            <span>
+              Available Now
+            </span>
+
+            <strong>
+              <%= equipment.availableQuantity || 0 %>
+            </strong>
+
+          </div>
+
+
+          <!-- RENTAL FEE -->
+
+          <div class="detail-list-item">
+
+            <span>
+              Rental Fee
+            </span>
+
+            <strong>
+              ₹<%= Number(
+                equipment.rentalFee || 0
+              ).toLocaleString("en-IN") %>
+            </strong>
+
+          </div>
+
+
+          <!-- SECURITY DEPOSIT -->
+
+          <div class="detail-list-item">
+
+            <span>
+              Security Deposit
+            </span>
+
+            <strong>
+              ₹<%= Number(
+                equipment.securityDeposit || 0
+              ).toLocaleString("en-IN") %>
+            </strong>
+
+          </div>
+
+
+          <!-- BORROWING TERMS -->
+
+          <% if (equipment.borrowingTerms) { %>
+
+            <div class="detail-list-item">
+
+              <span>
+                Borrowing Terms
+              </span>
+
+              <strong>
+                <%= equipment.borrowingTerms %>
+              </strong>
+
+            </div>
+
+          <% } %>
+
+        </div>
+
+
+        <!-- ==================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="equipment-detail-actions">
+
+
+          <!-- BORROW -->
+
+          <% if (
+            Number(equipment.availableQuantity || 0) > 0
+          ) { %>
+
+            <a
+              href="/borrow?equipmentId=<%= equipment._id %>"
+              class="btn btn-primary btn-full"
+            >
+              Request to Borrow
+            </a>
+
+          <% } else { %>
+
+            <button
+              type="button"
+              class="btn btn-disabled btn-full"
+              disabled
+            >
+              Currently Unavailable
+            </button>
+
+          <% } %>
+
+
+          <!-- OWNER EDIT -->
+
+          <%
+            const ownerId =
+              equipment &&
+              equipment.owner
+                ? String(
+                    equipment.owner._id ||
+                    equipment.owner
+                  )
+                : null;
+
+            const viewerId =
+              typeof currentUser !== "undefined" &&
+              currentUser
+                ? String(
+                    currentUser._id ||
+                    currentUser.id
+                  )
+                : null;
+
+            const ownerView =
+              typeof isOwnerView !== "undefined"
+                ? Boolean(isOwnerView)
+                : false;
+
+            const canEdit =
+              ownerView ||
+              (
+                ownerId &&
+                viewerId &&
+                ownerId === viewerId
+              );
+          %>
+
+
+          <% if (canEdit) { %>
+
+            <a
+              href="/equipment/<%= equipment._id %>/edit"
+              class="btn btn-secondary btn-full"
+            >
+              Edit Equipment
+            </a>
+
+          <% } %>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>

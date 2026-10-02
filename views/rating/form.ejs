@@ -1,0 +1,424 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+
+<main class="rating-page">
+
+  <div class="container">
+
+    <div class="rating-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          PHASE 5
+        </span>
+
+        <h1>
+          Rate Your Experience
+        </h1>
+
+        <p>
+          Share your experience with the other participant.
+        </p>
+
+      </div>
+
+      <a
+        href="/dashboard"
+        class="btn btn-secondary"
+      >
+        Dashboard
+      </a>
+
+    </div>
+
+
+    <% if (success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (error) { %>
+
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <% if (!transaction) { %>
+
+      <section class="rating-card">
+
+        <div class="rating-card-icon">
+          !
+        </div>
+
+        <h2>
+          Rating unavailable
+        </h2>
+
+        <p>
+          <%= error || "This transaction cannot be rated." %>
+        </p>
+
+      </section>
+
+
+    <% } else if (existingRating) { %>
+
+      <section class="rating-card">
+
+        <span class="rating-badge">
+          RATING SUBMITTED
+        </span>
+
+        <h2>
+          You already rated this transaction.
+        </h2>
+
+        <p>
+          One participant can submit only one rating
+          for a transaction.
+        </p>
+
+
+        <div class="rating-summary">
+
+          <div class="rating-summary-item">
+
+            <span>
+              Overall
+            </span>
+
+            <strong>
+              <%= existingRating.overallRating %>/5
+            </strong>
+
+          </div>
+
+
+          <div class="rating-summary-item">
+
+            <span>
+              Condition
+            </span>
+
+            <strong>
+              <%= existingRating.equipmentConditionRating %>/5
+            </strong>
+
+          </div>
+
+
+          <div class="rating-summary-item">
+
+            <span>
+              Punctuality
+            </span>
+
+            <strong>
+              <%= existingRating.punctualityRating %>/5
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <% if (existingRating.comment) { %>
+
+          <div class="rating-comment">
+
+            <strong>
+              Your comment
+            </strong>
+
+            <p>
+              <%= existingRating.comment %>
+            </p>
+
+          </div>
+
+        <% } %>
+
+
+      </section>
+
+
+    <% } else { %>
+
+      <section class="rating-card">
+
+        <div class="rating-context">
+
+          <div>
+
+            <span class="context-label">
+              Equipment
+            </span>
+
+            <strong>
+              <%= transaction.equipment
+                ? transaction.equipment.name
+                : "Equipment unavailable"
+              %>
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span class="context-label">
+              Your role
+            </span>
+
+            <strong>
+              <%= viewerRole %>
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span class="context-label">
+              Rating
+            </span>
+
+            <strong>
+              <%= receiver
+                ? receiver.name
+                : "Participant"
+              %>
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="rating-info">
+
+          <p>
+            The transaction has been completed/returned.
+            Your rating will be stored with this transaction.
+          </p>
+
+          <p>
+            All three ratings use a 1–5 scale.
+          </p>
+
+        </div>
+
+
+        <form
+          method="POST"
+          action="/rating/transaction/<%= transaction._id %>"
+          class="rating-form"
+        >
+
+          <div class="rating-field">
+
+            <label
+              for="equipmentConditionRating"
+            >
+              Equipment Condition
+            </label>
+
+            <span class="rating-help">
+              How would you rate the equipment condition
+              during this borrowing?
+            </span>
+
+            <select
+              id="equipmentConditionRating"
+              name="equipmentConditionRating"
+              required
+            >
+
+              <option value="">
+                Select rating
+              </option>
+
+              <option value="1">
+                1 — Very Poor
+              </option>
+
+              <option value="2">
+                2 — Poor
+              </option>
+
+              <option value="3">
+                3 — Average
+              </option>
+
+              <option value="4">
+                4 — Good
+              </option>
+
+              <option value="5">
+                5 — Excellent
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="rating-field">
+
+            <label
+              for="punctualityRating"
+            >
+              Punctuality / Reliability
+            </label>
+
+            <span class="rating-help">
+              How reliable was the other participant
+              about the borrowing/return process?
+            </span>
+
+            <select
+              id="punctualityRating"
+              name="punctualityRating"
+              required
+            >
+
+              <option value="">
+                Select rating
+              </option>
+
+              <option value="1">
+                1 — Very Poor
+              </option>
+
+              <option value="2">
+                2 — Poor
+              </option>
+
+              <option value="3">
+                3 — Average
+              </option>
+
+              <option value="4">
+                4 — Good
+              </option>
+
+              <option value="5">
+                5 — Excellent
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="rating-field">
+
+            <label
+              for="overallRating"
+            >
+              Overall Rating
+            </label>
+
+            <span class="rating-help">
+              Your overall experience.
+            </span>
+
+            <select
+              id="overallRating"
+              name="overallRating"
+              required
+            >
+
+              <option value="">
+                Select rating
+              </option>
+
+              <option value="1">
+                1 — Very Poor
+              </option>
+
+              <option value="2">
+                2 — Poor
+              </option>
+
+              <option value="3">
+                3 — Average
+              </option>
+
+              <option value="4">
+                4 — Good
+              </option>
+
+              <option value="5">
+                5 — Excellent
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="rating-field">
+
+            <label
+              for="comment"
+            >
+              Comment
+            </label>
+
+            <textarea
+              id="comment"
+              name="comment"
+              rows="5"
+              maxlength="1000"
+              placeholder="Write an optional comment..."
+            ></textarea>
+
+            <span class="rating-help">
+              Maximum 1000 characters.
+            </span>
+
+          </div>
+
+
+          <div class="rating-actions">
+
+            <a
+              href="/dashboard"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </a>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Submit Rating
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+    <% } %>
+
+  </div>
+
+</main>
+
+
+<%- include("../partials/footer") %>

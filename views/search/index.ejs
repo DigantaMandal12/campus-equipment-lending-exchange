@@ -1,0 +1,701 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="search-page">
+
+  <div class="container">
+
+    <!-- ==================================================
+         SEARCH HERO
+         ================================================== -->
+
+    <section class="search-hero">
+
+      <span class="eyebrow">
+        SMART SEARCH
+      </span>
+
+      <h1>
+        Find the right equipment
+      </h1>
+
+      <p>
+        Search academic equipment using keywords,
+        category, department, condition, availability,
+        and price.
+      </p>
+
+    </section>
+
+
+    <!-- ==================================================
+         SEARCH FORM
+         ================================================== -->
+
+    <form
+      method="GET"
+      action="/search"
+      class="search-filter-form"
+    >
+
+      <!-- KEYWORD -->
+
+      <div class="search-main-field">
+
+        <label for="keyword">
+          Keyword
+        </label>
+
+        <input
+          id="keyword"
+          name="keyword"
+          type="text"
+          value="<%= filters && filters.keyword ? filters.keyword : '' %>"
+          placeholder="Arduino, Load Cell, Multimeter..."
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <!-- DEPARTMENT -->
+
+      <div class="filter-field">
+
+        <label for="department">
+          Department
+        </label>
+
+        <select
+          id="department"
+          name="department"
+        >
+
+          <option value="">
+            All Departments
+          </option>
+
+          <% (departments || []).forEach(function(item) { %>
+
+            <option
+              value="<%= item %>"
+              <%= filters &&
+                  filters.department &&
+                  String(filters.department).toLowerCase() ===
+                  String(item).toLowerCase()
+                  ? "selected"
+                  : "" %>
+            >
+              <%= item %>
+            </option>
+
+          <% }) %>
+
+        </select>
+
+      </div>
+
+
+      <!-- CATEGORY -->
+
+      <div class="filter-field">
+
+        <label for="category">
+          Category
+        </label>
+
+        <select
+          id="category"
+          name="category"
+        >
+
+          <option value="">
+            All Categories
+          </option>
+
+          <% (categories || []).forEach(function(item) { %>
+
+            <option
+              value="<%= item %>"
+              <%= filters &&
+                  filters.category &&
+                  String(filters.category).toLowerCase() ===
+                  String(item).toLowerCase()
+                  ? "selected"
+                  : "" %>
+            >
+              <%= item %>
+            </option>
+
+          <% }) %>
+
+        </select>
+
+      </div>
+
+
+      <!-- CONDITION -->
+
+      <div class="filter-field">
+
+        <label for="condition">
+          Condition
+        </label>
+
+        <select
+          id="condition"
+          name="condition"
+        >
+
+          <option value="">
+            All Conditions
+          </option>
+
+          <% (conditions || []).forEach(function(item) { %>
+
+            <option
+              value="<%= item %>"
+              <%= filters &&
+                  filters.condition &&
+                  String(filters.condition).toLowerCase() ===
+                  String(item).toLowerCase()
+                  ? "selected"
+                  : "" %>
+            >
+              <%= item %>
+            </option>
+
+          <% }) %>
+
+        </select>
+
+      </div>
+
+
+      <!-- AVAILABILITY -->
+
+      <div class="filter-field">
+
+        <label for="availability">
+          Availability
+        </label>
+
+        <select
+          id="availability"
+          name="availability"
+        >
+
+          <option value="">
+            All
+          </option>
+
+          <option
+            value="available"
+            <%= filters &&
+                filters.availability === "available"
+                ? "selected"
+                : "" %>
+          >
+            Available
+          </option>
+
+          <option
+            value="unavailable"
+            <%= filters &&
+                filters.availability === "unavailable"
+                ? "selected"
+                : "" %>
+          >
+            Currently Unavailable
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PRICE -->
+
+      <div class="price-group">
+
+        <!-- MIN PRICE -->
+
+        <div class="filter-field">
+
+          <label for="minPrice">
+            Min Price
+          </label>
+
+          <input
+            id="minPrice"
+            name="minPrice"
+            type="number"
+            min="0"
+            step="1"
+            value="<%= filters && filters.minPrice ? filters.minPrice : '' %>"
+            placeholder="No minimum"
+          >
+
+        </div>
+
+
+        <!-- MAX PRICE -->
+
+        <div class="filter-field">
+
+          <label for="maxPrice">
+            Max Price
+          </label>
+
+          <input
+            id="maxPrice"
+            name="maxPrice"
+            type="number"
+            min="0"
+            step="1"
+            value="<%= filters && filters.maxPrice ? filters.maxPrice : '' %>"
+            placeholder="No maximum"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="search-actions">
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Search Equipment
+        </button>
+
+        <a
+          href="/search"
+          class="btn btn-secondary"
+        >
+          Clear
+        </a>
+
+      </div>
+
+    </form>
+
+
+    <!-- ==================================================
+         RESULTS
+         ================================================== -->
+
+    <section class="search-results">
+
+      <div class="results-header">
+
+        <div>
+
+          <span class="eyebrow">
+            RESULTS
+          </span>
+
+          <h2>
+            <%= Number(total || 0) %>
+            equipment item<%= Number(total || 0) === 1 ? "" : "s" %>
+            found
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================
+           EMPTY RESULT
+           ================================================== -->
+
+      <% if (!equipment || equipment.length === 0) { %>
+
+        <div class="empty-state">
+
+          <h3>
+            No matching equipment found
+          </h3>
+
+          <% if (
+            filters &&
+            (
+              filters.keyword ||
+              filters.department ||
+              filters.category ||
+              filters.condition ||
+              filters.availability ||
+              filters.minPrice ||
+              filters.maxPrice
+            )
+          ) { %>
+
+            <p>
+              Try a different keyword or remove one of the filters.
+            </p>
+
+            <a
+              href="/search"
+              class="btn btn-secondary"
+            >
+              Clear All Filters
+            </a>
+
+          <% } else { %>
+
+            <p>
+              There is currently no equipment listed in the database.
+            </p>
+
+          <% } %>
+
+        </div>
+
+      <% } else { %>
+
+
+        <!-- ==================================================
+             EQUIPMENT GRID
+             ================================================== -->
+
+        <div class="equipment-search-grid">
+
+          <% equipment.forEach(function(item) { %>
+
+            <article class="search-equipment-card">
+
+
+              <!-- IMAGE -->
+
+              <div class="search-card-image">
+
+                <% if (
+                  Array.isArray(item.images) &&
+                  item.images.length > 0 &&
+                  item.images[0]
+                ) { %>
+
+                  <img
+                    src="<%= item.images[0] %>"
+                    alt="<%= item.name || 'Equipment image' %>"
+                    loading="lazy"
+                  >
+
+                <% } else { %>
+
+                  <span>
+                    <%= item.name &&
+                        String(item.name).trim()
+                        ? String(item.name).trim().charAt(0).toUpperCase()
+                        : "E" %>
+                  </span>
+
+                <% } %>
+
+              </div>
+
+
+              <!-- CONTENT -->
+
+              <div class="search-card-content">
+
+
+                <!-- TOP BADGES -->
+
+                <div class="search-card-top">
+
+                  <span class="search-category">
+                    <%= item.category || "Equipment" %>
+                  </span>
+
+                  <span
+                    class="search-status <%= Number(item.availableQuantity || 0) > 0
+                      ? "available"
+                      : "unavailable" %>"
+                  >
+                    <%= Number(item.availableQuantity || 0) > 0
+                      ? "Available"
+                      : "Unavailable" %>
+                  </span>
+
+                </div>
+
+
+                <!-- NAME -->
+
+                <h3>
+                  <%= item.name || "Unnamed Equipment" %>
+                </h3>
+
+
+                <!-- DESCRIPTION -->
+
+                <p class="search-description">
+
+                  <%
+                    const description =
+                      item.description
+                        ? String(item.description)
+                        : "";
+
+                    const shortDescription =
+                      description.length > 110
+                        ? description.substring(0, 110) + "..."
+                        : description;
+                  %>
+
+                  <%= shortDescription || "No description available." %>
+
+                </p>
+
+
+                <!-- META -->
+
+                <div class="search-meta">
+
+
+                  <!-- DEPARTMENT -->
+
+                  <div>
+
+                    <span>
+                      Department
+                    </span>
+
+                    <strong>
+                      <%= item.department || "—" %>
+                    </strong>
+
+                  </div>
+
+
+                  <!-- CONDITION -->
+
+                  <div>
+
+                    <span>
+                      Condition
+                    </span>
+
+                    <strong>
+                      <%= item.condition || "—" %>
+                    </strong>
+
+                  </div>
+
+
+                  <!-- STOCK -->
+
+                  <div>
+
+                    <span>
+                      Available
+                    </span>
+
+                    <strong>
+                      <%= Number(item.availableQuantity || 0) %>
+                      /
+                      <%= Number(item.quantity || 0) %>
+                    </strong>
+
+                  </div>
+
+
+                  <!-- RENTAL -->
+
+                  <div>
+
+                    <span>
+                      Rental Fee
+                    </span>
+
+                    <strong>
+                      ₹<%= Number(item.rentalFee || 0).toLocaleString("en-IN") %>
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <!-- VIEW EQUIPMENT -->
+
+                <a
+                  href="/equipment/<%= item._id %>"
+                  class="btn btn-primary btn-full"
+                >
+                  View Equipment
+                </a>
+
+              </div>
+
+            </article>
+
+          <% }) %>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAGINATION
+             ================================================== -->
+
+        <% if (Number(totalPages || 1) > 1) { %>
+
+          <%
+            const buildPageUrl = function(targetPage) {
+
+              const params = new URLSearchParams();
+
+              if (
+                filters &&
+                filters.keyword
+              ) {
+                params.set(
+                  "keyword",
+                  filters.keyword
+                );
+              }
+
+              if (
+                filters &&
+                filters.department
+              ) {
+                params.set(
+                  "department",
+                  filters.department
+                );
+              }
+
+              if (
+                filters &&
+                filters.category
+              ) {
+                params.set(
+                  "category",
+                  filters.category
+                );
+              }
+
+              if (
+                filters &&
+                filters.condition
+              ) {
+                params.set(
+                  "condition",
+                  filters.condition
+                );
+              }
+
+              if (
+                filters &&
+                filters.availability
+              ) {
+                params.set(
+                  "availability",
+                  filters.availability
+                );
+              }
+
+              if (
+                filters &&
+                filters.minPrice !== undefined &&
+                filters.minPrice !== null &&
+                String(filters.minPrice).trim() !== ""
+              ) {
+                params.set(
+                  "minPrice",
+                  filters.minPrice
+                );
+              }
+
+              if (
+                filters &&
+                filters.maxPrice !== undefined &&
+                filters.maxPrice !== null &&
+                String(filters.maxPrice).trim() !== ""
+              ) {
+                params.set(
+                  "maxPrice",
+                  filters.maxPrice
+                );
+              }
+
+              params.set(
+                "page",
+                targetPage
+              );
+
+              return params.toString();
+            };
+          %>
+
+
+          <nav
+            class="search-pagination"
+            aria-label="Search results pagination"
+          >
+
+
+            <!-- PREVIOUS -->
+
+            <% if (hasPreviousPage) { %>
+
+              <a
+                href="/search?<%= buildPageUrl(page - 1) %>"
+                class="btn btn-secondary"
+              >
+                ← Previous
+              </a>
+
+            <% } %>
+
+
+            <!-- PAGE NUMBER -->
+
+            <span>
+
+              Page
+              <strong>
+                <%= page %>
+              </strong>
+
+              of
+
+              <strong>
+                <%= totalPages %>
+              </strong>
+
+            </span>
+
+
+            <!-- NEXT -->
+
+            <% if (hasNextPage) { %>
+
+              <a
+                href="/search?<%= buildPageUrl(page + 1) %>"
+                class="btn btn-secondary"
+              >
+                Next →
+              </a>
+
+            <% } %>
+
+          </nav>
+
+        <% } %>
+
+      <% } %>
+
+    </section>
+
+  </div>
+
+</main>

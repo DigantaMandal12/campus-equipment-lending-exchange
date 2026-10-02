@@ -1,0 +1,419 @@
+<%- include("../partials/head", { title }) %>
+
+<link
+  rel="stylesheet"
+  href="/css/return.css"
+>
+
+<%- include("../partials/header") %>
+
+
+<main class="equipment-page">
+
+  <div class="container">
+
+
+    <!-- ========================================== -->
+    <!-- HEADER -->
+    <!-- ========================================== -->
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          Return Equipment
+        </h1>
+
+        <p>
+          Request the lender to receive your borrowed equipment.
+        </p>
+
+      </div>
+
+
+      <a
+        href="/borrow/my-requests"
+        class="btn btn-secondary"
+      >
+        My Requests
+      </a>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- ALERTS -->
+    <!-- ========================================== -->
+
+    <% if (success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (error) { %>
+
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <!-- ========================================== -->
+    <!-- RETURN PANEL -->
+    <!-- ========================================== -->
+
+    <section class="return-panel">
+
+
+      <!-- ======================================== -->
+      <!-- EQUIPMENT -->
+      <!-- ======================================== -->
+
+      <div class="return-equipment">
+
+
+        <% if (
+          transaction.equipment &&
+          Array.isArray(transaction.equipment.images) &&
+          transaction.equipment.images.length > 0
+        ) { %>
+
+          <img
+            src="<%= transaction.equipment.images[0] %>"
+            alt="<%= transaction.equipment.name || 'Equipment' %>"
+            class="return-equipment-image"
+          >
+
+        <% } else { %>
+
+          <div class="return-image-placeholder">
+            No Image
+          </div>
+
+        <% } %>
+
+
+        <div>
+
+          <span class="equipment-card-category">
+
+            <%= transaction.equipment
+              ? transaction.equipment.category || "Equipment"
+              : "Equipment"
+            %>
+
+          </span>
+
+
+          <h2>
+
+            <%= transaction.equipment
+              ? transaction.equipment.name || "Unknown Equipment"
+              : "Unknown Equipment"
+            %>
+
+          </h2>
+
+
+          <p>
+
+            Quantity:
+
+            <strong>
+              <%= transaction.quantity %>
+            </strong>
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- DETAILS -->
+      <!-- ======================================== -->
+
+      <div class="return-details">
+
+
+        <div class="return-detail">
+
+          <span>
+            Transaction Status
+          </span>
+
+          <strong>
+
+            <%= transaction.status
+              ? transaction.status.replace(
+                  /_/g,
+                  " "
+                )
+              : "UNKNOWN"
+            %>
+
+          </strong>
+
+        </div>
+
+
+        <div class="return-detail">
+
+          <span>
+            Requested Return Date
+          </span>
+
+          <strong>
+
+            <% if (
+              transaction.requestedReturnDate
+            ) { %>
+
+              <%= new Date(
+                transaction.requestedReturnDate
+              ).toLocaleDateString(
+                "en-IN"
+              ) %>
+
+            <% } else { %>
+
+              Not specified
+
+            <% } %>
+
+          </strong>
+
+        </div>
+
+
+        <div class="return-detail">
+
+          <span>
+            Security Deposit
+          </span>
+
+          <strong>
+
+            ₹<%= Number(
+              transaction.securityDeposit || 0
+            ).toLocaleString("en-IN") %>
+
+          </strong>
+
+        </div>
+
+
+        <div class="return-detail">
+
+          <span>
+            Deposit Refund
+          </span>
+
+          <strong>
+
+            <%= transaction.depositRefundStatus
+              ? transaction.depositRefundStatus.replace(
+                  /_/g,
+                  " "
+                )
+              : "NOT APPLICABLE"
+            %>
+
+          </strong>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- ACTIVE -->
+      <!-- ======================================== -->
+
+      <% if (
+        transaction.status === "ACTIVE"
+      ) { %>
+
+
+        <div class="return-warning">
+
+          <strong>
+            Ready to return?
+          </strong>
+
+
+          <p>
+            Submit a return request to the lender.
+          </p>
+
+
+          <p>
+            The equipment will remain active until
+            the lender confirms the return.
+          </p>
+
+        </div>
+
+
+        <form
+          method="POST"
+          action="/return/<%= transaction._id %>"
+          class="return-form"
+        >
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-full"
+            onclick="return confirm('Submit this equipment return request?')"
+          >
+            Request Return
+          </button>
+
+        </form>
+
+
+      <% } %>
+
+
+      <!-- ======================================== -->
+      <!-- RETURN REQUESTED -->
+      <!-- ======================================== -->
+
+      <% if (
+        transaction.status === "RETURN_REQUESTED"
+      ) { %>
+
+
+        <div class="return-pending">
+
+          <strong>
+            Return Request Submitted
+          </strong>
+
+
+          <p>
+            The lender has been notified.
+          </p>
+
+
+          <p>
+            Inventory will be restored after the lender
+            confirms the returned equipment.
+          </p>
+
+        </div>
+
+
+      <% } %>
+
+
+      <!-- ======================================== -->
+      <!-- RETURNED -->
+      <!-- ======================================== -->
+
+      <% if (
+        transaction.status === "RETURNED"
+      ) { %>
+
+
+        <div class="return-success">
+
+          <strong>
+            Equipment Returned
+          </strong>
+
+
+          <% if (
+            transaction.actualReturnDate
+          ) { %>
+
+            <p>
+
+              Returned on:
+
+              <strong>
+
+                <%= new Date(
+                  transaction.actualReturnDate
+                ).toLocaleString(
+                  "en-IN"
+                ) %>
+
+              </strong>
+
+            </p>
+
+          <% } %>
+
+
+          <p>
+
+            Condition:
+
+            <strong>
+
+              <%= transaction.returnedCondition ||
+                "Not recorded"
+              %>
+
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            Late Days:
+
+            <strong>
+              <%= transaction.lateDays || 0 %>
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            Deposit Status:
+
+            <strong>
+
+              <%= transaction.paymentStatus
+                ? transaction.paymentStatus.replace(
+                    /_/g,
+                    " "
+                  )
+                : "UNKNOWN"
+              %>
+
+            </strong>
+
+          </p>
+
+
+        </div>
+
+
+      <% } %>
+
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<%- include("../partials/footer") %>

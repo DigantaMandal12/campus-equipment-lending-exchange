@@ -1,0 +1,626 @@
+/* =========================================================
+   CAMPUS EXCHANGE — RETURN EQUIPMENT
+   FINAL PROFESSIONAL UI
+   ========================================================= */
+
+.return-page {
+  min-height: calc(100vh - 72px);
+  padding: 32px 0 70px;
+  background: #f6f8fc;
+  color: #111827;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+.return-page .container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.return-page .equipment-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 28px;
+}
+
+.return-page .eyebrow {
+  display: block;
+  margin-bottom: 8px;
+
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.return-page .equipment-page-header h1 {
+  margin: 0 0 8px;
+
+  color: #0f172a;
+  font-size: 34px;
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.return-page .equipment-page-header p {
+  margin: 0;
+
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   MY REQUESTS BUTTON
+   ========================================================= */
+
+.return-page .equipment-page-header .btn,
+.return-page .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+  padding: 0 17px;
+
+  border: 1px solid #d7dee8;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #1e293b;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.return-page .equipment-page-header .btn:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+
+/* =========================================================
+   MAIN RETURN AREA
+   ========================================================= */
+
+/*
+   The existing page is approximately:
+
+   header
+   image
+   category
+   title
+   details
+   footer
+
+   We turn the main container into a grid.
+*/
+
+.return-page .container {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(360px, 420px);
+
+  column-gap: 28px;
+  row-gap: 0;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   HEADER MUST SPAN BOTH COLUMNS
+   ========================================================= */
+
+.return-page .equipment-page-header {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   EQUIPMENT IMAGE
+   ========================================================= */
+
+.return-page .container > img:first-of-type {
+  grid-column: 1;
+  grid-row: 2 / span 8;
+
+  width: 100%;
+  height: 520px;
+
+  display: block;
+
+  object-fit: contain;
+  object-position: center;
+
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.return-page .container > .equipment-card-category,
+.return-page .container > .equipment-category,
+.return-page .container > .category {
+  grid-column: 2;
+
+  margin-top: 4px;
+  margin-bottom: 7px;
+
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   EQUIPMENT NAME
+   ========================================================= */
+
+.return-page .container > h2,
+.return-page .container > h1 {
+  grid-column: 2;
+
+  margin: 0 0 18px;
+
+  color: #0f172a;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  line-height: 1.25;
+}
+
+
+/* =========================================================
+   DIRECT TEXT INFORMATION
+   ========================================================= */
+
+.return-page .container > p:not(.page-subtitle),
+.return-page .container > strong {
+  grid-column: 2;
+}
+
+
+/* =========================================================
+   DETAILS CONTAINER
+   ========================================================= */
+
+.return-page .detail-list,
+.return-page .return-details,
+.return-page .transaction-details,
+.return-page .equipment-info {
+  grid-column: 2;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin: 0 0 18px;
+  padding: 16px 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 24px rgba(15, 23, 42, 0.05);
+}
+
+
+/* =========================================================
+   DETAIL ROWS
+   ========================================================= */
+
+.return-page .detail-list-item,
+.return-page .transaction-details > div,
+.return-page .equipment-info > div {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  min-height: 45px;
+
+  padding: 9px 0;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.return-page .detail-list-item:last-child,
+.return-page .transaction-details > div:last-child,
+.return-page .equipment-info > div:last-child {
+  border-bottom: 0;
+}
+
+.return-page .detail-list-item > span,
+.return-page .transaction-details > div > span,
+.return-page .equipment-info > div > span {
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.return-page .detail-list-item > strong,
+.return-page .transaction-details > div > strong,
+.return-page .equipment-info > div > strong {
+  color: #111827;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.return-page .status,
+.return-page .transaction-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #fff7ed;
+  color: #c2410c;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   DEPOSIT INFO
+   ========================================================= */
+
+.return-page .deposit-info,
+.return-page .return-info {
+  grid-column: 2;
+
+  margin-bottom: 18px;
+  padding: 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.return-page .deposit-info strong,
+.return-page .return-info strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #111827;
+
+  font-size: 14px;
+}
+
+.return-page .deposit-info p,
+.return-page .return-info p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   RETURN ACTION
+   ========================================================= */
+
+.return-page form,
+.return-page .return-actions,
+.return-page .actions {
+  grid-column: 2;
+
+  width: 100%;
+
+  margin: 0 0 18px;
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 24px rgba(15, 23, 42, 0.05);
+}
+
+
+/* FORM LABEL */
+
+.return-page form label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* FORM INPUTS */
+
+.return-page form select,
+.return-page form input,
+.return-page form textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  min-height: 46px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font: inherit;
+}
+
+.return-page form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.return-page form select:focus,
+.return-page form input:focus,
+.return-page form textarea:focus {
+  outline: none;
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, .10);
+}
+
+
+/* =========================================================
+   RETURN BUTTON
+   ========================================================= */
+
+.return-page form button,
+.return-page form input[type="submit"],
+.return-page .return-button,
+.return-page .btn-primary {
+  width: 100%;
+
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 14px;
+
+  border: 1px solid #2563eb;
+  border-radius: 9px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.return-page form button:hover,
+.return-page form input[type="submit"]:hover,
+.return-page .return-button:hover,
+.return-page .btn-primary:hover {
+  background: #1d4ed8;
+
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, .20);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.return-page .alert,
+.return-page .warning,
+.return-page .return-warning {
+  grid-column: 1 / -1;
+
+  margin-bottom: 18px;
+
+  padding: 14px 16px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.return-page .alert-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.return-page .alert-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.return-page .warning,
+.return-page .return-warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+
+/* =========================================================
+   HIDE UNRELATED FOOTER CONTENT FROM GRID
+   ========================================================= */
+
+.return-page .container > footer {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .return-page .container {
+    grid-template-columns: 1fr;
+  }
+
+  .return-page .equipment-page-header {
+    grid-column: 1;
+  }
+
+  .return-page .container > img:first-of-type {
+    grid-column: 1;
+    grid-row: auto;
+
+    height: 400px;
+
+    margin-bottom: 20px;
+  }
+
+  .return-page .container > .equipment-card-category,
+  .return-page .container > .equipment-category,
+  .return-page .container > .category,
+  .return-page .container > h2,
+  .return-page .container > h1,
+  .return-page .detail-list,
+  .return-page .return-details,
+  .return-page .transaction-details,
+  .return-page .equipment-info,
+  .return-page .deposit-info,
+  .return-page .return-info,
+  .return-page form,
+  .return-page .return-actions,
+  .return-page .actions {
+    grid-column: 1;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .return-page {
+    padding: 24px 0 45px;
+  }
+
+  .return-page .container {
+    width: calc(100% - 20px);
+  }
+
+  .return-page .equipment-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .return-page .equipment-page-header h1 {
+    font-size: 27px;
+  }
+
+  .return-page .equipment-page-header .btn {
+    width: 100%;
+  }
+
+  .return-page .container > img:first-of-type {
+    height: 300px;
+
+    padding: 10px;
+  }
+
+  .return-page .container > h2,
+  .return-page .container > h1 {
+    font-size: 24px;
+  }
+
+  .return-page .detail-list-item,
+  .return-page .transaction-details > div,
+  .return-page .equipment-info > div {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 4px;
+  }
+
+  .return-page .detail-list-item > strong,
+  .return-page .transaction-details > div > strong,
+  .return-page .equipment-info > div > strong {
+    text-align: left;
+  }
+
+}

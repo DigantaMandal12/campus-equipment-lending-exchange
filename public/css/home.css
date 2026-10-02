@@ -1,0 +1,932 @@
+/* =========================================================
+   CAMPUS EXCHANGE — HOME PAGE
+   PHASE 7E FINAL HOME UX
+   ========================================================= */
+
+:root {
+  --home-primary: #315cf5;
+  --home-primary-dark: #2448d8;
+  --home-primary-soft: #eef2ff;
+
+  --home-text: #101828;
+  --home-text-soft: #475467;
+  --home-muted: #667085;
+
+  --home-border: #e4e7ec;
+  --home-border-soft: #eef1f5;
+
+  --home-page: #f7f9fc;
+  --home-card: #ffffff;
+
+  --home-success: #16a34a;
+  --home-success-soft: #ecfdf3;
+
+  --home-warning: #d97706;
+  --home-warning-soft: #fff7ed;
+
+  --home-radius: 18px;
+
+  --home-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06);
+
+  --home-shadow-hover:
+    0 18px 40px rgba(15, 23, 42, 0.10);
+}
+
+
+/* =========================================================
+   HOME PAGE BASE
+   ========================================================= */
+
+body:has(main.home-page) {
+  background: var(--home-page);
+}
+
+.home-page {
+  position: relative;
+
+  min-height:
+    calc(100vh - 72px);
+
+  padding:
+    48px 0 80px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faff 0%,
+      #f5f7fb 100%
+    );
+}
+
+
+/* =========================================================
+   DECORATIVE BACKGROUND
+   ========================================================= */
+
+.home-page::before {
+  content: "";
+
+  position: absolute;
+
+  top: -280px;
+  right: -180px;
+
+  width: 650px;
+  height: 650px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(49, 92, 245, 0.11) 0%,
+      rgba(49, 92, 245, 0) 68%
+    );
+
+  pointer-events: none;
+}
+
+.home-page::after {
+  content: "";
+
+  position: absolute;
+
+  left: -220px;
+  bottom: -260px;
+
+  width: 600px;
+  height: 600px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(99, 102, 241, 0.07) 0%,
+      rgba(99, 102, 241, 0) 68%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.home-page > .container,
+.home-page .container {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(
+      calc(100% - 40px),
+      1180px
+    );
+
+  margin:
+    0 auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.home-page .hero,
+.home-page .home-hero,
+.home-page .hero-section {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.55fr)
+    minmax(280px, 0.75fr);
+
+  gap: 28px;
+
+  align-items: stretch;
+
+  margin-bottom: 28px;
+
+  padding: 38px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #e1e7f3;
+
+  border-radius:
+    24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f7f9ff 58%,
+      #eef2ff 100%
+    );
+
+  box-shadow:
+    var(--home-shadow);
+}
+
+
+/* =========================================================
+   HERO CONTENT
+   ========================================================= */
+
+.home-page .hero-content,
+.home-page .home-hero-content {
+  min-width: 0;
+}
+
+.home-page .hero-content h1,
+.home-page .home-hero h1,
+.home-page .hero h1,
+.home-page main h1 {
+  max-width: 780px;
+
+  margin:
+    10px 0 14px;
+
+  color:
+    var(--home-text);
+
+  font-size:
+    clamp(
+      34px,
+      5vw,
+      52px
+    );
+
+  font-weight:
+    850;
+
+  line-height:
+    1.05;
+
+  letter-spacing:
+    -0.035em;
+}
+
+.home-page .hero-content p,
+.home-page .home-hero p,
+.home-page .hero p {
+  max-width: 700px;
+
+  margin:
+    0 0 22px;
+
+  color:
+    var(--home-text-soft);
+
+  font-size:
+    15px;
+
+  line-height:
+    1.75;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.home-page .eyebrow,
+.home-page .section-eyebrow {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  margin: 0;
+
+  color:
+    var(--home-primary);
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    0.14em;
+
+  text-transform:
+    uppercase;
+}
+
+.home-page .eyebrow::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--home-primary);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(49, 92, 245, 0.10);
+}
+
+
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
+
+.home-page .hero-actions,
+.home-page .home-actions,
+.home-page .hero .actions {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    10px;
+
+  margin-top:
+    18px;
+}
+
+.home-page .btn {
+  min-height:
+    44px;
+
+  padding:
+    11px 17px;
+
+  border-radius:
+    11px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+}
+
+.home-page .btn-primary {
+  background:
+    var(--home-primary);
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 8px 18px
+    rgba(49, 92, 245, 0.20);
+}
+
+.home-page .btn-primary:hover {
+  background:
+    var(--home-primary-dark);
+}
+
+.home-page .btn-secondary {
+  background:
+    #ffffff;
+
+  border:
+    1px solid
+    var(--home-border);
+
+  color:
+    var(--home-text);
+}
+
+.home-page .btn-secondary:hover {
+  background:
+    #f8fafc;
+}
+
+
+/* =========================================================
+   HERO SIDE PANEL
+   ========================================================= */
+
+.home-page .hero-side,
+.home-page .home-hero-side,
+.home-page .hero-card {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  min-width:
+    0;
+
+  padding:
+    24px;
+
+  border:
+    1px solid
+    rgba(49, 92, 245, 0.12);
+
+  border-radius:
+    18px;
+
+  background:
+    rgba(255,255,255,0.78);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.home-page .hero-side h2,
+.home-page .home-hero-side h2,
+.home-page .hero-card h2 {
+  margin:
+    0 0 14px;
+
+  color:
+    var(--home-text);
+
+  font-size:
+    18px;
+}
+
+
+/* =========================================================
+   SYSTEM STATUS
+   ========================================================= */
+
+.home-page .system-status,
+.home-page .status-section,
+.home-page .system-info {
+  margin:
+    28px 0;
+}
+
+.home-page .system-status h2,
+.home-page .status-section h2,
+.home-page .system-info h2 {
+  margin:
+    0 0 16px;
+
+  color:
+    var(--home-text);
+
+  font-size:
+    22px;
+
+  font-weight:
+    800;
+}
+
+
+/* =========================================================
+   STATUS GRID
+   ========================================================= */
+
+.home-page .status-grid,
+.home-page .system-status-grid,
+.home-page .status-cards {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap:
+    14px;
+}
+
+
+/* =========================================================
+   STATUS CARD
+   ========================================================= */
+
+.home-page .status-card,
+.home-page .system-status-card,
+.home-page .status-item {
+  min-width:
+    0;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    var(--home-border);
+
+  border-radius:
+    15px;
+
+  background:
+    var(--home-card);
+
+  box-shadow:
+    0 4px 14px
+    rgba(15, 23, 42, 0.04);
+}
+
+.home-page .status-card:hover,
+.home-page .system-status-card:hover,
+.home-page .status-item:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 10px 24px
+    rgba(15, 23, 42, 0.07);
+}
+
+.home-page .status-card span,
+.home-page .status-item span {
+  display:
+    block;
+
+  margin-bottom:
+    6px;
+
+  color:
+    var(--home-muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    750;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.06em;
+}
+
+.home-page .status-card strong,
+.home-page .status-item strong {
+  color:
+    var(--home-text);
+
+  font-size:
+    15px;
+}
+
+
+/* =========================================================
+   TECH STACK / QUICK INFO
+   ========================================================= */
+
+.home-page .tech-stack,
+.home-page .architecture,
+.home-page .quick-info {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    18px;
+
+  margin-top:
+    28px;
+}
+
+.home-page .tech-card,
+.home-page .architecture-card,
+.home-page .quick-info-card {
+  padding:
+    22px;
+
+  border:
+    1px solid
+    var(--home-border);
+
+  border-radius:
+    var(--home-radius);
+
+  background:
+    var(--home-card);
+
+  box-shadow:
+    var(--home-shadow);
+}
+
+.home-page .tech-card h3,
+.home-page .architecture-card h3,
+.home-page .quick-info-card h3 {
+  margin:
+    0 0 7px;
+
+  color:
+    var(--home-text);
+
+  font-size:
+    17px;
+}
+
+.home-page .tech-card p,
+.home-page .architecture-card p,
+.home-page .quick-info-card p {
+  margin:
+    0;
+
+  color:
+    var(--home-muted);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.6;
+}
+
+
+/* =========================================================
+   CURRENT PHASE
+   ========================================================= */
+
+.home-page .current-phase,
+.home-page .phase-section,
+.home-page .roadmap-section {
+  margin-top:
+    32px;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    var(--home-border);
+
+  border-radius:
+    20px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    var(--home-shadow);
+}
+
+.home-page .current-phase h2,
+.home-page .phase-section h2,
+.home-page .roadmap-section h2 {
+  margin:
+    7px 0 10px;
+
+  color:
+    var(--home-text);
+
+  font-size:
+    25px;
+
+  line-height:
+    1.2;
+}
+
+.home-page .current-phase > p,
+.home-page .phase-section > p,
+.home-page .roadmap-section > p {
+  max-width:
+    850px;
+
+  margin:
+    0 0 24px;
+
+  color:
+    var(--home-muted);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.7;
+}
+
+
+/* =========================================================
+   PHASE ITEMS
+   ========================================================= */
+
+.home-page .phase-list,
+.home-page .roadmap-list,
+.home-page .phase-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap:
+    16px;
+}
+
+.home-page .phase-item,
+.home-page .roadmap-item,
+.home-page .phase-card {
+  position:
+    relative;
+
+  padding:
+    20px;
+
+  border:
+    1px solid
+    var(--home-border);
+
+  border-radius:
+    15px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #fafbff
+    );
+}
+
+.home-page .phase-item::before,
+.home-page .roadmap-item::before,
+.home-page .phase-card::before {
+  content:
+    "";
+
+  display:
+    block;
+
+  width:
+    34px;
+
+  height:
+    3px;
+
+  margin-bottom:
+    14px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--home-primary);
+}
+
+.home-page .phase-number {
+  display:
+    inline-block;
+
+  margin-bottom:
+    10px;
+
+  color:
+    var(--home-primary);
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
+}
+
+.home-page .phase-item h3,
+.home-page .roadmap-item h3,
+.home-page .phase-card h3 {
+  margin:
+    0 0 8px;
+
+  color:
+    var(--home-text);
+
+  font-size:
+    17px;
+}
+
+.home-page .phase-item p,
+.home-page .roadmap-item p,
+.home-page .phase-card p {
+  margin:
+    0;
+
+  color:
+    var(--home-muted);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.65;
+}
+
+
+/* =========================================================
+   FEATURE LISTS
+   ========================================================= */
+
+.home-page ul {
+  padding-left:
+    18px;
+}
+
+.home-page li {
+  margin-bottom:
+    6px;
+
+  color:
+    var(--home-text-soft);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.55;
+}
+
+
+/* =========================================================
+   FOOTER SPACE
+   ========================================================= */
+
+.home-page + footer,
+.home-page ~ footer {
+  margin-top:
+    0;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .home-page .hero,
+  .home-page .home-hero,
+  .home-page .hero-section {
+    grid-template-columns:
+      1fr;
+  }
+
+  .home-page .status-grid,
+  .home-page .system-status-grid,
+  .home-page .status-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .home-page .phase-list,
+  .home-page .roadmap-list,
+  .home-page .phase-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .home-page {
+    padding:
+      24px 0 50px;
+  }
+
+  .home-page > .container,
+  .home-page .container {
+    width:
+      calc(100% - 24px);
+  }
+
+  .home-page .hero,
+  .home-page .home-hero,
+  .home-page .hero-section {
+    padding:
+      24px;
+
+    border-radius:
+      18px;
+  }
+
+  .home-page .hero-content h1,
+  .home-page .home-hero h1,
+  .home-page .hero h1,
+  .home-page main h1 {
+    font-size:
+      32px;
+  }
+
+  .home-page .hero-actions,
+  .home-page .home-actions,
+  .home-page .hero .actions {
+    flex-direction:
+      column;
+  }
+
+  .home-page .hero-actions .btn,
+  .home-page .home-actions .btn {
+    width:
+      100%;
+  }
+
+  .home-page .status-grid,
+  .home-page .system-status-grid,
+  .home-page .status-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .home-page .tech-stack,
+  .home-page .architecture,
+  .home-page .quick-info,
+  .home-page .phase-list,
+  .home-page .roadmap-list,
+  .home-page .phase-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .home-page .status-grid,
+  .home-page .system-status-grid,
+  .home-page .status-cards {
+    grid-template-columns:
+      1fr;
+  }
+
+  .home-page .hero,
+  .home-page .home-hero,
+  .home-page .hero-section,
+  .home-page .current-phase,
+  .home-page .phase-section,
+  .home-page .roadmap-section {
+    padding:
+      20px;
+  }
+
+}

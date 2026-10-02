@@ -1,0 +1,906 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<%
+  const successMessage =
+    typeof success !== "undefined" &&
+    success
+      ? success
+      : "";
+
+  const errorMessage =
+    typeof error !== "undefined" &&
+    error
+      ? error
+      : "";
+%>
+
+<main class="equipment-page">
+
+  <div class="container">
+
+    <div class="equipment-page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          My Borrow Requests
+        </h1>
+
+        <p>
+          Track your equipment requests, payments, due dates,
+          returns, and active borrowings.
+        </p>
+
+      </div>
+
+
+      <a
+        href="/equipment"
+        class="btn btn-primary"
+      >
+        Browse Equipment
+      </a>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- SUCCESS -->
+    <!-- ========================================== -->
+
+    <% if (successMessage) { %>
+
+      <div class="alert alert-success">
+        <%= successMessage %>
+      </div>
+
+    <% } %>
+
+
+    <!-- ========================================== -->
+    <!-- ERROR -->
+    <!-- ========================================== -->
+
+    <% if (errorMessage) { %>
+
+      <div class="alert alert-error">
+        <%= errorMessage %>
+      </div>
+
+    <% } %>
+
+
+    <!-- ========================================== -->
+    <!-- EMPTY -->
+    <!-- ========================================== -->
+
+    <% if (!requests || requests.length === 0) { %>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          —
+        </div>
+
+        <h3>
+          No borrow requests yet.
+        </h3>
+
+        <p>
+          Browse available equipment and submit your first request.
+        </p>
+
+        <div style="margin-top: 18px;">
+
+          <a
+            href="/equipment"
+            class="btn btn-primary"
+          >
+            Browse Equipment
+          </a>
+
+        </div>
+
+      </div>
+
+
+    <% } else { %>
+
+
+      <div class="equipment-grid">
+
+
+        <% for (
+          let i = 0;
+          i < requests.length;
+          i++
+        ) { %>
+
+
+          <%
+            const request =
+              requests[i];
+
+            const equipment =
+              request.equipment || null;
+
+            const lender =
+              request.lender || null;
+
+            const status =
+              request.status || "UNKNOWN";
+
+            const paymentStatus =
+              request.paymentStatus || "NOT_STARTED";
+          %>
+
+
+          <article class="equipment-card">
+
+
+            <!-- ================================== -->
+            <!-- IMAGE -->
+            <!-- ================================== -->
+
+            <div class="equipment-card-visual">
+
+
+              <% if (
+                equipment &&
+                Array.isArray(equipment.images) &&
+                equipment.images.length > 0
+              ) { %>
+
+                <img
+                  src="<%= equipment.images[0] %>"
+                  alt="<%= equipment.name || 'Equipment' %>"
+                  class="equipment-card-image"
+                  loading="lazy"
+                >
+
+              <% } else { %>
+
+                <span class="equipment-letter">
+
+                  <%= equipment &&
+                      equipment.name
+                        ? equipment.name
+                            .charAt(0)
+                            .toUpperCase()
+                        : "?"
+                  %>
+
+                </span>
+
+              <% } %>
+
+
+              <span class="equipment-status-badge status-available">
+
+                <%= status.replace(
+                  /_/g,
+                  " "
+                ) %>
+
+              </span>
+
+            </div>
+
+
+            <!-- ================================== -->
+            <!-- CONTENT -->
+            <!-- ================================== -->
+
+            <div class="equipment-card-content">
+
+
+              <span class="equipment-card-category">
+
+                <%= equipment
+                  ? equipment.category || "Equipment"
+                  : "Equipment"
+                %>
+
+              </span>
+
+
+              <h2>
+
+                <%= equipment
+                  ? equipment.name || "Equipment unavailable"
+                  : "Equipment unavailable"
+                %>
+
+              </h2>
+
+
+              <!-- ================================= -->
+              <!-- DETAILS -->
+              <!-- ================================= -->
+
+              <div class="detail-list">
+
+
+                <!-- STATUS -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Request Status
+                  </span>
+
+                  <strong>
+                    <%= status.replace(
+                      /_/g,
+                      " "
+                    ) %>
+                  </strong>
+
+                </div>
+
+
+                <!-- QUANTITY -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Requested Quantity
+                  </span>
+
+                  <strong>
+                    <%= request.quantity %>
+                  </strong>
+
+                </div>
+
+
+                <!-- RETURN DATE -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Return Date
+                  </span>
+
+                  <strong>
+
+                    <% if (
+                      request.requestedReturnDate
+                    ) { %>
+
+                      <%= new Date(
+                        request.requestedReturnDate
+                      ).toLocaleDateString(
+                        "en-IN"
+                      ) %>
+
+                    <% } else { %>
+
+                      Not specified
+
+                    <% } %>
+
+                  </strong>
+
+                </div>
+
+
+                <!-- BORROW FEE -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Borrow Fee
+                  </span>
+
+                  <strong>
+                    ₹<%= Number(
+                      request.rentalFee || 0
+                    ).toLocaleString(
+                      "en-IN"
+                    ) %>
+                  </strong>
+
+                </div>
+
+
+                <!-- SECURITY DEPOSIT -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Security Deposit
+                  </span>
+
+                  <strong>
+                    ₹<%= Number(
+                      request.securityDeposit || 0
+                    ).toLocaleString(
+                      "en-IN"
+                    ) %>
+                  </strong>
+
+                </div>
+
+
+                <!-- LENDER -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Lender
+                  </span>
+
+                  <strong>
+
+                    <%= lender
+                      ? lender.name || "Unavailable"
+                      : "Unavailable"
+                    %>
+
+                  </strong>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+
+                <div class="detail-list-item">
+
+                  <span>
+                    Payment Status
+                  </span>
+
+                  <strong>
+                    <%= paymentStatus.replace(
+                      /_/g,
+                      " "
+                    ) %>
+                  </strong>
+
+                </div>
+
+
+                <!-- PAYMENT REFERENCE -->
+
+                <% if (
+                  request.paymentReference
+                ) { %>
+
+                  <div class="detail-list-item">
+
+                    <span>
+                      Payment Reference
+                    </span>
+
+                    <strong>
+                      <%= request.paymentReference %>
+                    </strong>
+
+                  </div>
+
+                <% } %>
+
+
+                <!-- APPROVED DATE -->
+
+                <% if (
+                  request.approvedDate
+                ) { %>
+
+                  <div class="detail-list-item">
+
+                    <span>
+                      Approved Date
+                    </span>
+
+                    <strong>
+
+                      <%= new Date(
+                        request.approvedDate
+                      ).toLocaleDateString(
+                        "en-IN"
+                      ) %>
+
+                    </strong>
+
+                  </div>
+
+                <% } %>
+
+
+              </div>
+
+
+              <!-- ================================= -->
+              <!-- DUE DATE COUNTDOWN -->
+              <!-- ================================= -->
+
+              <% if (
+                (
+                  status === "ACTIVE" ||
+                  status === "OVERDUE"
+                ) &&
+                request.requestedReturnDate
+              ) { %>
+
+
+                <div
+                  class="due-countdown"
+                  data-due-date="<%= new Date(request.requestedReturnDate).toISOString() %>"
+                >
+
+                  <span class="due-countdown-label">
+                    Time remaining
+                  </span>
+
+                  <strong class="due-countdown-value">
+                    Calculating...
+                  </strong>
+
+                </div>
+
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- EQUIPMENT BUTTON -->
+              <!-- ================================= -->
+
+              <% if (equipment) { %>
+
+                <div
+                  style="margin-top: 18px;"
+                >
+
+                  <a
+                    href="/equipment/<%= equipment._id %>"
+                    class="btn btn-primary btn-full"
+                  >
+                    View Equipment
+                  </a>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- PENDING APPROVAL -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "PENDING_APPROVAL"
+              ) { %>
+
+                <div
+                  class="decision-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 16px;
+                    border-radius: 10px;
+                  "
+                >
+
+                  <strong>
+                    Waiting for Lender Approval
+                  </strong>
+
+                  <p>
+                    Your borrow request is waiting for the equipment owner.
+                  </p>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- REJECTED -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "REJECTED"
+              ) { %>
+
+                <div
+                  class="decision-box rejected-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 16px;
+                    border-radius: 10px;
+                  "
+                >
+
+                  <strong>
+                    Request Rejected
+                  </strong>
+
+
+                  <% if (
+                    request.rejectionReason
+                  ) { %>
+
+                    <p>
+
+                      <strong>
+                        Reason:
+                      </strong>
+
+                      <%= request.rejectionReason %>
+
+                    </p>
+
+                  <% } %>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- APPROVED -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "APPROVED"
+              ) { %>
+
+
+                <!-- PAYMENT NOT STARTED -->
+
+                <% if (
+                  paymentStatus === "NOT_STARTED" ||
+                  paymentStatus === "PAYMENT_REJECTED"
+                ) { %>
+
+                  <div
+                    class="decision-box"
+                    style="
+                      margin-top: 15px;
+                      padding: 16px;
+                      border-radius: 10px;
+                    "
+                  >
+
+                    <strong>
+
+                      <% if (
+                        paymentStatus ===
+                        "PAYMENT_REJECTED"
+                      ) { %>
+
+                        Payment Rejected
+
+                      <% } else { %>
+
+                        Security Deposit Required
+
+                      <% } %>
+
+                    </strong>
+
+
+                    <p>
+
+                      Security Deposit:
+
+                      <strong>
+                        ₹<%= Number(
+                          request.securityDeposit || 0
+                        ).toLocaleString(
+                          "en-IN"
+                        ) %>
+                      </strong>
+
+                    </p>
+
+
+                    <a
+                      href="/payment/<%= request._id %>"
+                      class="btn btn-primary btn-full"
+                    >
+                      Pay Security Deposit
+                    </a>
+
+                  </div>
+
+                <% } %>
+
+
+                <!-- PAYMENT PENDING -->
+
+                <% if (
+                  paymentStatus ===
+                  "PENDING_VERIFICATION"
+                ) { %>
+
+                  <div
+                    class="decision-box"
+                    style="
+                      margin-top: 15px;
+                      padding: 16px;
+                      border-radius: 10px;
+                    "
+                  >
+
+                    <strong>
+                      Payment Verification Pending
+                    </strong>
+
+                    <p>
+
+                      Your payment reference
+
+                      <strong>
+                        <%= request.paymentReference || "submitted" %>
+                      </strong>
+
+                      is waiting for lender verification.
+
+                    </p>
+
+                  </div>
+
+                <% } %>
+
+
+                <!-- DEPOSIT CONFIRMED -->
+
+                <% if (
+                  paymentStatus ===
+                  "DEPOSIT_CONFIRMED"
+                ) { %>
+
+                  <div
+                    class="decision-box approved-box"
+                    style="
+                      margin-top: 15px;
+                      padding: 16px;
+                      border-radius: 10px;
+                    "
+                  >
+
+                    <strong>
+                      Deposit Confirmed
+                    </strong>
+
+                    <p>
+                      Your security deposit has been verified.
+                    </p>
+
+
+                    <a
+                      href="/checkout/<%= request._id %>"
+                      class="btn btn-primary btn-full"
+                    >
+                      Continue to Checkout
+                    </a>
+
+                  </div>
+
+                <% } %>
+
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- ACTIVE -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "ACTIVE"
+              ) { %>
+
+
+                <div
+                  class="decision-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 16px;
+                    border-radius: 10px;
+                  "
+                >
+
+                  <strong>
+                    Equipment Borrowed
+                  </strong>
+
+                  <p>
+                    This equipment is currently active under your borrowing request.
+                  </p>
+
+
+                  <a
+                    href="/return/<%= request._id %>"
+                    class="btn btn-primary btn-full"
+                  >
+                    Request Return
+                  </a>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- OVERDUE -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "OVERDUE"
+              ) { %>
+
+
+                <div
+                  class="decision-box rejected-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 16px;
+                    border-radius: 10px;
+                  "
+                >
+
+                  <strong>
+                    Equipment Overdue
+                  </strong>
+
+                  <p>
+                    The requested return date has passed.
+                    Please return the equipment as soon as possible.
+                  </p>
+
+
+                  <a
+                    href="/return/<%= request._id %>"
+                    class="btn btn-danger btn-full"
+                  >
+                    Request Return
+                  </a>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- RETURN REQUESTED -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "RETURN_REQUESTED"
+              ) { %>
+
+
+                <div
+                  class="decision-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 16px;
+                    border-radius: 10px;
+                  "
+                >
+
+                  <strong>
+                    Return Request Submitted
+                  </strong>
+
+                  <p>
+                    Waiting for the lender to confirm the returned equipment.
+                  </p>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- ================================= -->
+              <!-- RETURNED -->
+              <!-- ================================= -->
+
+              <% if (
+                status === "RETURNED"
+              ) { %>
+
+
+                <div
+                  class="decision-box approved-box"
+                  style="
+                    margin-top: 15px;
+                    padding: 16px;
+                    border-radius: 10px;
+                  "
+                >
+
+                  <strong>
+                    Equipment Returned
+                  </strong>
+
+
+                  <% if (
+                    request.actualReturnDate
+                  ) { %>
+
+                    <p>
+
+                      Returned on:
+
+                      <%= new Date(
+                        request.actualReturnDate
+                      ).toLocaleString(
+                        "en-IN"
+                      ) %>
+
+                    </p>
+
+                  <% } %>
+
+
+                  <% if (
+                    request.returnedCondition
+                  ) { %>
+
+                    <p>
+
+                      Condition:
+
+                      <strong>
+                        <%= request.returnedCondition %>
+                      </strong>
+
+                    </p>
+
+                  <% } %>
+
+
+                  <p>
+
+                    Deposit:
+
+                    <strong>
+                      <%= paymentStatus.replace(
+                        /_/g,
+                        " "
+                      ) %>
+                    </strong>
+
+                  </p>
+
+                </div>
+
+              <% } %>
+
+
+            </div>
+
+          </article>
+
+
+        <% } %>
+
+
+      </div>
+
+
+    <% } %>
+
+  </div>
+
+</main>
+
+
+<script
+  src="/js/due-countdown.js"
+  defer
+></script>
+
+
+<%- include("../partials/footer") %>

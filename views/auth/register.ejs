@@ -1,0 +1,352 @@
+<%- include("../partials/head", { title: "Register" }) %>
+
+<link
+  rel="stylesheet"
+  href="/css/register.css?v=7e3"
+/>
+
+
+<main class="register-page">
+
+  <div class="register-background"></div>
+
+
+  <section
+    class="register-card"
+    aria-labelledby="register-title"
+  >
+
+    <!-- =====================================================
+         BRAND
+         ===================================================== -->
+
+    <div class="register-brand">
+
+      <a
+        href="/"
+        class="register-brand-link"
+        aria-label="Campus Exchange Home"
+      >
+
+        <span class="register-brand-mark">
+          CE
+        </span>
+
+        <span class="register-brand-text">
+
+          <strong>
+            Campus Exchange
+          </strong>
+
+          <small>
+            Campus Equipment Lending
+          </small>
+
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="register-header">
+
+      <p class="register-eyebrow">
+        CREATE ACCOUNT
+      </p>
+
+      <h1 id="register-title">
+        Join Campus Exchange
+      </h1>
+
+      <p class="register-subtitle">
+        Register using your institutional email.
+        A verification code will be sent before login.
+      </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         ERROR MESSAGE
+         ===================================================== -->
+
+    <% if (
+      typeof error !== "undefined" &&
+      error
+    ) { %>
+
+      <div
+        class="register-alert register-alert-error"
+        role="alert"
+      >
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+         ===================================================== -->
+
+    <% if (
+      typeof message !== "undefined" &&
+      message
+    ) { %>
+
+      <div
+        class="register-alert register-alert-success"
+        role="status"
+      >
+        <%= message %>
+      </div>
+
+    <% } %>
+
+
+    <!-- =====================================================
+         REGISTRATION FORM
+         ===================================================== -->
+
+    <form
+      method="POST"
+      action="/auth/register"
+      class="register-form"
+    >
+
+
+      <!-- FULL NAME -->
+
+      <div class="register-field">
+
+        <label for="name">
+          Full Name
+        </label>
+
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Your full name"
+          autocomplete="name"
+          required
+        >
+
+      </div>
+
+
+      <!-- EMAIL -->
+
+      <div class="register-field">
+
+        <label for="email">
+          Institutional Email
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@college.edu"
+          autocomplete="email"
+          required
+        >
+
+      </div>
+
+
+      <!-- DEPARTMENT + YEAR -->
+
+      <div class="register-row">
+
+        <div class="register-field">
+
+          <label for="department">
+            Department
+          </label>
+
+          <input
+            type="text"
+            id="department"
+            name="department"
+            placeholder="Computer Science"
+            required
+          >
+
+        </div>
+
+
+        <div class="register-field">
+
+          <label for="year">
+            Academic Year
+          </label>
+
+          <select
+            id="year"
+            name="year"
+            required
+          >
+
+            <option value="">
+              Select year
+            </option>
+
+            <option value="1">
+              1st Year
+            </option>
+
+            <option value="2">
+              2nd Year
+            </option>
+
+            <option value="3">
+              3rd Year
+            </option>
+
+            <option value="4">
+              4th Year
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACCOUNT TYPE -->
+
+<div class="register-field">
+
+  <label for="role">
+    Account Type
+  </label>
+
+  <select
+    id="role"
+    name="role"
+    required
+  >
+
+    <option value="">
+      Select account type
+    </option>
+
+    <option value="BORROWER">
+      Borrower
+    </option>
+
+    <option value="LENDER">
+      Lender
+    </option>
+
+  </select>
+
+</div>
+
+
+      <!-- PHONE -->
+
+      <div class="register-field">
+
+        <label for="phone">
+          Phone
+        </label>
+
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="Optional"
+          autocomplete="tel"
+        >
+
+      </div>
+
+
+      <!-- PASSWORD + CONFIRM PASSWORD -->
+
+      <div class="register-row">
+
+        <div class="register-field">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Minimum 8 characters"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+
+        </div>
+
+
+        <div class="register-field">
+
+          <label for="confirmPassword">
+            Confirm Password
+          </label>
+
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- SUBMIT -->
+
+      <button
+        type="submit"
+        class="register-submit"
+      >
+        Create Account
+      </button>
+
+
+    </form>
+
+
+    <!-- =====================================================
+         LOGIN LINK
+         ===================================================== -->
+
+    <div class="register-footer">
+
+      <span>
+        Already have an account?
+      </span>
+
+      <a href="/auth/login">
+        Login
+      </a>
+
+    </div>
+
+
+  </section>
+
+</main>
+
+
+<%- include("../partials/footer") %>

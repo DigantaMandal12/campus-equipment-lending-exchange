@@ -1,0 +1,32 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="error-page">
+
+  <div class="container error-container">
+
+    <span class="error-code">404</span>
+
+    <h1>Page Not Found</h1>
+
+    <p>
+      The requested page could not be found.
+    </p>
+
+    <p class="error-url">
+      <%= requestedUrl %>
+    </p>
+
+    <a
+      href="/"
+      class="btn btn-primary"
+    >
+      Return Home
+    </a>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

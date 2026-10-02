@@ -1,0 +1,28 @@
+<%- include("../partials/head", { title }) %>
+
+<%- include("../partials/header") %>
+
+<main class="error-page">
+
+  <div class="container error-container">
+
+    <span class="error-code">500</span>
+
+    <h1>Something Went Wrong</h1>
+
+    <p>
+      <%= message %>
+    </p>
+
+    <a
+      href="/"
+      class="btn btn-primary"
+    >
+      Return Home
+    </a>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

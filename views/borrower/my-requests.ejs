@@ -1,0 +1,389 @@
+<%- include("../partials/head", { title: title || "My Borrow Requests" }) %>
+
+<link
+  rel="stylesheet"
+  href="/css/borrow-requests.css?v=2"
+/>
+
+<%- include("../partials/header") %>
+
+<main class="borrow-requests-page">
+
+  <div class="borrow-requests-container">
+
+    <div class="borrow-page-header">
+
+      <div>
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          My Borrow Requests
+        </h1>
+
+        <p>
+          Track your equipment requests, payments, due dates, returns,
+          and active borrowings.
+        </p>
+      </div>
+
+      <a
+        href="/equipment"
+        class="btn btn-primary"
+      >
+        Browse Equipment
+      </a>
+
+    </div>
+
+    <% if (success) { %>
+      <div class="borrow-alert borrow-alert-success">
+        <%= success %>
+      </div>
+    <% } %>
+
+
+    <% if (!requests || requests.length === 0) { %>
+
+      <section class="borrow-empty">
+
+        <div class="borrow-empty-icon">
+          ✓
+        </div>
+
+        <h2>
+          No borrow requests yet
+        </h2>
+
+        <p>
+          Browse available equipment and submit your first request.
+        </p>
+
+        <a
+          href="/equipment"
+          class="btn btn-primary"
+        >
+          Browse Equipment
+        </a>
+
+      </section>
+
+    <% } else { %>
+
+      <div class="borrow-request-grid">
+
+        <% requests.forEach(function(request) { %>
+
+          <article class="borrow-request-card">
+
+
+            <!-- IMAGE -->
+
+            <div class="borrow-request-image">
+
+              <% if (
+                request.equipment &&
+                Array.isArray(request.equipment.images) &&
+                request.equipment.images.length > 0
+              ) { %>
+
+                <img
+                  src="<%= request.equipment.images[0] %>"
+                  alt="<%= request.equipment.name %>"
+                  loading="lazy"
+                >
+
+              <% } else { %>
+
+                <div class="borrow-image-placeholder">
+                  <%= request.equipment
+                    ? request.equipment.name.charAt(0).toUpperCase()
+                    : "E"
+                  %>
+                </div>
+
+              <% } %>
+
+
+              <span class="borrow-status-badge">
+
+                <%= request.status
+                  ? request.status.replace(/_/g, " ")
+                  : "UNKNOWN"
+                %>
+
+              </span>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="borrow-request-content">
+
+              <span class="borrow-category">
+                <%= request.equipment
+                  ? request.equipment.category
+                  : "Equipment"
+                %>
+              </span>
+
+
+              <h2>
+                <%= request.equipment
+                  ? request.equipment.name
+                  : "Equipment unavailable"
+                %>
+              </h2>
+
+
+              <div class="borrow-details">
+
+
+                <div class="borrow-detail-row">
+                  <span>Request Status</span>
+                  <strong>
+                    <%= request.status
+                      ? request.status.replace(/_/g, " ")
+                      : "UNKNOWN"
+                    %>
+                  </strong>
+                </div>
+
+
+                <div class="borrow-detail-row">
+                  <span>Requested Quantity</span>
+                  <strong>
+                    <%= request.quantity || 0 %>
+                  </strong>
+                </div>
+
+
+                <div class="borrow-detail-row">
+                  <span>Return Date</span>
+                  <strong>
+                    <% if (request.requestedReturnDate) { %>
+                      <%= new Date(
+                        request.requestedReturnDate
+                      ).toLocaleDateString("en-IN") %>
+                    <% } else { %>
+                      Not set
+                    <% } %>
+                  </strong>
+                </div>
+
+
+                <div class="borrow-detail-row">
+                  <span>Borrow Fee</span>
+                  <strong>
+                    ₹<%= Number(
+                      request.rentalFee || 0
+                    ).toLocaleString("en-IN") %>
+                  </strong>
+                </div>
+
+
+                <div class="borrow-detail-row">
+                  <span>Security Deposit</span>
+                  <strong>
+                    ₹<%= Number(
+                      request.securityDeposit || 0
+                    ).toLocaleString("en-IN") %>
+                  </strong>
+                </div>
+
+
+                <div class="borrow-detail-row">
+                  <span>Payment Status</span>
+                  <strong>
+                    <%= request.paymentStatus
+                      ? request.paymentStatus.replace(/_/g, " ")
+                      : "NOT STARTED"
+                    %>
+                  </strong>
+                </div>
+
+
+                <% if (request.lender) { %>
+
+                  <div class="borrow-detail-row">
+                    <span>Lender</span>
+                    <strong>
+                      <%= request.lender.name || "Unavailable" %>
+                    </strong>
+                  </div>
+
+                <% } %>
+
+              </div>
+
+
+              <!-- VIEW EQUIPMENT -->
+
+              <% if (request.equipment) { %>
+
+                <a
+                  href="/equipment/<%= request.equipment._id %>"
+                  class="borrow-view-button"
+                >
+                  View Equipment
+                </a>
+
+              <% } %>
+
+
+              <!-- EXISTING REQUEST-STATE CONTENT -->
+
+              <% if (request.status === "PENDING_APPROVAL") { %>
+
+                <div class="borrow-state borrow-state-pending">
+
+                  <strong>
+                    Waiting for Lender Approval
+                  </strong>
+
+                  <p>
+                    Your borrow request is waiting for the equipment owner.
+                  </p>
+
+                </div>
+
+              <% } %>
+
+
+              <% if (
+                request.status === "APPROVED" &&
+                (
+                  !request.paymentStatus ||
+                  request.paymentStatus === "NOT_STARTED" ||
+                  request.paymentStatus === "PAYMENT_REJECTED"
+                )
+              ) { %>
+
+                <div class="borrow-state borrow-state-payment">
+
+                  <strong>
+                    Security Deposit Required
+                  </strong>
+
+                  <p>
+                    Your request was approved. Complete the deposit before checkout.
+                  </p>
+
+                  <a
+                    href="/payment/<%= request._id %>"
+                    class="btn btn-primary btn-full"
+                  >
+                    Pay Security Deposit
+                  </a>
+
+                </div>
+
+              <% } %>
+
+
+              <% if (
+                request.status === "APPROVED" &&
+                request.paymentStatus === "PENDING_VERIFICATION"
+              ) { %>
+
+                <div class="borrow-state borrow-state-warning">
+
+                  <strong>
+                    Payment Verification Pending
+                  </strong>
+
+                  <p>
+                    Your payment reference is waiting for lender verification.
+                  </p>
+
+                </div>
+
+              <% } %>
+
+
+              <% if (
+                request.status === "APPROVED" &&
+                request.paymentStatus === "DEPOSIT_CONFIRMED"
+              ) { %>
+
+                <div class="borrow-state borrow-state-success">
+
+                  <strong>
+                    Deposit Confirmed
+                  </strong>
+
+                  <p>
+                    Your security deposit has been verified.
+                  </p>
+
+                  <a
+                    href="/checkout/<%= request._id %>"
+                    class="btn btn-primary btn-full"
+                  >
+                    Continue to Checkout
+                  </a>
+
+                </div>
+
+              <% } %>
+
+
+              <% if (request.status === "ACTIVE") { %>
+
+                <div class="borrow-state borrow-state-active">
+
+                  <strong>
+                    Equipment Borrowed
+                  </strong>
+
+                  <p>
+                    This equipment is currently active under your borrowing request.
+                  </p>
+
+                </div>
+
+              <% } %>
+
+
+              <% if (request.status === "REJECTED") { %>
+
+                <div class="borrow-state borrow-state-rejected">
+
+                  <strong>
+                    Request Rejected
+                  </strong>
+
+                  <p>
+                    The lender has rejected this borrow request.
+                  </p>
+
+                  <% if (request.rejectionReason) { %>
+
+                    <p>
+                      <strong>Reason:</strong>
+                      <%= request.rejectionReason %>
+                    </p>
+
+                  <% } %>
+
+                </div>
+
+              <% } %>
+
+            </div>
+
+          </article>
+
+        <% }); %>
+
+      </div>
+
+    <% } %>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>

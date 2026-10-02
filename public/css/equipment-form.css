@@ -1,0 +1,614 @@
+/* =========================================================
+   CAMPUS EXCHANGE
+   ADD EQUIPMENT / EQUIPMENT FORM
+   ========================================================= */
+
+:root {
+  --eq-primary: #315cf5;
+  --eq-primary-dark: #2448d8;
+
+  --eq-text: #101828;
+  --eq-text-soft: #475467;
+  --eq-muted: #667085;
+
+  --eq-border: #d9dfeb;
+  --eq-border-soft: #eef1f5;
+
+  --eq-bg: #f5f7fb;
+  --eq-card: #ffffff;
+
+  --eq-radius: 18px;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.equipment-form-page {
+  min-height: calc(100vh - 72px);
+
+  padding: 34px 0 70px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faff 0%,
+      #f4f7fb 100%
+    );
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.equipment-form-container {
+  width:
+    min(
+      calc(100% - 40px),
+      1000px
+    );
+
+  margin:
+    0 auto;
+}
+
+
+/* =========================================================
+   TOP HEADER
+   ========================================================= */
+
+.equipment-form-header {
+  margin-bottom: 22px;
+}
+
+.equipment-form-eyebrow {
+  margin: 0 0 8px;
+
+  color: var(--eq-primary);
+
+  font-size: 10px;
+
+  font-weight: 850;
+
+  letter-spacing: .14em;
+
+  text-transform: uppercase;
+}
+
+.equipment-form-header h1 {
+  margin: 0;
+
+  color: var(--eq-text);
+
+  font-size:
+    clamp(
+      30px,
+      4vw,
+      40px
+    );
+
+  font-weight: 850;
+
+  line-height: 1.1;
+
+  letter-spacing: -.025em;
+}
+
+.equipment-form-header p {
+  margin: 10px 0 0;
+
+  color: var(--eq-muted);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.equipment-form-card {
+  padding: 30px;
+
+  border:
+    1px solid
+    var(--eq-border);
+
+  border-radius:
+    20px;
+
+  background:
+    var(--eq-card);
+
+  box-shadow:
+    0 10px 30px
+    rgba(15, 23, 42, .07);
+}
+
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.equipment-form-card .alert {
+  margin-bottom: 20px;
+
+  padding:
+    12px 14px;
+
+  border-radius:
+    10px;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.equipment-form {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    22px;
+}
+
+
+/* =========================================================
+   FORM SECTION
+   ========================================================= */
+
+.equipment-form-section {
+  padding-bottom: 22px;
+
+  border-bottom:
+    1px solid
+    var(--eq-border-soft);
+}
+
+.equipment-form-section:last-child {
+  border-bottom: 0;
+
+  padding-bottom: 0;
+}
+
+.equipment-form-section h2 {
+  margin:
+    0 0 5px;
+
+  color:
+    var(--eq-text);
+
+  font-size:
+    17px;
+
+  font-weight:
+    800;
+}
+
+.equipment-form-section > p {
+  margin:
+    0 0 18px;
+
+  color:
+    var(--eq-muted);
+
+  font-size:
+    12px;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.equipment-form-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    17px;
+}
+
+
+/* =========================================================
+   FIELD
+   ========================================================= */
+
+.equipment-form-field {
+  min-width: 0;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+}
+
+.equipment-form-field.full-width {
+  grid-column:
+    1 / -1;
+}
+
+.equipment-form-field label {
+  margin-bottom:
+    7px;
+
+  color:
+    #1f2937;
+
+  font-size:
+    12px;
+
+  font-weight:
+    750;
+}
+
+.equipment-form-field input,
+.equipment-form-field select,
+.equipment-form-field textarea {
+  width:
+    100%;
+
+  min-height:
+    46px;
+
+  padding:
+    10px 12px;
+
+  border:
+    1px solid
+    var(--eq-border);
+
+  border-radius:
+    10px;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--eq-text);
+
+  font-size:
+    13px;
+
+  outline:
+    none;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+.equipment-form-field textarea {
+  min-height:
+    130px;
+
+  resize:
+    vertical;
+}
+
+.equipment-form-field input::placeholder,
+.equipment-form-field textarea::placeholder {
+  color:
+    #98a2b3;
+}
+
+.equipment-form-field input:hover,
+.equipment-form-field select:hover,
+.equipment-form-field textarea:hover {
+  border-color:
+    #c3ccda;
+}
+
+.equipment-form-field input:focus,
+.equipment-form-field select:focus,
+.equipment-form-field textarea:focus {
+  border-color:
+    var(--eq-primary);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(49,92,245,.11);
+}
+
+
+/* =========================================================
+   HELPER TEXT
+   ========================================================= */
+
+.equipment-form-help {
+  margin:
+    6px 0 0;
+
+  color:
+    var(--eq-muted);
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   CURRENCY INPUT
+   ========================================================= */
+
+.currency-field {
+  position:
+    relative;
+}
+
+.currency-field::before {
+  content:
+    "₹";
+
+  position:
+    absolute;
+
+  left:
+    13px;
+
+  top:
+    50%;
+
+  transform:
+    translateY(-50%);
+
+  color:
+    #667085;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  pointer-events:
+    none;
+}
+
+.currency-field input {
+  padding-left:
+    29px;
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+   ========================================================= */
+
+.equipment-upload {
+  padding:
+    20px;
+
+  border:
+    1px dashed
+    #c8d2e3;
+
+  border-radius:
+    14px;
+
+  background:
+    #fafbff;
+
+  text-align:
+    center;
+}
+
+.equipment-upload label {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    40px;
+
+  padding:
+    9px 14px;
+
+  border-radius:
+    9px;
+
+  background:
+    #eef2ff;
+
+  color:
+    var(--eq-primary);
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+.equipment-upload input[type="file"] {
+  margin-top:
+    12px;
+
+  width:
+    100%;
+}
+
+
+/* =========================================================
+   CHECKBOX / STATUS
+   ========================================================= */
+
+.equipment-checkbox {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    10px 0;
+}
+
+.equipment-checkbox input {
+  width:
+    17px;
+
+  height:
+    17px;
+
+  accent-color:
+    var(--eq-primary);
+}
+
+.equipment-checkbox label {
+  margin:
+    0;
+
+  color:
+    var(--eq-text-soft);
+
+  font-size:
+    12px;
+
+  font-weight:
+    600;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.equipment-form-actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    10px;
+
+  padding-top:
+    4px;
+}
+
+.equipment-form-actions .btn {
+  min-height:
+    44px;
+
+  padding:
+    10px 17px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+}
+
+.equipment-form-actions .btn-primary {
+  background:
+    var(--eq-primary);
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 7px 16px
+    rgba(49,92,245,.18);
+}
+
+.equipment-form-actions .btn-primary:hover {
+  background:
+    var(--eq-primary-dark);
+}
+
+.equipment-form-actions .btn-secondary {
+  border:
+    1px solid
+    var(--eq-border);
+
+  background:
+    #ffffff;
+
+  color:
+    #344054;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .equipment-form-page {
+    padding:
+      24px 0 50px;
+  }
+
+  .equipment-form-container {
+    width:
+      calc(100% - 24px);
+  }
+
+  .equipment-form-card {
+    padding:
+      22px 18px;
+
+    border-radius:
+      16px;
+  }
+
+  .equipment-form-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .equipment-form-field.full-width {
+    grid-column:
+      auto;
+  }
+
+  .equipment-form-actions {
+    flex-direction:
+      column-reverse;
+  }
+
+  .equipment-form-actions .btn {
+    width:
+      100%;
+  }
+
+}

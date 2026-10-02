@@ -1,0 +1,229 @@
+<%- include("../partials/head", { title }) %>
+
+<link
+  rel="stylesheet"
+  href="/css/notifications.css"
+>
+
+<%- include("../partials/header") %>
+
+
+<main class="notifications-page">
+
+  <div class="container">
+
+
+    <div class="notifications-header">
+
+      <div>
+
+        <span class="eyebrow">
+          BORROWER
+        </span>
+
+        <h1>
+          Notifications
+        </h1>
+
+        <p>
+          Important updates about your equipment borrowing.
+        </p>
+
+      </div>
+
+
+      <% if (unreadCount > 0) { %>
+
+        <form
+          method="POST"
+          action="/notifications/read-all"
+        >
+
+          <button
+            type="submit"
+            class="btn btn-secondary"
+          >
+            Mark All Read
+          </button>
+
+        </form>
+
+      <% } %>
+
+    </div>
+
+
+    <% if (success) { %>
+
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+
+    <% } %>
+
+
+    <% if (error) { %>
+
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <% if (
+      !notifications ||
+      notifications.length === 0
+    ) { %>
+
+
+      <section class="empty-state">
+
+        <div class="empty-icon">
+          ✓
+        </div>
+
+        <h2>
+          No notifications
+        </h2>
+
+        <p>
+          You are all caught up.
+        </p>
+
+      </section>
+
+
+    <% } else { %>
+
+
+      <div class="notifications-list">
+
+
+        <% for (
+          let i = 0;
+          i < notifications.length;
+          i++
+        ) { %>
+
+
+          <%
+            const notification =
+              notifications[i];
+
+            const notificationClass =
+              notification.read
+                ? ""
+                : "notification-unread";
+          %>
+
+
+          <article
+            class="notification-card <%= notificationClass %>"
+          >
+
+
+            <div class="notification-icon">
+
+              <% if (
+                notification.type === "DUE_SOON"
+              ) { %>
+
+                ⏰
+
+              <% } else if (
+                notification.type === "OVERDUE"
+              ) { %>
+
+                ⚠
+
+              <% } else { %>
+
+                ℹ
+
+              <% } %>
+
+            </div>
+
+
+            <div class="notification-content">
+
+
+              <div class="notification-top">
+
+                <h2>
+                  <%= notification.title %>
+                </h2>
+
+
+                <% if (
+                  !notification.read
+                ) { %>
+
+                  <span class="notification-new">
+                    NEW
+                  </span>
+
+                <% } %>
+
+              </div>
+
+
+              <p>
+                <%= notification.message %>
+              </p>
+
+
+              <small>
+
+                <%= new Date(
+                  notification.createdAt
+                ).toLocaleString(
+                  "en-IN"
+                ) %>
+
+              </small>
+
+
+              <% if (
+                !notification.read
+              ) { %>
+
+                <form
+                  method="POST"
+                  action="/notifications/<%= notification._id %>/read"
+                  class="notification-read-form"
+                >
+
+                  <button
+                    type="submit"
+                    class="btn btn-secondary"
+                  >
+                    Mark as Read
+                  </button>
+
+                </form>
+
+              <% } %>
+
+
+            </div>
+
+          </article>
+
+
+        <% } %>
+
+
+      </div>
+
+
+    <% } %>
+
+
+  </div>
+
+</main>
+
+
+<%- include("../partials/footer") %>

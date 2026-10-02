@@ -1,0 +1,322 @@
+<%- include("../partials/head", { title }) %>
+<link
+  rel="stylesheet"
+  href="/css/equipment-form.css?v=7e1"
+>
+<%- include("../partials/header") %>
+
+<main class="form-page">
+
+  <div class="container">
+
+    <div class="form-card">
+
+      <div class="form-card-heading">
+
+        <span class="eyebrow">
+          LENDER
+        </span>
+
+        <h1>
+          Add Equipment
+        </h1>
+
+        <p>
+          List an academic item that other students can borrow.
+        </p>
+
+      </div>
+
+
+      <% if (error) { %>
+
+        <div class="alert alert-error">
+          <%= error %>
+        </div>
+
+      <% } %>
+
+
+      <form
+        action="/equipment"
+        method="POST"
+        enctype="multipart/form-data"
+        class="auth-form"
+      >
+
+        <div class="equipment-form-grid">
+
+
+          <!-- Equipment Name -->
+          <div class="form-group">
+
+            <label for="name">
+              Equipment Name
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value="<%= formData.name %>"
+              placeholder="Scientific Calculator"
+              minlength="2"
+              maxlength="120"
+              required
+            >
+
+          </div>
+
+
+          <!-- Category -->
+          <div class="form-group">
+
+            <label for="category">
+              Category
+            </label>
+
+            <input
+              id="category"
+              type="text"
+              name="category"
+              value="<%= formData.category %>"
+              placeholder="Mathematics"
+              maxlength="100"
+              required
+            >
+
+          </div>
+
+
+          <!-- Department -->
+          <div class="form-group">
+
+            <label for="department">
+              Engineering Department
+            </label>
+
+            <input
+              id="department"
+              type="text"
+              name="department"
+              value="<%= formData.department %>"
+              placeholder="Computer Science and Engineering"
+              maxlength="100"
+              required
+            >
+
+          </div>
+
+
+          <!-- Condition -->
+          <div class="form-group">
+
+            <label for="condition">
+              Condition
+            </label>
+
+            <select
+              id="condition"
+              name="condition"
+              required
+            >
+
+              <option
+                value="NEW"
+                <%= formData.condition === "NEW" ? "selected" : "" %>
+              >
+                New
+              </option>
+
+              <option
+                value="LIKE_NEW"
+                <%= formData.condition === "LIKE_NEW" ? "selected" : "" %>
+              >
+                Like New
+              </option>
+
+              <option
+                value="GOOD"
+                <%= formData.condition === "GOOD" ? "selected" : "" %>
+              >
+                Good
+              </option>
+
+              <option
+                value="FAIR"
+                <%= formData.condition === "FAIR" ? "selected" : "" %>
+              >
+                Fair
+              </option>
+
+              <option
+                value="NEEDS_REPAIR"
+                <%= formData.condition === "NEEDS_REPAIR" ? "selected" : "" %>
+              >
+                Needs Repair
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Quantity -->
+          <div class="form-group">
+
+            <label for="quantity">
+              Quantity
+            </label>
+
+            <input
+              id="quantity"
+              type="number"
+              name="quantity"
+              min="1"
+              step="1"
+              value="<%= formData.quantity %>"
+              required
+            >
+
+            <small class="form-help">
+              Total number of physical items available.
+            </small>
+
+          </div>
+
+
+          <!-- Rental Fee -->
+          <div class="form-group">
+
+            <label for="rentalFee">
+              Borrow / Rental Fee (₹)
+            </label>
+
+            <input
+              id="rentalFee"
+              type="number"
+              name="rentalFee"
+              min="0"
+              step="0.01"
+              value="<%= formData.rentalFee %>"
+              required
+            >
+
+          </div>
+
+
+          <!-- Security Deposit -->
+          <div class="form-group">
+
+            <label for="securityDeposit">
+              Security Deposit (₹)
+            </label>
+
+            <input
+              id="securityDeposit"
+              type="number"
+              name="securityDeposit"
+              min="0"
+              step="0.01"
+              value="<%= formData.securityDeposit %>"
+              required
+            >
+
+          </div>
+
+
+          <!-- Description -->
+          <div class="form-group form-field-full">
+
+            <label for="description">
+              Equipment Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              minlength="10"
+              maxlength="2000"
+              rows="5"
+              placeholder="Example: Handheld non-programmable scientific calculator suitable for mathematics and engineering calculations."
+              required
+            ><%= formData.description %></textarea>
+
+            <small class="form-help">
+              Minimum 10 characters. Describe the equipment, its purpose,
+              and how it can be used.
+            </small>
+
+          </div>
+
+
+          <!-- Images -->
+          <div class="form-group form-field-full">
+
+            <label for="images">
+              Equipment Photos
+            </label>
+
+            <input
+              id="images"
+              type="file"
+              name="images"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              data-max-files="5"
+              data-max-size="2097152"
+            >
+
+            <small class="form-help">
+              Upload up to 5 images. JPG, PNG or WEBP. Maximum 2 MB per image.
+            </small>
+
+            <div
+              id="image-preview"
+              class="equipment-image-preview"
+              aria-live="polite"
+            ></div>
+
+          </div>
+
+
+          <!-- Borrowing Terms -->
+          <div class="form-group form-field-full">
+
+            <label for="borrowingTerms">
+              Borrowing Terms
+            </label>
+
+            <textarea
+              id="borrowingTerms"
+              name="borrowingTerms"
+              maxlength="2000"
+              rows="4"
+              placeholder="Example: Return within 7 days. Keep equipment dry and in good condition."
+            ><%= formData.borrowingTerms %></textarea>
+
+            <small class="form-help">
+              Add rules students should follow while borrowing the equipment.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-full"
+        >
+          Publish Equipment
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</main>
+
+<%- include("../partials/footer") %>
