@@ -1,0 +1,39 @@
+{
+  "name": "campus-equipment-lending-exchange",
+  "version": "1.0.0",
+  "description": "A campus platform where students can list, discover, borrow, return, and manage academic equipment.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test_workflow.js",
+    "build": "echo 'Build successful for deployment'"
+  },
+  "keywords": [
+    "campus",
+    "equipment",
+    "lending",
+    "academic",
+    "express",
+    "mongodb",
+    "ejs",
+    "nodemailer"
+  ],
+  "author": "Campus Lending Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.4.1",
+    "nodemailer": "^6.9.13"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
